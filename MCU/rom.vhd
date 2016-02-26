@@ -30,13 +30,13 @@ architecture rtl of rom is
     ---------------------------------------------------------------------------
     -- addr    Opcode     Rdest    Rsrc1    Rsrc2              description
     ---------------------------------------------------------------------------
-         0  => OPC(add) & reg(1) & reg(0) & reg(6) & "--",    -- command xy
-         1  => OPC(sub) & reg(2) & reg(0) & reg(2) & "--",    -- command xy
-         2  => OPC(andi)& reg(7) & reg(0) & reg(1) & "--",    -- command xy
-         3  => OPC(ori) & reg(6) & reg(2) & reg(3) & "--",    -- command xy
-         4  => OPC(nop) & "-----------",                      -- command xy
-         others    => (others => '1')                        
-         );
+	 16#00# => OPC(xori)  & reg(4) & reg(1) & reg(0) & "--",		-- r4 = r0 xor r1
+	 16#01# => OPC(xori)  & reg(5) & reg(4) & reg(2) & "--",		-- r4 = r4 xor r2
+	 16#02# => OPC(xori)  & reg(6) & reg(5) & reg(3) & "--",		-- r4 = r4 xor r3
+	 16#03# => OPC(xori)  & reg(7) & reg(6) & reg(0) & "--",		-- r7 = r4 xor r0
+
+    others => OPC(nop)   & "-----------"
+    );
   
 begin
 

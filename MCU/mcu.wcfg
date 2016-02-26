@@ -3,7 +3,7 @@
    <wave_state>
    </wave_state>
    <db_ref_list>
-      <db_ref path="C:/_dev/ADD_FS16/design_env/ISE/MCU/tb_mcu_isim_beh.wdb" id="1" type="auto">
+      <db_ref path="/home/pascal/Documents/hslu/ADD/git/MCU/tb_mcu_isim_beh.wdb" id="1" type="auto">
          <top_modules>
             <top_module name="mcu_pkg" />
             <top_module name="numeric_std" />
@@ -12,7 +12,7 @@
          </top_modules>
       </db_ref>
    </db_ref_list>
-   <WVObjectSize size="29" />
+   <WVObjectSize size="37" />
    <wvobject fp_name="/tb_mcu/rst" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">rst</obj_property>
       <obj_property name="ObjectShortName">rst</obj_property>
@@ -197,5 +197,37 @@
    <wvobject fp_name="/tb_mcu/gpio_3" type="array" db_ref_id="1">
       <obj_property name="ElementShortName">gpio_3[15:0]</obj_property>
       <obj_property name="ObjectShortName">gpio_3[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mcu/MUT/i_cpu/i_reg/rst" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">rst</obj_property>
+      <obj_property name="ObjectShortName">rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mcu/MUT/i_cpu/i_reg/clk" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mcu/MUT/i_cpu/i_reg/reg_in" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">reg_in</obj_property>
+      <obj_property name="ObjectShortName">reg_in</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mcu/MUT/i_cpu/i_reg/reg_out" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">reg_out</obj_property>
+      <obj_property name="ObjectShortName">reg_out</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mcu/MUT/i_cpu/i_reg/alu_res" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">alu_res[15:0]</obj_property>
+      <obj_property name="ObjectShortName">alu_res[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mcu/MUT/i_cpu/i_reg/alu_op1" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">alu_op1[15:0]</obj_property>
+      <obj_property name="ObjectShortName">alu_op1[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mcu/MUT/i_cpu/i_reg/alu_op2" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">alu_op2[15:0]</obj_property>
+      <obj_property name="ObjectShortName">alu_op2[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mcu/MUT/i_cpu/i_reg/reg_blk" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">reg_blk[0:7]</obj_property>
+      <obj_property name="ObjectShortName">reg_blk[0:7]</obj_property>
    </wvobject>
 </wave_config>
