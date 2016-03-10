@@ -41,6 +41,9 @@ architecture rtl of cpu_ctrl is
   signal instr_reg : std_logic_vector(DW-1 downto 0);
   signal instr_enb : std_logic;
   signal opcode    : natural range 0 to 2**OPCW-1;
+  -- write enable signals registered
+  signal reg_enb_low  : std_logic;
+  signal reg_enb_high : std_logic;
   
 begin
 
@@ -50,15 +53,33 @@ begin
   data_out <= reg_in.data;
 
   -----------------------------------------------------------------------------
-  -- Register Block Interface
-  -----------------------------------------------------------------------------
-  reg_out.data <= data_in;
-
-  -----------------------------------------------------------------------------
   -- PC Interface
   -----------------------------------------------------------------------------
   prc_out.addr <= instr_reg(AW-1 downto 0); 
   
+  -----------------------------------------------------------------------------
+  -- Register Block Interface
+  -- registered to break comb. path from bus system to register block
+  -----------------------------------------------------------------------------
+  P_rbi: process(clk)
+  begin
+    if rising_edge(clk) then
+      -- write enable and data signals to reg block; 
+      reg_out.enb_data_low  <= reg_enb_low;  
+      reg_out.enb_data_high <= reg_enb_high;
+      if opcode = 16 then
+        -- load instruction, register low & high byte from bus system
+        reg_out.data <= data_in;
+      elsif opcode = 15 then
+        -- setih instruction, register low byte from instr. reg as high byte
+        reg_out.data(DW-1 downto DW/2) <= instr_reg(DW/2-1 downto 0);
+      else
+        -- e.g. setil instruction, register low byte from instr. reg as low byte
+        reg_out.data <= instr_reg;
+      end if;
+    end if;
+  end process;
+
   -----------------------------------------------------------------------------
   -- Instruction register 
   -----------------------------------------------------------------------------
@@ -87,32 +108,33 @@ begin
   p_fsm_com: process (c_st, opcode, alu_in, reg_in, prc_in)
   begin
     -- default assignments for all outputs
-    n_st                  <= c_st; -- remain in current state
-    rd_enb                <= '0';  
-    wr_enb                <= '0';  
-    instr_enb             <= '0';
-    reg_out.enb_res       <= '0';
-    reg_out.enb_data_low  <= '0';  
-    reg_out.enb_data_high <= '0';
-    alu_out.enb           <= '0';
-    prc_out.enb           <= '0';
-    prc_out.mode          <= linear;
-    addr                  <= (others => '1');  -- reset vector
+    n_st             <= c_st; -- remain in current state
+    rd_enb           <= '0';  
+    wr_enb           <= '0';  
+    instr_enb        <= '0';
+    reg_out.enb_res  <= '0';
+    reg_enb_low      <= '0';
+    reg_enb_high     <= '0';
+    alu_out.enb      <= '0';
+    prc_out.enb      <= '0';
+    prc_out.mode     <= linear;
+    addr             <= (others => '1');  -- reset vector
     -- specific assignments
     case c_st is
       when s_if =>
-        -- instruction fetch
+        -- instruction fetch ----------------------------------
+        rd_enb <= '1';
         if prc_in.exc = no_err then
           -- normal fetch if no exception, otherwise go to reset vector
           addr <= prc_in.pc;
         end if;
         n_st <= s_id;
       when s_id =>
-        -- instruction decode
+        -- instruction decode ---------------------------------
         instr_enb <= '1';
         n_st      <= s_ex;
       when s_ex =>
-        -- instruction execute
+        -- instruction execute --------------------------------
         if opcode <= 7 or opcode = 12 or opcode = 13 then
           -- reg/reg-instruction or addil/h instruction
           -- increase PC, store result/flags from ALU, start next instr. cycle 
@@ -120,20 +142,51 @@ begin
           reg_out.enb_res <= '1';  
           alu_out.enb     <= '1';
           n_st            <= s_if; 
-        elsif opcode = 17 then
-          -- To be continued.... !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-          wr_enb <= '1'; -- temporal, to avoid optimizations. !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        elsif opcode = 14 then
+          -- setil instruction
+          -- increase PC, enable storage of low-byte, start next instr. cycle
+          prc_out.enb <= '1';  
+          reg_enb_low <= '1';
+          n_st        <= s_if;                  
+        elsif opcode = 15 then
+          -- setih instruction
+          -- increase PC, enable storage of high-byte, start next instr. cycle
+          prc_out.enb  <= '1';  
+          reg_enb_high <= '1';
+          n_st         <= s_if;                  
+        elsif opcode = 16 or opcode = 17 then
+          -- load/store instruction
+          -- increase PC, go to "Memory Access" state 
+          prc_out.enb <= '1';  
+          n_st        <= s_ma;                  
+        elsif opcode = 24 then
+          -- jump instruction
+          -- To be continued.... !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         else
           -- NOP instruction
           prc_out.enb  <= '1';  
           n_st         <= s_if;        
         end if;
       when s_ma =>
-        -- memory access
-        n_st <= s_rw;
+        -- memory access -------------------------------------
+        if opcode = 16 then
+          -- load instruction
+          -- read data from memory and go to "Register Write-Back" state  
+          rd_enb <= '1';
+          n_st   <= s_rw;
+        else
+          -- store instruction
+          -- write data from register to memory and start next instr. cycle 
+          wr_enb <= '1';
+          n_st   <= s_if; 
+        end if;
+        addr <= reg_in.addr;
       when s_rw =>
-        -- register write-back
-        n_st <= s_if;
+        -- register write-back -------------------------------
+        -- store data from memory in register and start next instr. cycle 
+        reg_enb_low  <= '1';  
+        reg_enb_high <= '1';  
+        n_st         <= s_if;
       when others =>
         n_st <= s_if; -- handle parasitic states
     end case;

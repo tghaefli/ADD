@@ -28,15 +28,24 @@ architecture rtl of rom is
     ---------------------------------------------------------------------------
     -- program code -----------------------------------------------------------
     ---------------------------------------------------------------------------
-    -- addr    Opcode     Rdest    Rsrc1    Rsrc2              description
+    -- addr  Opcode       Rdest    Rsrc1    Rsrc2              description
     ---------------------------------------------------------------------------
-	 16#00# => OPC(xori)  & reg(4) & reg(1) & reg(0) & "--",		-- r4 = r0 xor r1
-	 16#01# => OPC(xori)  & reg(5) & reg(4) & reg(2) & "--",		-- r4 = r4 xor r2
-	 16#02# => OPC(xori)  & reg(6) & reg(5) & reg(3) & "--",		-- r4 = r4 xor r3
-	 16#03# => OPC(xori)  & reg(7) & reg(6) & reg(0) & "--",		-- r7 = r4 xor r0
-
-    others => OPC(nop)   & "-----------"
-    );
+    -- Flag-testing with ADD/SUB commands
+    16#0# => OPC(ld)    & reg(4) & reg(0) & "-----",            -- ld r4, r0
+    16#1# => OPC(ld)    & reg(5) & reg(1) & "-----",            -- ld r5, r1
+    16#2# => OPC(ld)    & reg(6) & reg(2) & "-----",            -- ld r6, r2
+    16#3# => OPC(ld)    & reg(7) & reg(3) & "-----",            -- ld r7, r3
+    16#4# => OPC(add)   & reg(0) & reg(5) & reg(4) & "--",      -- add r0, r5, r4
+    16#5# => OPC(st)    & reg(0) & reg(1) & "-----",            -- st r0, r1
+    16#6# => OPC(sub)   & reg(0) & reg(5) & reg(4) & "--",      -- sub r0, r5, r4
+    16#7# => OPC(st)    & reg(0) & reg(2) & "-----",            -- st r0, r2
+    16#8# => OPC(add)   & reg(0) & reg(7) & reg(6) & "--",      -- add r0, r7, r6
+    16#9# => OPC(st)    & reg(0) & reg(3) & "-----",            -- st r0, r3
+    16#A# => OPC(sub)   & reg(0) & reg(7) & reg(6) & "--",      -- sub r0, r7, r6
+    16#B# => OPC(addil) & reg(0) & "01000001",                  -- addil r0, 0x41
+    16#C# => OPC(st)    & reg(0) & reg(0) & "-----",            -- st r0, r0
+    others => OPC(nop)  & "-----------"                         -- NOP
+         );
   
 begin
 
