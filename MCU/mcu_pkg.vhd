@@ -155,13 +155,12 @@ package mcu_pkg is
   -----------------------------------------------------------------------------
   -- Control Unit / Register Block interface ----------------------------------
   type t_ctr2reg is record
-    src1          : std_logic_vector(RIDW-1 downto 0);
-    src2          : std_logic_vector(RIDW-1 downto 0);
-    dest          : std_logic_vector(RIDW-1 downto 0);
-    enb_res       : std_logic;
-    data          : std_logic_vector(DW-1 downto 0);
-    enb_data_low  : std_logic;
-    enb_data_high : std_logic;
+    src1     : std_logic_vector(RIDW-1 downto 0);
+    src2     : std_logic_vector(RIDW-1 downto 0);
+    dest     : std_logic_vector(RIDW-1 downto 0);
+    enb_res  : std_logic;
+    data     : std_logic_vector(DW-1 downto 0);
+    enb_data : std_logic;
   end record;
   type t_reg2ctr is record
     data : std_logic_vector(DW-1 downto 0);
@@ -186,5 +185,32 @@ package mcu_pkg is
   type t_alu2ctr is record
     flag : t_flag_arr;
   end record;
+  
+  -----------------------------------------------------------------------------
+  -- Helper functions
+  -----------------------------------------------------------------------------
+  -- std_logic_vector(to_signed(i,w))
+  function i2slv(i : integer; w : positive) return std_logic_vector;
+  -- std_logic_vector(to_unsigned(n,w))
+  function n2slv(n : natural; w : positive) return std_logic_vector;
+  
+end package mcu_pkg;
 
-end mcu_pkg;
+
+package body mcu_pkg is
+  
+  -----------------------------------------------------------------------------
+  -- Function Implementations
+  -----------------------------------------------------------------------------
+  function i2slv(i : integer;w : positive) return std_logic_vector is
+  begin 
+    return std_logic_vector(to_signed(i,w));
+  end function i2slv;
+  
+  function n2slv(n : natural;w : positive) return std_logic_vector is
+  begin 
+    return std_logic_vector(to_unsigned(n,w));
+  end function n2slv;
+
+
+end package body mcu_pkg;

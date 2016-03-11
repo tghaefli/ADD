@@ -57,24 +57,14 @@ begin
   P_reg: process(rst, clk)
   begin
     if rst = '1' then
-      reg_blk <= (0      => std_logic_vector(to_unsigned(16#00_40#, DW)),
-                  1      => std_logic_vector(to_unsigned(16#00_41#, DW)),
-                  2      => std_logic_vector(to_unsigned(16#00_42#, DW)),
-                  3      => std_logic_vector(to_unsigned(16#00_43#, DW)),
-                  others => (others => '0'));
+      reg_blk <= (others => (others => '0'));
     elsif rising_edge(clk) then
       if reg_in.enb_res = '1' then
         -- store result from ALU
         reg_blk(to_integer(unsigned(reg_in.dest))) <= alu_res;
-      else
-        if reg_in.enb_data_low = '1' then
-          -- store low-byte (ld & setil instruction)
-          reg_blk(to_integer(unsigned(reg_in.dest)))(DW/2-1 downto 0) <= reg_in.data(DW/2-1 downto 0);
-        end if;
-        if reg_in.enb_data_high = '1' then
-          -- store high-byte (ld & setih instruction)
-          reg_blk(to_integer(unsigned(reg_in.dest)))(DW-1 downto DW/2) <= reg_in.data(DW-1 downto DW/2);
-        end if;
+      elsif reg_in.enb_data = '1' then
+        -- store data from Ctrl (ld instruction)
+        reg_blk(to_integer(unsigned(reg_in.dest))) <= reg_in.data;
       end if;
     end if;
   end process;

@@ -42,8 +42,8 @@ architecture rtl of cpu_ctrl is
   signal instr_enb : std_logic;
   signal opcode    : natural range 0 to 2**OPCW-1;
   -- write enable signals registered
-  signal reg_enb_low  : std_logic;
-  signal reg_enb_high : std_logic;
+  signal reg_enb_res : std_logic;
+  signal reg_enb_data : std_logic;
   
 begin
 
@@ -51,11 +51,6 @@ begin
   -- Bus Interface
   -----------------------------------------------------------------------------
   data_out <= reg_in.data;
-
-  -----------------------------------------------------------------------------
-  -- PC Interface
-  -----------------------------------------------------------------------------
-  prc_out.addr <= instr_reg(AW-1 downto 0); 
   
   -----------------------------------------------------------------------------
   -- Register Block Interface
@@ -65,8 +60,8 @@ begin
   begin
     if rising_edge(clk) then
       -- write enable and data signals to reg block; 
-      reg_out.enb_data_low  <= reg_enb_low;  
-      reg_out.enb_data_high <= reg_enb_high;
+      reg_out.enb_res  <= reg_enb_res;
+      reg_out.enb_data <= reg_enb_data;  
       if opcode = 16 then
         -- load instruction, register low & high byte from bus system
         reg_out.data <= data_in;
@@ -97,9 +92,10 @@ begin
   alu_out.op   <= instr_reg(DW-1-(OPCW-OPAW) downto DW-OPCW);
   alu_out.imm  <= instr_reg(IOWW-1 downto 0);
   reg_out.dest <= instr_reg(10 downto 8);
-  reg_out.src1 <= instr_reg(10 downto 8) when (opcode = 12 or opcode = 13) else
+  reg_out.src1 <= instr_reg(10 downto 8) when (opcode >= 12 and opcode <= 15) else
                   instr_reg( 7 downto 5);
   reg_out.src2 <= instr_reg( 4 downto 2);
+  prc_out.addr <= instr_reg(AW-1 downto 0); 
 
   -----------------------------------------------------------------------------
   -- FSM: Mealy-type
@@ -112,9 +108,8 @@ begin
     rd_enb           <= '0';  
     wr_enb           <= '0';  
     instr_enb        <= '0';
-    reg_out.enb_res  <= '0';
-    reg_enb_low      <= '0';
-    reg_enb_high     <= '0';
+    reg_enb_res      <= '0';
+    reg_enb_data     <= '0';
     alu_out.enb      <= '0';
     prc_out.enb      <= '0';
     prc_out.mode     <= linear;
@@ -135,33 +130,51 @@ begin
         n_st      <= s_ex;
       when s_ex =>
         -- instruction execute --------------------------------
-        if opcode <= 7 or opcode = 12 or opcode = 13 then
-          -- reg/reg-instruction or addil/h instruction
+        if opcode <= 7 or (opcode >= 12 and opcode <= 15) then
+          -- reg/reg-instruction, addil/h instruction, setil/h instruction
           -- increase PC, store result/flags from ALU, start next instr. cycle 
-          prc_out.enb     <= '1';  
-          reg_out.enb_res <= '1';  
-          alu_out.enb     <= '1';
-          n_st            <= s_if; 
-        elsif opcode = 14 then
-          -- setil instruction
-          -- increase PC, enable storage of low-byte, start next instr. cycle
           prc_out.enb <= '1';  
-          reg_enb_low <= '1';
-          n_st        <= s_if;                  
-        elsif opcode = 15 then
-          -- setih instruction
-          -- increase PC, enable storage of high-byte, start next instr. cycle
-          prc_out.enb  <= '1';  
-          reg_enb_high <= '1';
-          n_st         <= s_if;                  
+          reg_enb_res <= '1';  
+          alu_out.enb <= '1';
+          n_st        <= s_if; 
         elsif opcode = 16 or opcode = 17 then
           -- load/store instruction
           -- increase PC, go to "Memory Access" state 
           prc_out.enb <= '1';  
-          n_st        <= s_ma;                  
+          n_st        <= s_ma;
+			 
         elsif opcode = 24 then
           -- jump instruction
-          -- To be continued.... !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			 prc_out.enb <= '1';
+			 prc_out.mode <= abs_jump;
+			 n_st <= s_if;		
+		  elsif opcode = 25 and (not(alu_in.flag(Z))) then
+		    -- Branch if Not Equal 
+			 prc_out.enb <= '1';
+			 prc_out.mode <= rel_offset;
+			 n_st <= s_if;
+		  elsif opcode = 26 and (not(alu_in.flag(N)) or alu_in.flag(Z)) then
+		    -- Branch if Greater/Equal  
+			 prc_out.enb <= '1';
+			 prc_out.mode <= rel_offset;
+			 n_st <= s_if;	
+		  elsif opcode = 27 and alu_in.flag(N) then
+		    -- Branch if Less 
+			 prc_out.enb <= '1';
+			 prc_out.mode <= rel_offset;
+			 n_st <= s_if; 
+		  elsif opcode = 28 and alu_in.flag(C) then
+		    -- Branch if Carry 
+			 prc_out.enb <= '1';
+			 prc_out.mode <= rel_offset;
+			 n_st <= s_if; 
+		  elsif opcode = 29 and alu_in.flag(O) then
+		    -- Branch if Overflow 
+			 prc_out.enb <= '1';
+			 prc_out.mode <= rel_offset;
+			 n_st <= s_if; 
+			 
+			 
         else
           -- NOP instruction
           prc_out.enb  <= '1';  
@@ -184,8 +197,7 @@ begin
       when s_rw =>
         -- register write-back -------------------------------
         -- store data from memory in register and start next instr. cycle 
-        reg_enb_low  <= '1';  
-        reg_enb_high <= '1';  
+        reg_enb_data <= '1';  
         n_st         <= s_if;
       when others =>
         n_st <= s_if; -- handle parasitic states
