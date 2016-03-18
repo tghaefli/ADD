@@ -132,24 +132,7 @@ package mcu_pkg is
   type t_rws2bus is record
     data : std_logic_vector(DW-1 downto 0);
   end record;
-  -- GPIO ---------------------------------------------------------------------
-  type t_gpio_pin_in is record
-    in_0 : std_logic_vector(DW-1 downto 0);
-    in_1 : std_logic_vector(DW-1 downto 0);
-    in_2 : std_logic_vector(DW-1 downto 0);
-    in_3 : std_logic_vector(DW-1 downto 0);
-  end record;
-  type t_gpio_pin_out is record
-    out_0 : std_logic_vector(DW-1 downto 0);
-    out_1 : std_logic_vector(DW-1 downto 0);
-    out_2 : std_logic_vector(DW-1 downto 0);
-    out_3 : std_logic_vector(DW-1 downto 0);
-    enb_0 : std_logic_vector(DW-1 downto 0);
-    enb_1 : std_logic_vector(DW-1 downto 0);
-    enb_2 : std_logic_vector(DW-1 downto 0);
-    enb_3 : std_logic_vector(DW-1 downto 0);
-  end record; 
-
+  
   -----------------------------------------------------------------------------
   -- CPU internal types
   -----------------------------------------------------------------------------

@@ -18,13 +18,10 @@ use work.mcu_pkg.all;
 entity mcu is
   port(rst     : in    std_logic;
        clk     : in    std_logic;
-       -- General-Purpose I/O ports
-       GPIO_0 : inout std_logic_vector(DW-1 downto 0);
-       GPIO_1 : inout std_logic_vector(DW-1 downto 0);
-       GPIO_2 : inout std_logic_vector(DW-1 downto 0);
-       GPIO_3 : inout std_logic_vector(DW-1 downto 0);
-       -- Dedicated LCD port
-       LCD    : out   std_logic_vector(LCD_PW-1 downto 0)
+       -- LED(8:0) on S3E-Board (demonstrate tri-state buffers)
+       LED     : inout std_logic_vector(7 downto 0);
+       -- SW(3:0) on S3E-Board
+       Switch  : in std_logic_vector(3 downto 0)
        );
 end mcu;
 
@@ -40,10 +37,11 @@ architecture rtl of mcu is
   signal bus2ram : t_bus2rws;
   signal ram2bus : t_rws2bus;
   -- GPIO signals
-  signal bus2gpio : t_bus2rws;
-  signal gpio2bus : t_rws2bus;
-  signal gpio_in  : t_gpio_pin_in;
-  signal gpio_out : t_gpio_pin_out;
+  signal bus2gpio     : t_bus2rws;
+  signal gpio2bus     : t_rws2bus;
+  signal gpio_in      : std_logic_vector(DW-1 downto 0);
+  signal gpio_out     : std_logic_vector(DW-1 downto 0);
+  signal gpio_out_enb : std_logic_vector(DW-1 downto 0);
   -- LCD signals
   signal bus2lcd : t_bus2rws;
   signal lcd2bus : t_rws2bus;
@@ -52,23 +50,27 @@ architecture rtl of mcu is
 begin
 
   -----------------------------------------------------------------------------
-  -- Tri-state buffers for GPIO pins
+  -- Connect GPIO(7:0) to LED(7:0)
+  -- Demonstrates the usage of tri-state buffers although this not required for
+  -- LED functionality.
   -----------------------------------------------------------------------------
-  gpio_in.in_0 <= GPIO_0;
-  gpio_in.in_1 <= GPIO_1;
-  gpio_in.in_2 <= GPIO_2;
-  gpio_in.in_3 <= GPIO_3;
-  gen_gpin: for k in 0 to DW-1 generate
-    GPIO_0(k) <= gpio_out.out_0(k) when gpio_out.enb_0(k) = '1' else 'Z';
-    GPIO_1(k) <= gpio_out.out_1(k) when gpio_out.enb_1(k) = '1' else 'Z';
-    GPIO_2(k) <= gpio_out.out_2(k) when gpio_out.enb_2(k) = '1' else 'Z';
-    GPIO_3(k) <= gpio_out.out_3(k) when gpio_out.enb_3(k) = '1' else 'Z';
+  gpio_in(7 downto 0) <= LED;
+  gen_led_3state: for k in 0 to 7 generate
+    LED(k) <= gpio_out(k) when gpio_out_enb(k) = '1' else 'Z';
   end generate;
 
   -----------------------------------------------------------------------------
-  -- LCD interface pins
+  -- Connect SW(3:0) to GPIO(11:8)
+  -- NOTE: GPIO(11:8) is only connected as input, since the SITE TYPE of the 4
+  --       Switch pins is IBUF, which prevents the usage of tri-state IOBs.
+  --       Furthermore, even if IOBs were available, it would be dangerous to
+  --       use them here, since a wrong SW configuration could then cause
+  --       driver conflicts on these pins!!
   -----------------------------------------------------------------------------
-  LCD <= lcd_out;
+  gpio_in(11 downto 8) <= Switch;
+  -- gen_sw_3state: for k in 8 to 11 generate
+  --   SW(k-8) <= gpio_out(k) when gpio_out_enb(k) = '1' else 'Z';
+  -- end generate;
  
   -----------------------------------------------------------------------------
   -- Instantiation of top-level components (assumed to be in library work)
@@ -118,12 +120,13 @@ begin
   -- GPIO ---------------------------------------------------------------------
   i_gpio: entity work.gpio
     port map(
-      rst     => rst,
-      clk     => clk,
-      bus_in  => bus2gpio,
-      bus_out => gpio2bus,
-      pin_in  => gpio_in,
-      pin_out => gpio_out
+      rst          => rst,
+      clk          => clk,
+      bus_in       => bus2gpio,
+      bus_out      => gpio2bus,
+      gpio_in      => gpio_in,
+      gpio_out     => gpio_out,
+      gpio_out_enb => gpio_out_enb
     );
   
   -- LCD ----------------------------------------------------------------------

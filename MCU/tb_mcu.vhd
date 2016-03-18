@@ -10,11 +10,8 @@ architecture TB of tb_mcu is
 
   signal rst    : std_logic;
   signal clk    : std_logic := '0';
-  signal GPIO_0 : std_logic_vector(DW-1 downto 0);
-  signal GPIO_1 : std_logic_vector(DW-1 downto 0);
-  signal GPIO_2 : std_logic_vector(DW-1 downto 0);
-  signal GPIO_3 : std_logic_vector(DW-1 downto 0);
-  signal LCD    : std_logic_vector(LCD_PW-1 downto 0);
+  signal Switch : std_logic_vector(3 downto 0);
+  signal LED    : std_logic_vector(7 downto 0);
    
 begin
 
@@ -23,11 +20,8 @@ begin
     port map(
       rst    => rst,
       clk    => clk,
-      GPIO_0 => GPIO_0,
-      GPIO_1 => GPIO_1,
-      GPIO_2 => GPIO_2,
-      GPIO_3 => GPIO_3,
-      LCD    => LCD
+      LED    => LED,
+      Switch => Switch
       );
 
   -- generate reset

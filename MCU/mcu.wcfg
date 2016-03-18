@@ -12,7 +12,7 @@
          </top_modules>
       </db_ref>
    </db_ref_list>
-   <WVObjectSize size="30" />
+   <WVObjectSize size="32" />
    <wvobject fp_name="/tb_mcu/rst" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">rst</obj_property>
       <obj_property name="ObjectShortName">rst</obj_property>
@@ -215,6 +215,10 @@
       <obj_property name="ObjectShortName">bus_in.data</obj_property>
       <obj_property name="Radix">HEXRADIX</obj_property>
    </wvobject>
+   <wvobject fp_name="/tb_mcu/MUT/i_ram/bus_in.wr_enb" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">.wr_enb</obj_property>
+      <obj_property name="ObjectShortName">bus_in.wr_enb</obj_property>
+   </wvobject>
    <wvobject fp_name="/tb_mcu/MUT/i_ram/bus_out.data" type="array" db_ref_id="1">
       <obj_property name="ElementShortName">.data</obj_property>
       <obj_property name="ObjectShortName">bus_out.data</obj_property>
@@ -226,20 +230,27 @@
       <obj_property name="BkColor">128 128 255</obj_property>
       <obj_property name="TextColor">230 230 230</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_mcu/gpio_0" type="array" db_ref_id="1">
-      <obj_property name="ElementShortName">gpio_0[15:0]</obj_property>
-      <obj_property name="ObjectShortName">gpio_0[15:0]</obj_property>
+   <wvobject fp_name="/tb_mcu/MUT/i_gpio/bus_in" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">bus_in</obj_property>
+      <obj_property name="ObjectShortName">bus_in</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_mcu/gpio_1" type="array" db_ref_id="1">
-      <obj_property name="ElementShortName">gpio_1[15:0]</obj_property>
-      <obj_property name="ObjectShortName">gpio_1[15:0]</obj_property>
+   <wvobject fp_name="/tb_mcu/MUT/i_gpio/bus_out" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">bus_out</obj_property>
+      <obj_property name="ObjectShortName">bus_out</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_mcu/gpio_2" type="array" db_ref_id="1">
-      <obj_property name="ElementShortName">gpio_2[15:0]</obj_property>
-      <obj_property name="ObjectShortName">gpio_2[15:0]</obj_property>
+   <wvobject fp_name="/tb_mcu/MUT/i_gpio/gpio_in" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">gpio_in[15:0]</obj_property>
+      <obj_property name="ObjectShortName">gpio_in[15:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_mcu/gpio_3" type="array" db_ref_id="1">
-      <obj_property name="ElementShortName">gpio_3[15:0]</obj_property>
-      <obj_property name="ObjectShortName">gpio_3[15:0]</obj_property>
+   <wvobject fp_name="/tb_mcu/MUT/i_gpio/gpio_out" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">gpio_out[15:0]</obj_property>
+      <obj_property name="ObjectShortName">gpio_out[15:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mcu/MUT/i_gpio/gpio_out_enb" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">gpio_out_enb[15:0]</obj_property>
+      <obj_property name="ObjectShortName">gpio_out_enb[15:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
    </wvobject>
 </wave_config>

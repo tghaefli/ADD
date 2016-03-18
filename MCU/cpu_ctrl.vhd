@@ -51,6 +51,7 @@ begin
   -- Bus Interface
   -----------------------------------------------------------------------------
   data_out <= reg_in.data;
+
   
   -----------------------------------------------------------------------------
   -- Register Block Interface
@@ -141,40 +142,37 @@ begin
           -- load/store instruction
           -- increase PC, go to "Memory Access" state 
           prc_out.enb <= '1';  
-          n_st        <= s_ma;
-			 
+          n_st        <= s_ma;                  
         elsif opcode = 24 then
           -- jump instruction
-			 prc_out.enb <= '1';
-			 prc_out.mode <= abs_jump;
-			 n_st <= s_if;		
-		  elsif opcode = 25 and (not(alu_in.flag(Z))) then
-		    -- Branch if Not Equal 
-			 prc_out.enb <= '1';
-			 prc_out.mode <= rel_offset;
-			 n_st <= s_if;
-		  elsif opcode = 26 and (not(alu_in.flag(N)) or alu_in.flag(Z)) then
-		    -- Branch if Greater/Equal  
-			 prc_out.enb <= '1';
-			 prc_out.mode <= rel_offset;
-			 n_st <= s_if;	
-		  elsif opcode = 27 and alu_in.flag(N) then
-		    -- Branch if Less 
-			 prc_out.enb <= '1';
-			 prc_out.mode <= rel_offset;
-			 n_st <= s_if; 
-		  elsif opcode = 28 and alu_in.flag(C) then
-		    -- Branch if Carry 
-			 prc_out.enb <= '1';
-			 prc_out.mode <= rel_offset;
-			 n_st <= s_if; 
-		  elsif opcode = 29 and alu_in.flag(O) then
-		    -- Branch if Overflow 
-			 prc_out.enb <= '1';
-			 prc_out.mode <= rel_offset;
-			 n_st <= s_if; 
-			 
-			 
+          -- set PC to absolute address, start next instr. cycle
+          prc_out.enb  <= '1';  
+          prc_out.mode <= abs_jump;
+          n_st         <= s_if;                  
+        elsif opcode >= 25 and opcode <= 29 then
+          -- branch instructions
+          prc_out.enb <= '1';  
+          n_st        <= s_if;
+          -- bne: branch if not equal (not Z)
+          if opcode = 25 and alu_in.flag(Z) = '0' then
+            prc_out.mode <= rel_offset;
+          end if;
+          -- bge: branch if greater/equal (not N or Z)
+          if opcode = 26 and (alu_in.flag(N) = '0' or alu_in.flag(Z) = '1') then
+            prc_out.mode <= rel_offset;
+          end if;
+          -- blt: branch if less than (N)
+          if opcode = 27 and alu_in.flag(N) = '1' then
+            prc_out.mode <= rel_offset;
+          end if;
+          -- bca: branch if carry set (C)
+          if opcode = 28 and alu_in.flag(C) = '1' then
+            prc_out.mode <= rel_offset;
+          end if;
+          -- bov: branch if overflow set (O)
+          if opcode = 29 and alu_in.flag(O) = '1' then
+            prc_out.mode <= rel_offset;
+          end if;
         else
           -- NOP instruction
           prc_out.enb  <= '1';  
