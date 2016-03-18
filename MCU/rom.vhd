@@ -30,6 +30,19 @@ architecture rtl of rom is
     ---------------------------------------------------------------------------
     -- addr  Opcode       Rdest    Rsrc1    Rsrc2              description
     ---------------------------------------------------------------------------
+	 OPC(nop)   & "-----------",                        -- NOP
+    OPC(nop)   & "-----------",                        -- NOP
+    OPC(nop)   & "-----------",                        -- NOP
+    OPC(nop)   & "-----------",                        -- NOP
+	 OPC(setil) & reg(7) & n2slv(16#82#, DW/2),
+	 OPC(setil) & reg(6) & n2slv(16#FF#, DW/2),
+	 OPC(st)    & reg(6) & reg(7)  & "-----",					-- GPIO_OUT_ENB (0x82) = 0xFF
+ 	 OPC(setil) & reg(7) & n2slv(16#81#, DW/2),
+	 OPC(setil) & reg(6) & n2slv(16#E7#, DW/2),
+	 OPC(st)    & reg(6) & reg(7)  & "-----",					-- GPIO_DATA_OUT (0x81) = 0xEF
+
+
+	 -- while-execution = for-loop init
     OPC(nop)   & "-----------",                        -- NOP
     -- while-execution = for-loop init
     OPC(setil) & reg(0) & n2slv(16#0A#, DW/2),         -- setil r0, 0x0A
