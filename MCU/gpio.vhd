@@ -38,11 +38,25 @@ architecture rtl of gpio is
   signal data_in_reg  : std_logic_vector(DW-1 downto 0);
   signal data_out_reg : std_logic_vector(DW-1 downto 0);
   signal out_enb_reg  : std_logic_vector(DW-1 downto 0);
-  
+ 
 begin
 
+  -- output ssignment
+  gpio_out     <= data_out_reg;
+  gpio_out_enb <= out_enb_reg;
+
   -----------------------------------------------------------------------------
-  -- Adress Decoding (combinationally)
+  -- Input register
+  -----------------------------------------------------------------------------  
+  P_in: process(clk)
+  begin
+    if rising_edge(clk) then
+      data_in_reg <= gpio_in;
+    end if;
+  end process;
+
+  -----------------------------------------------------------------------------
+  -- Address Decoding (combinationally)
   -----------------------------------------------------------------------------  
   process(bus_in.addr)
   begin
@@ -57,7 +71,7 @@ begin
   end process;
 
   -----------------------------------------------------------------------------
-  -- Read Access
+  -- Read Access (R and R/W registers)
   -----------------------------------------------------------------------------  
   P_read: process(clk)
   begin
@@ -73,23 +87,25 @@ begin
       end case;       
     end if;
   end process;
-
+  
   -----------------------------------------------------------------------------
-  -- ToDo...........................
+  -- Write Access (R/W regsiters only)
   -----------------------------------------------------------------------------  
-  --P_dummy: process(rst, clk)
-  --begin
-  --  if rst = '1' then
-  --    bus_out.data <= (others => '0');
-  --  elsif rising_edge(clk) then
-  --    if bus_in.wr_enb = '1' then
-  --      if unsigned(bus_in.addr) >= 0 then
-  --        bus_out.data  <= gpio_in;
-  --        gpio_out      <= bus_in.data;
-  --        gpio_out_enb  <= bus_in.data;
-  --      end if;
-  --    end if;
-  --  end if;
-  --end process;
+  P_write: process(clk)
+  begin
+    if rst = '1' then
+      data_out_reg <= (others => '0');
+      out_enb_reg  <= (others => '0');  -- output disabled per default
+    elsif rising_edge(clk) then
+      if bus_in.wr_enb = '1' then
+        -- use address select signal
+        case addr_sel is
+          when gpio_data_out => data_out_reg <= bus_in.data;
+          when gpio_enb      => out_enb_reg  <= bus_in.data;
+          when others        => null;
+        end case;       
+      end if;
+    end if;
+  end process;
 
 end rtl;
