@@ -176,7 +176,7 @@ package mcu_pkg is
   function i2slv(i : integer; w : positive) return std_logic_vector;
   -- std_logic_vector(to_unsigned(n,w))
   function n2slv(n : natural; w : positive) return std_logic_vector;
-  
+
 end package mcu_pkg;
 
 
