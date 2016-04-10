@@ -126,14 +126,12 @@ begin
   begin
     if clk_1'event and clk_1 = '1' then
       if ce_1 = '1' then
-
     
         -- :ToDo: ------------------------------------------------------------
         -- Implement logic to generate absolute value of VAL_IN
         -----------------------------------------------------------------------
-        OutReg <= .....
-          
-            
+        OutReg(DW-1 to 0) <= std_logic_vector(abs(signed(VAL_IN)));
+		  
         -- additional output register
         VAL_OUT <= OutReg;
       end if;
@@ -210,8 +208,12 @@ begin
         --  b) saturation is applied if the value of din exceeds the maximum 
         --     unsigned value of dout
         -----------------------------------------------------------------------
-        dout <= .....
-
+		  
+		  if unsigned(din(DW_IN-1 downto DW_OUT+BIN_PNT)) > 0 then
+		    dout <= (others => '1');
+		  else
+          dout <= din(DW_OUT-1+BIN_PNT downto BIN_PNT);
+		  end if;
 
       end if;
     end if;
