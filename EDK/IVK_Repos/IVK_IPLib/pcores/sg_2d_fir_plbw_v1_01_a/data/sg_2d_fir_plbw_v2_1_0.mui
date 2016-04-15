@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!--
+########################################################################
+##
+## Copyright (c) 2010 Xilinx, Inc.  All rights reserved.
+##
+########################################################################
+-->
+
+<!DOCTYPE doc SYSTEM "sg_ipdialog.dtd" [
+<!ENTITY C_BASEADDR '
+<widget id="C_BASEADDR">
+    <key>C_BASEADDR</key>
+    <label>C_BASEADDR</label>
+    <tip>Base Address</tip>
+</widget>
+'>
+<!ENTITY C_HIGHADDR '
+<widget id="C_HIGHADDR">
+    <key>C_HIGHADDR</key>
+    <label>C_HIGHADDR</label>
+    <tip>High Address</tip>
+</widget>
+'>
+<!ENTITY C_MEMMAP_COEF_UPDATE '
+<widget id="C_MEMMAP_COEF_UPDATE">
+    <key>C_MEMMAP_COEF_UPDATE</key>
+    <label>C_MEMMAP_COEF_UPDATE</label>
+    <tip>To Register
+    data type: UFix_1_0</tip>
+</widget>
+'>
+<!ENTITY C_MEMMAP_COEF_GAIN '
+<widget id="C_MEMMAP_COEF_GAIN">
+    <key>C_MEMMAP_COEF_GAIN</key>
+    <label>C_MEMMAP_COEF_GAIN</label>
+    <tip>To Register
+    data type: UFix_20_17</tip>
+</widget>
+'>
+<!ENTITY C_MEMMAP_COEF_BUFFER '
+<widget id="C_MEMMAP_COEF_BUFFER">
+    <key>C_MEMMAP_COEF_BUFFER</key>
+    <label>C_MEMMAP_COEF_BUFFER</label>
+    <tip>Shared Memory
+    data type: Fix_7_0</tip>
+</widget>
+'>
+]>
+
+<doc>
+<view id="Memory Map Information">
+    <display>Memory Map Information</display>
+    <group id="All">
+        <display>All</display>
+        <item>&C_BASEADDR;</item>
+        <item>&C_MEMMAP_COEF_UPDATE;</item>
+        <item>&C_MEMMAP_COEF_GAIN;</item>
+        <item>&C_MEMMAP_COEF_BUFFER;</item>
+    </group>
+    <group id="From/To Registers">
+        <display>From/To Registers</display>
+        <item>&C_BASEADDR;</item>
+        <item>&C_MEMMAP_COEF_UPDATE;</item>
+        <item>&C_MEMMAP_COEF_GAIN;</item>
+    </group>
+    <group id="From/To FIFOs">
+        <display>From/To FIFOs</display>
+        <item>&C_BASEADDR;</item>
+    </group>
+    <group id="Shared Memories">
+        <display>Shared Memories</display>
+        <item>&C_BASEADDR;</item>
+        <item>&C_MEMMAP_COEF_BUFFER;</item>
+    </group>
+</view>
+</doc>

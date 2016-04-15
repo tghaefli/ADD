@@ -1,0 +1,26 @@
+##############################################################################
+## Filename:          /home/chrisma/vfbc/s3adsp/DVI_Frame_Buffer_Demo_VFBC_pcore/pcores/vdma_v1_00_a/data/vdma_v2_1_0.pao
+## Description:       Peripheral Analysis Order
+## Date:              Thu May 15 08:43:45 2008 (by Create and Import Peripheral Wizard)
+##############################################################################
+
+lib proc_common_v3_00_a proc_common_pkg vhdl
+lib proc_common_v3_00_a ipif_pkg vhdl
+lib proc_common_v3_00_a or_muxcy vhdl
+lib proc_common_v3_00_a or_gate128 vhdl
+lib proc_common_v3_00_a family_support vhdl
+lib proc_common_v3_00_a pselect_f vhdl
+lib proc_common_v3_00_a counter_f vhdl
+lib plbv46_slave_single_v1_01_a plb_address_decoder vhdl
+lib plbv46_slave_single_v1_01_a plb_slave_attachment vhdl
+lib plbv46_slave_single_v1_01_a plbv46_slave_single vhdl
+lib proc_common_v3_00_a soft_reset vhdl
+lib interrupt_control_v2_01_a interrupt_control vhdl
+
+lib vdma_v1_00_a HWT vhdl
+lib vdma_v1_00_a vdma_package vhdl
+lib vdma_v1_00_a vdma_hcrop vhdl
+lib vdma_v1_00_a vdma_top vhdl
+
+lib vdma_v1_00_a user_logic vhdl
+lib vdma_v1_00_a vdma vhdl

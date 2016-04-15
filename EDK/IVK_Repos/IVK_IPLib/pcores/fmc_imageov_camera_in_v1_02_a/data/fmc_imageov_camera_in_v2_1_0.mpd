@@ -1,0 +1,103 @@
+##----------------------------------------------------------------
+##      _____
+##     /     \
+##    /____   \____
+##   / \===\   \==/
+##  /___\===\___\/  AVNET
+##       \======/
+##        \====/    
+##---------------------------------------------------------------
+##
+## This design is the property of Avnet.  Publication of this
+## design is not authorized without written consent from Avnet.
+## 
+## Please direct any questions to:  technical.support@avnet.com
+##
+## Disclaimer:
+##    Avnet, Inc. makes no warranty for the use of this code or design.
+##    This code is provided  "As Is". Avnet, Inc assumes no responsibility for
+##    any errors, which may appear in this code, nor does it make a commitment
+##    to update the information contained herein. Avnet, Inc specifically
+##    disclaims any implied warranties of fitness for a particular purpose.
+##                     Copyright(c) 2010 Avnet, Inc.
+##                             All rights reserved.
+##
+##----------------------------------------------------------------
+##
+## Create Date:         Jul 03, 2009
+## Design Name:         FMC-IMAGEOV
+## Module Name:         fmc_imageov_camera_in_v2_1_0.pao
+## Project Name:        FMC-IMAGEOV
+## Target Devices:      Spartan-6
+## Avnet Boards:        FMC-IMAGEOV
+##
+## Tool versions:       ISE 11.4
+##
+## Description:         FMC-IMAGEOV Camera input interface.
+##                      Microprocessor Peripheral Description
+##
+## Dependencies:        
+##
+## Revision:            Jul 03, 2009: 1.00 Initial version
+##                      Dec 01, 2009: 1.01 Increase CAMERA_VIDEO_OUT data width to 10 bits
+##                      Feb 01, 2010: 1.02 Add selectable video interface
+##
+##----------------------------------------------------------------
+
+BEGIN fmc_imageov_camera_in
+
+## Peripheral Options
+OPTION IPTYPE = PERIPHERAL
+OPTION IMP_NETLIST = TRUE
+OPTION HDL = VHDL
+OPTION IP_GROUP = USER
+
+## Bus Interfaces
+BUS_INTERFACE BUS = CAMERA_VIDEO_OUT, BUS_STD = CAMERA_VIDEO, BUS_TYPE = INITIATOR, ISVALID = (C_VIDEO_INTERFACE == 0)
+BUS_INTERFACE BUS = DVI_VIDEO_OUT,    BUS_STD = DVI_VIDEO,    BUS_TYPE = INITIATOR, ISVALID = (C_VIDEO_INTERFACE == 1)
+BUS_INTERFACE BUS = XSVI_VIDEO_OUT,   BUS_STD = XSVI,         BUS_TYPE = INITIATOR, ISVALID = (C_VIDEO_INTERFACE == 2)
+
+## Generics for VHDL or Parameters for Verilog
+PARAMETER C_FAMILY = spartan6, DT = STRING
+
+## Selectable Video Interface Type
+## 0 = CAMERA_INTERFACE
+## 1 = DVI_INTERFACE
+## 2 = XSVI PORTS
+PARAMETER C_VIDEO_INTERFACE = 0, DT = INTEGER, DESC = VIDEO_INTERFACE, RANGE = (0:2), ASSIGNMENT = REQUIRE, VALUES = (0=CAMERA, 1=DVI, 2=XSVI)
+PARAMETER C_DATA_WIDTH      = 8, DT = INTEGER, DESC = DATA_WIDTH,      RANGE = (8, 10)
+
+## Ports
+PORT clk = "", DIR = I
+PORT ce = "", DIR = I
+
+## I/O pins
+PORT io_frame_valid_i = "", DIR = I
+PORT io_line_valid_i  = "", DIR = I
+PORT io_data_i        = "", DIR = I, VEC = [9:0]
+
+## Camera Output Port
+PORT camera_frame_valid_o = "frame_valid", DIR = O,                              BUS = CAMERA_VIDEO_OUT, ISVALID = (C_VIDEO_INTERFACE == 0)
+PORT camera_line_valid_o  = "line_valid",  DIR = O,                              BUS = CAMERA_VIDEO_OUT, ISVALID = (C_VIDEO_INTERFACE == 0)
+PORT camera_data_o        = "data",        DIR = O, VEC = [[(C_DATA_WIDTH-1):0], BUS = CAMERA_VIDEO_OUT, ISVALID = (C_VIDEO_INTERFACE == 0)
+
+## DVI Output Port
+PORT dvi_vsync_o = "vsync", DIR = O,              BUS = DVI_VIDEO_OUT, ISVALID = (C_VIDEO_INTERFACE == 1)
+PORT dvi_hsync_o = "hsync", DIR = O,              BUS = DVI_VIDEO_OUT, ISVALID = (C_VIDEO_INTERFACE == 1)
+PORT dvi_de_o    = "de",    DIR = O,              BUS = DVI_VIDEO_OUT, ISVALID = (C_VIDEO_INTERFACE == 1)
+PORT dvi_red_o   = "red",   DIR = O, VEC = [7:0], BUS = DVI_VIDEO_OUT, ISVALID = (C_VIDEO_INTERFACE == 1)
+PORT dvi_green_o = "green", DIR = O, VEC = [7:0], BUS = DVI_VIDEO_OUT, ISVALID = (C_VIDEO_INTERFACE == 1)
+PORT dvi_blue_o  = "blue",  DIR = O, VEC = [7:0], BUS = DVI_VIDEO_OUT, ISVALID = (C_VIDEO_INTERFACE == 1)
+
+## XSVI Output Port
+PORT xsvi_vsync_o        = "vsync",        DIR = O,                             BUS = XSVI_VIDEO_OUT, ISVALID = (C_VIDEO_INTERFACE == 2)
+PORT xsvi_hsync_o        = "hsync",        DIR = O,                             BUS = XSVI_VIDEO_OUT, ISVALID = (C_VIDEO_INTERFACE == 2)
+PORT xsvi_vblank_o       = "vblank",       DIR = O,                             BUS = XSVI_VIDEO_OUT, ISVALID = (C_VIDEO_INTERFACE == 2)
+PORT xsvi_hblank_o       = "hblank",       DIR = O,                             BUS = XSVI_VIDEO_OUT, ISVALID = (C_VIDEO_INTERFACE == 2)
+PORT xsvi_active_video_o = "active_video", DIR = O,                             BUS = XSVI_VIDEO_OUT, ISVALID = (C_VIDEO_INTERFACE == 2)
+PORT xsvi_video_data_o   = "video_data",   DIR = O, VEC = [(C_DATA_WIDTH-1):0], BUS = XSVI_VIDEO_OUT, ISVALID = (C_VIDEO_INTERFACE == 2)
+
+## Debug Port
+PORT debug_o = "", DIR = O, VEC = [14:0]
+
+END

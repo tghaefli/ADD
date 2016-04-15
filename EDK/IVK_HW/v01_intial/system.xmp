@@ -1,0 +1,45 @@
+#Please do not modify this file by hand
+XmpVersion: 13.3
+VerMgmt: 13.3
+IntStyle: default
+Flow: ise
+ModuleSearchPath: ../../IVK_Repos/
+MHS File: system.mhs
+Architecture: spartan6
+Device: xc6slx150t
+Package: fgg676
+SpeedGrade: -3
+UserCmd1: 
+UserCmd1Type: 0
+UserCmd2: 
+UserCmd2Type: 0
+GenSimTB: 0
+SdkExportBmmBit: 1
+SdkExportDir: SDK/SDK_Export
+InsertNoPads: 0
+WarnForEAArch: 1
+HdlLang: VHDL
+SimModel: BEHAVIORAL
+ExternalMemSim: 0
+UcfFile: data/system.ucf
+EnableParTimingError: 1
+ShowLicenseDialog: 0
+LockAddr: MPMC_0,C_MPMC_BASEADDR
+LockAddr: ilmb_cntlr,C_BASEADDR
+LockAddr: dlmb_cntlr,C_BASEADDR
+LockAddr: xps_iic_0,C_BASEADDR
+LockAddr: RS232_Uart,C_BASEADDR
+LockAddr: mdm_0,C_BASEADDR
+LockAddr: sg_i2c_controller_plbw_0,C_BASEADDR
+LockAddr: vdma_0,C_BASEADDR
+LockAddr: vdma_1,C_BASEADDR
+LockAddr: plbv46_plbv46_bridge_0,C_BRIDGE_BASEADDR
+LockAddr: ivk_video_det_0,C_BASEADDR
+LockAddr: ivk_video_gen_0,C_BASEADDR
+LockAddr: sg_cfa_gamma_plbw_0,C_BASEADDR
+LockAddr: sg_2d_fir_plbw_0,C_BASEADDR
+ICacheAddr: DDR2_SDRAM,
+DCacheAddr: DDR2_SDRAM,
+Processor: microblaze_0
+ElfImp: 
+ElfSim: 

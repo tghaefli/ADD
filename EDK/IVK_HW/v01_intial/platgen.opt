@@ -1,0 +1,11 @@
+-p
+xc6slx150tfgg676-3
+-lang
+vhdl
+-intstyle
+default
+-lp
+C:/__waj_/_work_/RT_lab/EDK/IVK_Repos/
+-msg
+__xps/ise/xmsgprops.lst
+system.mhs

@@ -1,0 +1,54 @@
+##----------------------------------------------------------------
+##      _____
+##     /     \
+##    /____   \____
+##   / \===\   \==/
+##  /___\===\___\/  AVNET
+##       \======/
+##        \====/    
+##---------------------------------------------------------------
+##
+## This design is the property of Avnet.  Publication of this
+## design is not authorized without written consent from Avnet.
+## 
+## Please direct any questions to:  technical.support@avnet.com
+##
+## Disclaimer:
+##    Avnet, Inc. makes no warranty for the use of this code or design.
+##    This code is provided  "As Is". Avnet, Inc assumes no responsibility for
+##    any errors, which may appear in this code, nor does it make a commitment
+##    to update the information contained herein. Avnet, Inc specifically
+##    disclaims any implied warranties of fitness for a particular purpose.
+##                     Copyright(c) 2010 Avnet, Inc.
+##                             All rights reserved.
+##
+##----------------------------------------------------------------
+##
+## Create Date:         Jul 03, 2009
+## Design Name:         FMC-IMAGEOV
+## Module Name:         fmc_imageov_dvi_out_v2_1_0.pao
+## Project Name:        FMC-IMAGEOV
+## Target Devices:      Spartan-6
+## Avnet Boards:        FMC-IMAGEOV
+##
+## Tool versions:       ISE 11.4
+##
+## Description:         FMC-IMAGEOV DVI output interface.
+##                      Peripheral Analysis Order
+##
+## Dependencies:        
+##
+## Revision:            Jul 03, 2009: 1.00 Initial version
+##                      Jan 15, 2010: 1.01 Add a second set of regs
+##                                         Add an output enable port
+##                                         Add oe and reset to debug port
+##                      Feb 01, 2010: 1.02 Add selectable video interface
+##                      Feb 10, 2010: 1.02b Fix XSVI video_data ordering:
+##                                          [23:16] = red
+##                                          [15: 8] = blue
+##                                          [ 7: 0] = green
+##                      May 12, 2010: 1.02c Add V6 support
+##
+##----------------------------------------------------------------
+
+lib fmc_imageov_dvi_out_v1_02_c fmc_imageov_dvi_out vhdl

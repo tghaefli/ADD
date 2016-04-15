@@ -1,0 +1,79 @@
+## Copyright (c) 1995-2010 Xilinx, Inc.  All rights reserved.
+
+## You may copy and modify these files for your own internal use solely with
+## Xilinx programmable logic devices and  Xilinx EDK system or create IP
+## modules solely for Xilinx programmable logic devices and Xilinx EDK system.
+## No rights are granted to distribute any files unless they are distributed in
+## Xilinx programmable logic devices.
+
+BEGIN sg_i2c_controller_s6_plbw
+
+## Peripheral Options
+OPTION RUN_NGCBUILD = TRUE
+OPTION IMP_NETLIST = TRUE
+OPTION STYLE = MIX
+OPTION HDL = MIXED
+OPTION IPTYPE = PERIPHERAL
+OPTION LAST_UPDATED = 12.1i
+OPTION USAGE_LEVEL = BASE_USER
+OPTION ARCH_SUPPORT_MAP = ( others=PREFERRED )
+
+## Bus Interfaces
+BUS_INTERFACE BUS = SPLB, BUS_STD = PLBV46, BUS_TYPE = SLAVE
+
+## Generics for VHDL or Parameters for Verilog
+PARAMETER C_BASEADDR = 0xffffffff, DT = std_logic_vector(0 to 31), BUS = SPLB, ADDRESS = BASE, PAIR = C_HIGHADDR, MIN_SIZE = 0x1000, ASSIGNMENT = REQUIRE
+PARAMETER C_HIGHADDR = 0x00000000, DT = std_logic_vector(0 to 31), BUS = SPLB, ADDRESS = HIGH, PAIR = C_BASEADDR, ASSIGNMENT = REQUIRE
+PARAMETER C_SPLB_AWIDTH = 32, DT = INTEGER, ASSIGNMENT = CONSTANT, BUS = SPLB
+PARAMETER C_SPLB_DWIDTH = 32, DT = INTEGER, BUS = SPLB
+PARAMETER C_SPLB_MID_WIDTH = 1, DT = INTEGER, BUS = SPLB
+PARAMETER C_SPLB_NATIVE_DWIDTH = 32, DT = INTEGER, ASSIGNMENT = CONSTANT, BUS = SPLB
+PARAMETER C_SPLB_NUM_MASTERS = 1, DT = INTEGER, BUS = SPLB
+PARAMETER C_SPLB_SUPPORT_BURSTS = 0, DT = INTEGER, ASSIGNMENT = CONSTANT, BUS = SPLB
+
+# Memory Map Information
+# From Registers
+# To Registers
+PARAMETER C_MEMMAP_GPIO_OUT8 = 0x800, DT = integer, ASSIGNMENT = CONSTANT
+PARAMETER C_MEMMAP_GPIO_OUT8_N_BITS = 8, DT = integer, ASSIGNMENT = CONSTANT
+PARAMETER C_MEMMAP_GPIO_OUT8_BIN_PT = 0, DT = integer, ASSIGNMENT = CONSTANT
+# From FIFOs
+PARAMETER C_MEMMAP_CMD_RESPONSE = 0x400, DT = integer, ASSIGNMENT = CONSTANT 
+PARAMETER C_MEMMAP_CMD_RESPONSE_PERCENTFULL = 0x404, DT = integer, ASSIGNMENT = CONSTANT 
+PARAMETER C_MEMMAP_CMD_RESPONSE_EMPTY = 0x408, DT = integer, ASSIGNMENT = CONSTANT 
+PARAMETER C_MEMMAP_CMD_RESPONSE_N_BITS = 32, DT = integer, ASSIGNMENT = CONSTANT 
+PARAMETER C_MEMMAP_CMD_RESPONSE_BIN_PT = 0, DT = integer, ASSIGNMENT = CONSTANT 
+PARAMETER C_MEMMAP_CMD_RESPONSE_DEPTH = 32, DT = integer, ASSIGNMENT = CONSTANT
+# To FIFOs
+PARAMETER C_MEMMAP_CMD_REQUEST = 0x400, DT = integer, ASSIGNMENT = CONSTANT
+PARAMETER C_MEMMAP_CMD_REQUEST_PERCENTFULL = 0x40C, DT = integer, ASSIGNMENT = CONSTANT
+PARAMETER C_MEMMAP_CMD_REQUEST_FULL = 0x410, DT = integer, ASSIGNMENT = CONSTANT
+PARAMETER C_MEMMAP_CMD_REQUEST_N_BITS = 32, DT = integer, ASSIGNMENT = CONSTANT
+PARAMETER C_MEMMAP_CMD_REQUEST_BIN_PT = 0, DT = integer, ASSIGNMENT = CONSTANT
+PARAMETER C_MEMMAP_CMD_REQUEST_DEPTH = 32, DT = integer, ASSIGNMENT = CONSTANT
+# Shared RAMs
+
+# Ports
+PORT sysgen_clk = "", SIGIS = CLK, DIR = IN
+PORT i2c_sda_i = "", DIR = IN
+PORT plb_abus = plb_abus, VEC = [0:(32-1)], BUS = SPLB, DIR = IN
+PORT plb_pavalid = plb_pavalid, BUS = SPLB, DIR = IN
+PORT plb_rnw = plb_rnw, BUS = SPLB, DIR = IN
+PORT plb_wrdbus = plb_wrdbus, VEC = [0:(C_SPLB_DWIDTH-1)], BUS = SPLB, DIR = IN
+PORT splb_rst = "", SIGIS = RST, DIR = IN
+PORT splb_clk = "", BUS = SPLB, SIGIS = CLK, DIR = IN
+PORT gpio_out8_o = "", VEC = [0:(8-1)], DIR = OUT
+PORT i2c_scl = "", DIR = OUT
+PORT i2c_sda_o = "", DIR = OUT
+PORT i2c_sda_t = "", DIR = OUT
+PORT sl_addrack = sl_addrack, BUS = SPLB, DIR = OUT
+PORT sl_rdcomp = sl_rdcomp, BUS = SPLB, DIR = OUT
+PORT sl_rddack = sl_rddack, BUS = SPLB, DIR = OUT
+PORT sl_rddbus = sl_rddbus, VEC = [0:(C_SPLB_DWIDTH-1)], BUS = SPLB, DIR = OUT
+PORT sl_wait = sl_wait, BUS = SPLB, DIR = OUT
+PORT sl_wrcomp = sl_wrcomp, BUS = SPLB, DIR = OUT
+PORT sl_wrdack = sl_wrdack, BUS = SPLB, DIR = OUT
+
+PORT i2c_sda = "", DIR = IO, THREE_STATE = TRUE, TRI_I = i2c_sda_i, TRI_O = i2c_sda_o, TRI_T = i2c_sda_t, PERMIT = BASE_USER, DESC = 'I2C SDA'
+
+END

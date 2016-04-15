@@ -1,0 +1,308 @@
+##--------------------------------------------------------------------------
+##
+##  ***************************************************************************
+##  **  Copyright(C) 2005 by Xilinx, Inc. All rights reserved.               **
+##  **                                                                       **
+##  **  This text contains proprietary, confidential                         **
+##  **  information of Xilinx, Inc. , is distributed by                      **
+##  **  under license from Xilinx, Inc., and may be used,                    **
+##  **  copied and/or disclosed only pursuant to the terms                   **
+##  **  of a valid license agreement with Xilinx, Inc.                       **
+##  **                                                                       **
+##  **  Unmodified source code is guaranteed to place and route,             **
+##  **  function and run at speed according to the datasheet                 **
+##  **  specification. Source code is provided "as-is", with no              **
+##  **  obligation on the part of Xilinx to provide support.                 **
+##  **                                                                       **
+##  **  Xilinx Hotline support of source code IP shall only include          **
+##  **  standard level Xilinx Hotline support, and will only address         **
+##  **  issues and questions related to the standard released Netlist        **
+##  **  version of the core (and thus indirectly, the original core source). **
+##  **                                                                       **
+##  **  The Xilinx Support Hotline does not have access to source            **
+##  **  code and therefore cannot answer specific questions related          **
+##  **  to source HDL. The Xilinx Support Hotline will only be able          **
+##  **  to confirm the problem in the Netlist version of the core.           **
+##  **                                                                       **
+##  **  This copyright and support notice must be retained as part           **
+##  **  of this text at all times.                                           **
+##  ***************************************************************************
+##
+##--------------------------------------------------------------------------
+BEGIN vdma
+
+OPTION IPTYPE           = PERIPHERAL
+#OPTION STYLE            = MIX
+OPTION IMP_NETLIST      = TRUE
+#OPTION PLATGEN_SYSLEVEL_UPDATE_PROC = generate_corelevel_ucf
+OPTION ARCH_SUPPORT_MAP = (spartan3adsp=PREFERRED, spartan6=PREFERRED, virtex5lx=PREFERRED, virtex5sx=PREFERRED, virtex5fx=PREFERRED, virtex6lx= PREFERRED, virtex6sx= PREFERRED, virtex6cx= PREFERRED)
+OPTION IP_GROUP         = Memory and Memory Controller:MICROBLAZE:PPC
+OPTION HDL = VHDL
+#OPTION RUN_NGCBUILD = TRUE
+OPTION PAY_CORE = v_vdma@2009.09
+OPTION DESC = VDMA
+OPTION LONG_DESC = The Xilinx Video DMA LogiCORE provides a flexible interface for controlling and synchronizing video frame stores from external memory.  The VDMA works in conjunction with the Video Frame Buffer Controller (VFBC) and provides a read or a write interface to external memory.  Multiple VDMAs from different clock domains can be linked together to control frame store reads and writes from multiple sources.  Automatic frame skips and repeats are performed to seamlessly allow frame rate conversion.  Support for up to 16 external frame stores with image sizes of 4k x 4k is provided.  The core is programmable through a comprehensive register interface for setting and controlling frame synchronization (can be turned on/off in real-time), frame read/write delays, source synchronization switching, circular buffer enable and more using logic or a microprocessor.  A comprehensive set of interrupt status bits provided for processor monitoring.  The LogiCORE is provided with two different interfaces: General Purpose Processor and EDK pCore (including device driver).
+
+## Bus Interfaces
+BUS_INTERFACE BUS = SPLB,          BUS_TYPE = SLAVE,   BUS_STD = PLBV46
+BUS_INTERFACE BUS = XIL_VFBC,      BUS_STD = XIL_VFBC, BUS_TYPE = INITIATOR
+BUS_INTERFACE BUS = XIL_WD_VDMA,   BUS_STD = XIL_VFBC, BUS_TYPE = TARGET, ISVALID = (C_DMA_TYPE != 1)
+BUS_INTERFACE BUS = XIL_RD_VDMA,   BUS_STD = XIL_VFBC, BUS_TYPE = TARGET, ISVALID = (C_DMA_TYPE != 0)
+
+#BUS_INTERFACE BUS = XIL_WD_IGENLOCK,   BUS_STD = XIL_GENLOCK, BUS_TYPE = INITIATOR, ISVALID = (((C_DMA_TYPE == 0) || (C_DMA_TYPE == 2)) && (C_WRITE_GENLOCK_MODE == 2))
+#BUS_INTERFACE BUS = XIL_RD_TGENLOCK,   BUS_STD = XIL_GENLOCK, BUS_TYPE = TARGET,    ISVALID = (((C_DMA_TYPE == 1)  || (C_DMA_TYPE == 2)) && (C_READ_GENLOCK_MODE == 2))
+
+BUS_INTERFACE BUS = XIL_WD_MGENLOCK,   BUS_STD = XIL_MGENLOCK, BUS_TYPE = INITIATOR, ISVALID = ((C_DMA_TYPE != 1) && (C_WRITE_GENLOCK_MODE == 0))
+BUS_INTERFACE BUS = XIL_RD_SGENLOCK1,  BUS_STD = XIL_MGENLOCK, BUS_TYPE = TARGET,  ISVALID = ((C_DMA_TYPE != 0) && (C_READ_GENLOCK_MODE == 1) && (C_READ_NUM_PTR > 0))
+BUS_INTERFACE BUS = XIL_RD_SGENLOCK2,  BUS_STD = XIL_MGENLOCK, BUS_TYPE = TARGET,  ISVALID = ((C_DMA_TYPE != 0) && (C_READ_GENLOCK_MODE == 1) && (C_READ_NUM_PTR > 1))
+BUS_INTERFACE BUS = XIL_RD_SGENLOCK3,  BUS_STD = XIL_MGENLOCK, BUS_TYPE = TARGET,  ISVALID = ((C_DMA_TYPE != 0) && (C_READ_GENLOCK_MODE == 1) && (C_READ_NUM_PTR > 2))
+BUS_INTERFACE BUS = XIL_RD_SGENLOCK4,  BUS_STD = XIL_MGENLOCK, BUS_TYPE = TARGET,  ISVALID = ((C_DMA_TYPE != 0) && (C_READ_GENLOCK_MODE == 1) && (C_READ_NUM_PTR > 3))
+BUS_INTERFACE BUS = XIL_RD_SGENLOCK5,  BUS_STD = XIL_MGENLOCK, BUS_TYPE = TARGET,  ISVALID = ((C_DMA_TYPE != 0) && (C_READ_GENLOCK_MODE == 1) && (C_READ_NUM_PTR > 4))
+BUS_INTERFACE BUS = XIL_RD_SGENLOCK6,  BUS_STD = XIL_MGENLOCK, BUS_TYPE = TARGET,  ISVALID = ((C_DMA_TYPE != 0) && (C_READ_GENLOCK_MODE == 1) && (C_READ_NUM_PTR > 5))
+BUS_INTERFACE BUS = XIL_RD_SGENLOCK7,  BUS_STD = XIL_MGENLOCK, BUS_TYPE = TARGET,  ISVALID = ((C_DMA_TYPE != 0) && (C_READ_GENLOCK_MODE == 1) && (C_READ_NUM_PTR > 6))
+BUS_INTERFACE BUS = XIL_RD_SGENLOCK8,  BUS_STD = XIL_MGENLOCK, BUS_TYPE = TARGET,  ISVALID = ((C_DMA_TYPE != 0) && (C_READ_GENLOCK_MODE == 1) && (C_READ_NUM_PTR > 7))
+
+BUS_INTERFACE BUS = XIL_WD_SGENLOCK1,  BUS_STD = XIL_MGENLOCK, BUS_TYPE = TARGET,  ISVALID = ((C_DMA_TYPE != 1) && (C_WRITE_GENLOCK_MODE == 1) && (C_WRITE_NUM_PTR > 0))
+BUS_INTERFACE BUS = XIL_WD_SGENLOCK2,  BUS_STD = XIL_MGENLOCK, BUS_TYPE = TARGET,  ISVALID = ((C_DMA_TYPE != 1) && (C_WRITE_GENLOCK_MODE == 1) && (C_WRITE_NUM_PTR > 1))
+BUS_INTERFACE BUS = XIL_WD_SGENLOCK3,  BUS_STD = XIL_MGENLOCK, BUS_TYPE = TARGET,  ISVALID = ((C_DMA_TYPE != 1) && (C_WRITE_GENLOCK_MODE == 1) && (C_WRITE_NUM_PTR > 2))
+BUS_INTERFACE BUS = XIL_WD_SGENLOCK4,  BUS_STD = XIL_MGENLOCK, BUS_TYPE = TARGET,  ISVALID = ((C_DMA_TYPE != 1) && (C_WRITE_GENLOCK_MODE == 1) && (C_WRITE_NUM_PTR > 3))
+BUS_INTERFACE BUS = XIL_WD_SGENLOCK5,  BUS_STD = XIL_MGENLOCK, BUS_TYPE = TARGET,  ISVALID = ((C_DMA_TYPE != 1) && (C_WRITE_GENLOCK_MODE == 1) && (C_WRITE_NUM_PTR > 4))
+BUS_INTERFACE BUS = XIL_WD_SGENLOCK6,  BUS_STD = XIL_MGENLOCK, BUS_TYPE = TARGET,  ISVALID = ((C_DMA_TYPE != 1) && (C_WRITE_GENLOCK_MODE == 1) && (C_WRITE_NUM_PTR > 5))
+BUS_INTERFACE BUS = XIL_WD_SGENLOCK7,  BUS_STD = XIL_MGENLOCK, BUS_TYPE = TARGET,  ISVALID = ((C_DMA_TYPE != 1) && (C_WRITE_GENLOCK_MODE == 1) && (C_WRITE_NUM_PTR > 6))
+BUS_INTERFACE BUS = XIL_WD_SGENLOCK8,  BUS_STD = XIL_MGENLOCK, BUS_TYPE = TARGET,  ISVALID = ((C_DMA_TYPE != 1) && (C_WRITE_GENLOCK_MODE == 1) && (C_WRITE_NUM_PTR > 7))
+BUS_INTERFACE BUS = XIL_RD_MGENLOCK,   BUS_STD = XIL_MGENLOCK, BUS_TYPE = INITIATOR, ISVALID = ((C_DMA_TYPE != 0) && (C_READ_GENLOCK_MODE == 0))
+
+
+#PARAMETER C_DMA_TYPE            = WRITE_ONLY,   DT = string, VALUES = (WRITE_ONLY=WRITE_ONLY, READ_ONLY=READ_ONLY, READ_WRITE=READ_WRITE)
+#PARAMETER C_WRITE_GENLOCK_MODE  = MASTER,       DT =string, VALUES=(MASTER=MASTER, SLAVE=SLAVE, INITIATOR=INITIATOR), ISVALID=((C_DMA_TYPE == 0) || (C_DMA_TYPE == 2))
+#PARAMETER C_READ_GENLOCK_MODE   = SLAVE,        DT =string, VALUES=(MASTER=MASTER, SLAVE=SLAVE, TARGET=TARGET), ISVALID=((C_DMA_TYPE == 1) || (C_DMA_TYPE == 2))
+
+PARAMETER C_DMA_TYPE            = 0,                      DT = integer, RANGE = (0,1), VALUES = (0=WRITE_ONLY, 1=READ_ONLY)
+#PARAMETER C_DMA_TYPE            = 0,                      DT = integer, RANGE = (0,1,2), VALUES = (0=WRITE_ONLY, 1=READ_ONLY, 2=READ_WRITE)
+PARAMETER C_WRITE_GENLOCK_MODE  = 0,            DT = integer, RANGE = (0,1), VALUES=(0=MASTER, 1=SLAVE), ISVALID=((C_DMA_TYPE == 0) || (C_DMA_TYPE == 2))
+PARAMETER C_READ_GENLOCK_MODE   = 1,            DT = integer, RANGE = (0,1), VALUES=(0=MASTER, 1=SLAVE), ISVALID=((C_DMA_TYPE == 1) || (C_DMA_TYPE == 2))
+PARAMETER C_DATA_WIDTH          = 32,                    DT = integer, RANGE = (8,16,32,64)
+#PARAMETER C_READ_PORT_ID        = 0 ,            DT = integer, RANGE = (0,1)
+PARAMETER C_NUM_FSTORES         = 3,                   DT = integer, RANGE = (1:16)
+PARAMETER C_WRITE_NUM_PTR       = 1,                 DT = integer, RANGE = (1:16), ISVALID = ((C_DMA_TYPE == 0) || (C_DMA_TYPE == 2))
+PARAMETER C_READ_NUM_PTR        = 1,                  DT = integer, RANGE = (1:16), ISVALID = ((C_DMA_TYPE == 1) || (C_DMA_TYPE == 2))
+PARAMETER C_CLOCK_DIV           = 255,          DT = integer, RANGE = (0:255)
+PARAMETER C_MPMC_BASEADDR       = 0x00000000,   DT = std_logic_vector, ADDRESS = BASE, PAIR = C_MPMC_HIGHADDR
+PARAMETER C_MPMC_HIGHADDR       = 0xffffffff,   DT = std_logic_vector, ADDRESS = HIGH, PAIR = C_MPMC_HIGHADDR
+PARAMETER C_CROP_ENABLE         = 0,                   DT = integer, RANGE = (0,1)
+PARAMETER C_USE_FSYNC           = 0,            DT = integer, RANGE = (0,1)
+PARAMETER C_GEN_RESET           = 0,            DT = integer, RANGE = (0,1), ISVALID = (C_USE_FSYNC == 1)
+
+PARAMETER C_FAMILY              = spartan3adsp, DT = string
+
+PARAMETER C_BASEADDR = 0xffffffff, DT = std_logic_vector, MIN_SIZE = 0x200, BUS = SPLB, ADDRESS = BASE, PAIR = C_HIGHADDR
+PARAMETER C_HIGHADDR = 0x00000000, DT = std_logic_vector, BUS = SPLB, ADDRESS = HIGH, PAIR = C_BASEADDR
+PARAMETER C_SPLB_AWIDTH = 32, DT = INTEGER, BUS = SPLB, ASSIGNMENT = CONSTANT
+PARAMETER C_SPLB_DWIDTH = 32, DT = INTEGER, BUS = SPLB, RANGE = (32, 64, 128), ASSIGNMENT = CONSTANT
+PARAMETER C_SPLB_NUM_MASTERS = 8, DT = INTEGER, BUS = SPLB, RANGE = (1:16)
+PARAMETER C_SPLB_MID_WIDTH = 3, DT = INTEGER, BUS = SPLB, RANGE = (1:4)
+PARAMETER C_SPLB_NATIVE_DWIDTH = 32, DT = INTEGER, BUS = SPLB, RANGE = (32, 64, 128), ASSIGNMENT = CONSTANT
+PARAMETER C_SPLB_P2P = 0, DT = INTEGER, BUS = SPLB, RANGE = (0, 1)
+PARAMETER C_SPLB_SUPPORT_BURSTS = 0, DT = INTEGER, BUS = SPLB, RANGE = (0, 1), ASSIGNMENT = CONSTANT
+PARAMETER C_SPLB_SMALLEST_MASTER = 32, DT = INTEGER, BUS = SPLB, RANGE = (32, 64, 128)
+PARAMETER C_SPLB_CLK_PERIOD_PS = 10000, DT = INTEGER, BUS = SPLB
+
+## Ports
+PORT SPLB_Clk = "", DIR = I, SIGIS = CLK, BUS = SPLB
+PORT SPLB_Rst = SPLB_Rst, DIR = I, SIGIS = RST, BUS = SPLB
+PORT PLB_ABus = PLB_ABus, DIR = I, VEC = [0:31], BUS = SPLB
+PORT PLB_UABus = PLB_UABus, DIR = I, VEC = [0:31], BUS = SPLB
+PORT PLB_PAValid = PLB_PAValid, DIR = I, BUS = SPLB
+PORT PLB_SAValid = PLB_SAValid, DIR = I, BUS = SPLB
+PORT PLB_rdPrim = PLB_rdPrim, DIR = I, BUS = SPLB
+PORT PLB_wrPrim = PLB_wrPrim, DIR = I, BUS = SPLB
+PORT PLB_masterID = PLB_masterID, DIR = I, VEC = [0:(C_SPLB_MID_WIDTH-1)], BUS = SPLB
+PORT PLB_abort = PLB_abort, DIR = I, BUS = SPLB
+PORT PLB_busLock = PLB_busLock, DIR = I, BUS = SPLB
+PORT PLB_RNW = PLB_RNW, DIR = I, BUS = SPLB
+PORT PLB_BE = PLB_BE, DIR = I, VEC = [0:((C_SPLB_DWIDTH/8)-1)], BUS = SPLB
+PORT PLB_MSize = PLB_MSize, DIR = I, VEC = [0:1], BUS = SPLB
+PORT PLB_size = PLB_size, DIR = I, VEC = [0:3], BUS = SPLB
+PORT PLB_type = PLB_type, DIR = I, VEC = [0:2], BUS = SPLB
+PORT PLB_lockErr = PLB_lockErr, DIR = I, BUS = SPLB
+PORT PLB_wrDBus = PLB_wrDBus, DIR = I, VEC = [0:(C_SPLB_DWIDTH-1)], BUS = SPLB
+PORT PLB_wrBurst = PLB_wrBurst, DIR = I, BUS = SPLB
+PORT PLB_rdBurst = PLB_rdBurst, DIR = I, BUS = SPLB
+PORT PLB_wrPendReq = PLB_wrPendReq, DIR = I, BUS = SPLB
+PORT PLB_rdPendReq = PLB_rdPendReq, DIR = I, BUS = SPLB
+PORT PLB_wrPendPri = PLB_wrPendPri, DIR = I, VEC = [0:1], BUS = SPLB
+PORT PLB_rdPendPri = PLB_rdPendPri, DIR = I, VEC = [0:1], BUS = SPLB
+PORT PLB_reqPri = PLB_reqPri, DIR = I, VEC = [0:1], BUS = SPLB
+PORT PLB_TAttribute = PLB_TAttribute, DIR = I, VEC = [0:15], BUS = SPLB
+PORT Sl_addrAck = Sl_addrAck, DIR = O, BUS = SPLB
+PORT Sl_SSize = Sl_SSize, DIR = O, VEC = [0:1], BUS = SPLB
+PORT Sl_wait = Sl_wait, DIR = O, BUS = SPLB
+PORT Sl_rearbitrate = Sl_rearbitrate, DIR = O, BUS = SPLB
+PORT Sl_wrDAck = Sl_wrDAck, DIR = O, BUS = SPLB
+PORT Sl_wrComp = Sl_wrComp, DIR = O, BUS = SPLB
+PORT Sl_wrBTerm = Sl_wrBTerm, DIR = O, BUS = SPLB
+PORT Sl_rdDBus = Sl_rdDBus, DIR = O, VEC = [0:(C_SPLB_DWIDTH-1)], BUS = SPLB
+PORT Sl_rdWdAddr = Sl_rdWdAddr, DIR = O, VEC = [0:3], BUS = SPLB
+PORT Sl_rdDAck = Sl_rdDAck, DIR = O, BUS = SPLB
+PORT Sl_rdComp = Sl_rdComp, DIR = O, BUS = SPLB
+PORT Sl_rdBTerm = Sl_rdBTerm, DIR = O, BUS = SPLB
+PORT Sl_MBusy = Sl_MBusy, DIR = O, VEC = [0:(C_SPLB_NUM_MASTERS-1)], BUS = SPLB
+PORT Sl_MWrErr = Sl_MWrErr, DIR = O, VEC = [0:(C_SPLB_NUM_MASTERS-1)], BUS = SPLB
+PORT Sl_MRdErr = Sl_MRdErr, DIR = O, VEC = [0:(C_SPLB_NUM_MASTERS-1)], BUS = SPLB
+PORT Sl_MIRQ = Sl_MIRQ, DIR = O, VEC = [0:(C_SPLB_NUM_MASTERS-1)], BUS = SPLB
+
+
+PORT IP2INTC_Irpt = "", DIR = O, SIGIS = INTERRUPT, SENSITIVITY = LEVEL_HIGH
+###############################################################################
+## VFBC Command Ports and Parameters
+###############################################################################
+PORT vfbc_cmd_clk           = cmd_clk,             DIR = O,                BUS = XIL_VFBC#, SIGIS=CLK, ASSIGNMENT = REQUIRE
+PORT vfbc_cmd_reset         = cmd_reset,           DIR = O,                BUS = XIL_VFBC#, SIGIS=RST, ASSIGNMENT = REQUIRE
+PORT vfbc_cmd_data          = cmd_data,            DIR = O, VEC = [31:0],  BUS = XIL_VFBC
+PORT vfbc_cmd_write         = cmd_write,           DIR = O,                BUS = XIL_VFBC
+PORT vfbc_cmd_end           = cmd_end,             DIR = O,                BUS = XIL_VFBC
+PORT vfbc_cmd_full          = cmd_full,            DIR = I,                BUS = XIL_VFBC
+PORT vfbc_cmd_almost_full   = cmd_almost_full,     DIR = I,                BUS = XIL_VFBC
+PORT vfbc_cmd_idle          = cmd_idle,            DIR = I,                BUS = XIL_VFBC
+
+###############################################################################
+## VFBC Write DATA Ports and Parameters
+###############################################################################
+
+
+PORT vfbc_wd_clk            = wd_clk,              DIR = O,                                BUS = XIL_VFBC#, SIGIS=CLK, ASSIGNMENT = REQUIRE
+PORT vfbc_wd_reset          = wd_reset,            DIR = O,                                BUS = XIL_VFBC#, SIGIS=RST, ASSIGNMENT = REQUIRE
+PORT vfbc_wd_write          = wd_write,            DIR = O,                                BUS = XIL_VFBC
+PORT vfbc_wd_end_burst      = wd_end_burst,        DIR = O,                                BUS = XIL_VFBC
+PORT vfbc_wd_flush          = wd_flush,            DIR = O,                                BUS = XIL_VFBC
+PORT vfbc_wd_data           = wd_data,             DIR = O, VEC = [C_DATA_WIDTH-1:0],      BUS = XIL_VFBC
+PORT vfbc_wd_data_be        = wd_data_be,          DIR = O, VEC = [C_DATA_WIDTH/8-1:0],    BUS = XIL_VFBC
+PORT vfbc_wd_full           = wd_full,             DIR = I,                                BUS = XIL_VFBC
+PORT vfbc_wd_almost_full    = wd_almost_full,      DIR = I,                                BUS = XIL_VFBC
+
+
+
+###############################################################################
+## VFBC Read DATA Ports and Parameters
+###############################################################################
+
+PORT vfbc_rd_clk            = rd_clk,              DIR = O,                                BUS = XIL_VFBC#, SIGIS=CLK, ASSIGNMENT = REQUIRE
+PORT vfbc_rd_reset          = rd_reset,            DIR = O,                                BUS = XIL_VFBC#, SIGIS=RST, ASSIGNMENT = REQUIRE
+PORT vfbc_rd_read           = rd_read,             DIR = O,                                BUS = XIL_VFBC
+PORT vfbc_rd_end_burst      = rd_end_burst,        DIR = O,                                BUS = XIL_VFBC
+PORT vfbc_rd_flush          = rd_flush,            DIR = O,                                BUS = XIL_VFBC
+PORT vfbc_rd_data           = rd_data,             DIR = I, VEC = [C_DATA_WIDTH-1:0],      BUS = XIL_VFBC
+PORT vfbc_rd_empty          = rd_empty,            DIR = I,                                BUS = XIL_VFBC
+PORT vfbc_rd_almost_empty   = rd_almost_empty,     DIR = I,                                BUS = XIL_VFBC
+
+
+
+###############################################################################
+## VDMA Write Data Command Ports and Parameters
+###############################################################################
+
+###############################################################################
+PORT vdma_wcmd_clk           = cmd_clk,             DIR = I,                BUS = XIL_WD_VDMA#, SIGIS=CLK, ASSIGNMENT = REQUIRE
+PORT vdma_wcmd_reset         = cmd_reset,           DIR = I,                BUS = XIL_WD_VDMA#, SIGIS=RST, ASSIGNMENT = REQUIRE
+PORT vdma_wcmd_data          = cmd_data,            DIR = I, VEC = [31:0],  BUS = XIL_WD_VDMA
+PORT vdma_wcmd_write         = cmd_write,           DIR = I,                BUS = XIL_WD_VDMA
+PORT vdma_wcmd_end           = cmd_end,             DIR = I,                BUS = XIL_WD_VDMA
+PORT vdma_wcmd_full          = cmd_full,            DIR = O,                BUS = XIL_WD_VDMA
+PORT vdma_wcmd_almost_full   = cmd_almost_full,     DIR = O,                BUS = XIL_WD_VDMA
+PORT vdma_wcmd_idle          = cmd_idle,            DIR = O,                BUS = XIL_WD_VDMA
+
+###############################################################################
+## VDMA Write DATA Ports and Parameters
+###############################################################################
+
+
+PORT vdma_wd_clk            = wd_clk,              DIR = I,                                BUS = XIL_WD_VDMA#, SIGIS=CLK, ASSIGNMENT = REQUIRE
+PORT vdma_wd_reset          = wd_reset,            DIR = I,                                BUS = XIL_WD_VDMA#, SIGIS=RST, ASSIGNMENT = REQUIRE
+PORT vdma_wd_write          = wd_write,            DIR = I,                                BUS = XIL_WD_VDMA
+PORT vdma_wd_end_burst      = wd_end_burst,        DIR = I,                                BUS = XIL_WD_VDMA
+PORT vdma_wd_flush          = wd_flush,            DIR = I,                                BUS = XIL_WD_VDMA
+PORT vdma_wd_data           = wd_data,             DIR = I, VEC = [C_DATA_WIDTH-1:0],      BUS = XIL_WD_VDMA
+PORT vdma_wd_data_be        = wd_data_be,          DIR = I, VEC = [C_DATA_WIDTH/8-1:0],    BUS = XIL_WD_VDMA
+PORT vdma_wd_full           = wd_full,             DIR = O,                                BUS = XIL_WD_VDMA
+PORT vdma_wd_almost_full    = wd_almost_full,      DIR = O,                                BUS = XIL_WD_VDMA
+
+
+###############################################################################
+## VDMA Read Data Command Ports and Parameters
+###############################################################################
+PORT vdma_rcmd_clk           = cmd_clk,             DIR = I,                BUS = XIL_RD_VDMA#, SIGIS=CLK, ASSIGNMENT = REQUIRE
+PORT vdma_rcmd_reset         = cmd_reset,           DIR = I,                BUS = XIL_RD_VDMA#, SIGIS=RST, ASSIGNMENT = REQUIRE
+PORT vdma_rcmd_data          = cmd_data,            DIR = I, VEC = [31:0],  BUS = XIL_RD_VDMA
+PORT vdma_rcmd_write         = cmd_write,           DIR = I,                BUS = XIL_RD_VDMA
+PORT vdma_rcmd_end           = cmd_end,             DIR = I,                BUS = XIL_RD_VDMA
+PORT vdma_rcmd_full          = cmd_full,            DIR = O,                BUS = XIL_RD_VDMA
+PORT vdma_rcmd_almost_full   = cmd_almost_full,     DIR = O,                BUS = XIL_RD_VDMA
+PORT vdma_rcmd_idle          = cmd_idle,            DIR = O,                BUS = XIL_RD_VDMA
+
+
+###############################################################################
+## VDMA Read DATA Ports and Parameters
+###############################################################################
+
+PORT vdma_rd_clk            = rd_clk,              DIR = I,                                BUS = XIL_RD_VDMA#, SIGIS=CLK, ASSIGNMENT = REQUIRE
+PORT vdma_rd_reset          = rd_reset,            DIR = I,                                BUS = XIL_RD_VDMA#, SIGIS=RST, ASSIGNMENT = REQUIRE
+PORT vdma_rd_read           = rd_read,             DIR = I,                                BUS = XIL_RD_VDMA
+PORT vdma_rd_end_burst      = rd_end_burst,        DIR = I,                                BUS = XIL_RD_VDMA
+PORT vdma_rd_flush          = rd_flush,            DIR = I,                                BUS = XIL_RD_VDMA
+PORT vdma_rd_data           = rd_data,             DIR = O, VEC = [C_DATA_WIDTH-1:0],      BUS = XIL_RD_VDMA
+PORT vdma_rd_empty          = rd_empty,            DIR = O,                                BUS = XIL_RD_VDMA
+PORT vdma_rd_almost_empty   = rd_almost_empty,     DIR = O,                                BUS = XIL_RD_VDMA
+
+###############################################################################
+## VDMA Write Gen-Lock
+###############################################################################
+
+#PORT wd_frame_ptr_in    = read_frame_ptr,         DIR = I, VEC = [4:0],           BUS = XIL_WD_IGENLOCK
+#PORT wd_frame_ptr_out   = write_frame_ptr,        DIR = O, VEC = [4:0],           BUS = XIL_WD_IGENLOCK
+
+PORT s_wd_frame_ptr_in1   = gl_frame_ptr,            DIR = I, VEC = [4:0],           BUS = XIL_WD_SGENLOCK1
+PORT s_wd_frame_ptr_in2   = gl_frame_ptr,            DIR = I, VEC = [4:0],           BUS = XIL_WD_SGENLOCK2
+PORT s_wd_frame_ptr_in3   = gl_frame_ptr,            DIR = I, VEC = [4:0],           BUS = XIL_WD_SGENLOCK3
+PORT s_wd_frame_ptr_in4   = gl_frame_ptr,            DIR = I, VEC = [4:0],           BUS = XIL_WD_SGENLOCK4
+PORT s_wd_frame_ptr_in5   = gl_frame_ptr,            DIR = I, VEC = [4:0],           BUS = XIL_WD_SGENLOCK5
+PORT s_wd_frame_ptr_in6   = gl_frame_ptr,            DIR = I, VEC = [4:0],           BUS = XIL_WD_SGENLOCK6
+PORT s_wd_frame_ptr_in7   = gl_frame_ptr,            DIR = I, VEC = [4:0],           BUS = XIL_WD_SGENLOCK7
+PORT s_wd_frame_ptr_in8   = gl_frame_ptr,            DIR = I, VEC = [4:0],           BUS = XIL_WD_SGENLOCK8
+
+PORT m_wd_frame_ptr_out   = gl_frame_ptr,            DIR = O, VEC = [4:0],           BUS = XIL_WD_MGENLOCK
+
+
+###############################################################################
+## VDMA Read Gen-Lock
+###############################################################################
+
+#PORT rd_frame_ptr_in    = write_frame_ptr,       DIR = I, VEC = [4:0],           BUS = XIL_RD_TGENLOCK
+#PORT rd_frame_ptr_out   = read_frame_ptr,        DIR = O, VEC = [4:0],           BUS = XIL_RD_TGENLOCK
+
+PORT s_rd_frame_ptr_in1   = gl_frame_ptr,            DIR = I, VEC = [4:0],           BUS = XIL_RD_SGENLOCK1
+PORT s_rd_frame_ptr_in2   = gl_frame_ptr,            DIR = I, VEC = [4:0],           BUS = XIL_RD_SGENLOCK2
+PORT s_rd_frame_ptr_in3   = gl_frame_ptr,            DIR = I, VEC = [4:0],           BUS = XIL_RD_SGENLOCK3
+PORT s_rd_frame_ptr_in4   = gl_frame_ptr,            DIR = I, VEC = [4:0],           BUS = XIL_RD_SGENLOCK4
+PORT s_rd_frame_ptr_in5   = gl_frame_ptr,            DIR = I, VEC = [4:0],           BUS = XIL_RD_SGENLOCK5
+PORT s_rd_frame_ptr_in6   = gl_frame_ptr,            DIR = I, VEC = [4:0],           BUS = XIL_RD_SGENLOCK6
+PORT s_rd_frame_ptr_in7   = gl_frame_ptr,            DIR = I, VEC = [4:0],           BUS = XIL_RD_SGENLOCK7
+PORT s_rd_frame_ptr_in8   = gl_frame_ptr,            DIR = I, VEC = [4:0],           BUS = XIL_RD_SGENLOCK8
+
+PORT m_rd_frame_ptr_out   = gl_frame_ptr,            DIR = O, VEC = [4:0],           BUS = XIL_RD_MGENLOCK
+
+
+
+###############################################################################
+## Other Ports and Parameters
+###############################################################################
+PORT fsync = "",     DIR = I
+
+PORT debug_stat_curr_rd_fstore = "", DIR=O, VEC = [3:0]
+PORT debug_stat_curr_wd_fstore = "", DIR=O, VEC = [3:0]
+PORT debug_wd_reset_en = "", DIR=O
+PORT debug_rd_reset_en = "", DIR=O
+
+PORT debug_fsync_d = "", DIR=O, VEC = [7:0]
+PORT debug_wd_state = "", DIR=O, VEC = [2:0]
+PORT debug_reset = "", DIR=O, VEC = [8:0]
+END

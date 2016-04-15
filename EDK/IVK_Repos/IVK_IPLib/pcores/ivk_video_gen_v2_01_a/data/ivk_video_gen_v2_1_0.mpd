@@ -1,0 +1,174 @@
+## ----------------------------------------------------------------
+##      _____
+##     /     \
+##    /____   \____
+##   / \===\   \==/
+##  /___\===\___\/  AVNET
+##       \======/
+##        \====/    
+## ----------------------------------------------------------------
+##
+## This design is the property of Avnet.  Publication of this
+## design is not authorized without written consent from Avnet.
+## 
+## Please direct any questions to:  technical.support@avnet.com
+##
+## Disclaimer:
+##    Avnet, Inc. makes no warranty for the use of this code or design.
+##    This code is provided  "As Is". Avnet, Inc assumes no responsibility for
+##    any errors, which may appear in this code, nor does it make a commitment
+##    to update the information contained herein. Avnet, Inc specifically
+##    disclaims any implied warranties of fitness for a particular purpose.
+##                     Copyright(c) 2010 Avnet, Inc.
+##                             All rights reserved.
+##
+## ----------------------------------------------------------------
+##
+## Create Date:         Dec 03, 2009
+## Design Name:         IVK
+## Module Name:         ivk_video_gen
+## Project Name:        IVK
+## Target Devices:      Spartan-6
+## Avnet Boards:        IVK
+##
+## Tool versions:       ISE 12.1
+##
+## Description:         Microprocessor Peripheral Description
+##
+## Dependencies:        
+##
+## Revision:            Dec 03, 2009: 1.00 Initial Version
+##                      Feb 01, 2010: 1.02 Add selectable video interface
+##                      Feb 10, 2010: 1.02b Fix XSVI video_data ordering:
+##                                          [23:16] = red
+##                                          [15: 8] = blue
+##                                          [ 7: 0] = green
+##                      Mar 02, 2010: 1.03 Add optionnal VDMA Write Port
+##                      Mar 10, 2010: 1.04 Force FSYNC to active high polarity
+##                      Apr 12, 2010: 1.05 Fix VBlank/HBlank outputs
+##                      Apr 13, 2010: 1.06 Add support for 16bit data width on XSVI input
+##                      May 14, 2010: 2.01 Update for 12.1
+##
+## ----------------------------------------------------------------
+
+BEGIN ivk_video_gen
+
+## Peripheral Options
+OPTION IPTYPE = PERIPHERAL
+OPTION IMP_NETLIST = TRUE
+OPTION HDL = VHDL
+OPTION IP_GROUP = MICROBLAZE:PPC:USER
+OPTION DESC = ivk_video_gen
+OPTION LONG_DESC = Generates video timing and a color bar pattern
+
+## Bus Interfaces
+BUS_INTERFACE BUS = SPLB,              BUS_TYPE = SLAVE,       BUS_STD  = PLBV46
+BUS_INTERFACE BUS = CAMERA_VIDEO_OUT, BUS_STD = CAMERA_VIDEO, BUS_TYPE = INITIATOR, ISVALID = (C_VIDEO_INTERFACE == 0)
+BUS_INTERFACE BUS = DVI_VIDEO_OUT,    BUS_STD = DVI_VIDEO,    BUS_TYPE = INITIATOR, ISVALID = (C_VIDEO_INTERFACE == 1)
+BUS_INTERFACE BUS = XSVI_VIDEO_OUT,   BUS_STD = XSVI,         BUS_TYPE = INITIATOR, ISVALID = (C_VIDEO_INTERFACE == 2)
+BUS_INTERFACE BUS = XIL_RD_VDMA,      BUS_STD = XIL_VFBC,     BUS_TYPE = INITIATOR, ISVALID = (C_GEN_RD_VDMA  == 1)
+
+## Generics for VHDL or Parameters for Verilog
+PARAMETER C_BASEADDR = 0xffffffff, DT = std_logic_vector, MIN_SIZE = 0x200, BUS = SPLB, ADDRESS = BASE, PAIR = C_HIGHADDR
+PARAMETER C_HIGHADDR = 0x00000000, DT = std_logic_vector, BUS = SPLB, ADDRESS = HIGH, PAIR = C_BASEADDR
+PARAMETER C_SPLB_AWIDTH = 32, DT = INTEGER, BUS = SPLB, ASSIGNMENT = CONSTANT
+PARAMETER C_SPLB_DWIDTH = 32, DT = INTEGER, BUS = SPLB, RANGE = (32, 64, 128), ASSIGNMENT = CONSTANT
+PARAMETER C_SPLB_NUM_MASTERS = 8, DT = INTEGER, BUS = SPLB, RANGE = (1:16)
+PARAMETER C_SPLB_MID_WIDTH = 3, DT = INTEGER, BUS = SPLB, RANGE = (1:4)
+PARAMETER C_SPLB_NATIVE_DWIDTH = 32, DT = INTEGER, BUS = SPLB, RANGE = (32, 64, 128), ASSIGNMENT = CONSTANT
+PARAMETER C_SPLB_P2P = 0, DT = INTEGER, BUS = SPLB, RANGE = (0, 1)
+PARAMETER C_SPLB_SUPPORT_BURSTS = 0, DT = INTEGER, BUS = SPLB, RANGE = (0, 1), ASSIGNMENT = CONSTANT
+PARAMETER C_SPLB_SMALLEST_MASTER = 32, DT = INTEGER, BUS = SPLB, RANGE = (32, 64, 128)
+PARAMETER C_SPLB_CLK_PERIOD_PS = 10000, DT = INTEGER, BUS = SPLB
+PARAMETER C_INCLUDE_DPHASE_TIMER = 0, DT = INTEGER, RANGE = (0, 1)
+PARAMETER C_FAMILY = spartan3adsp, DT = STRING
+
+PARAMETER C_GEN_FSYNC = 0, DT = integer, RANGE = (0,1)
+PARAMETER C_GEN_RD_VDMA  = 0, DT = integer, RANGE = (0,1)
+## Selectable Video Interface Type
+## 0 = CAMERA_INTERFACE
+## 1 = DVI_INTERFACE
+## 2 = XVSI PORTS
+PARAMETER C_VIDEO_INTERFACE = 2, DT = INTEGER, DESC = VIDEO_INTERFACE, RANGE = (0:2), ASSIGNMENT = REQUIRE, VALUES = (0=CAMERA, 1=DVI, 2=XSVI)
+PARAMETER C_XSVI_DATA_WIDTH = 24, DT = INTEGER, DESC = DATA_WIDTH,      RANGE = (8, 10, 16, 24, 32)
+PARAMETER C_VDMA_DATA_WIDTH = 32, DT = INTEGER, DESC = VDMA_DATA_WIDTH, RANGE = (8, 16, 32)
+
+## PLB Ports
+PORT SPLB_Clk = "", DIR = I, SIGIS = CLK, BUS = SPLB
+PORT SPLB_Rst = SPLB_Rst, DIR = I, SIGIS = RST, BUS = SPLB
+PORT PLB_ABus = PLB_ABus, DIR = I, VEC = [0:31], BUS = SPLB
+PORT PLB_UABus = PLB_UABus, DIR = I, VEC = [0:31], BUS = SPLB
+PORT PLB_PAValid = PLB_PAValid, DIR = I, BUS = SPLB
+PORT PLB_SAValid = PLB_SAValid, DIR = I, BUS = SPLB
+PORT PLB_rdPrim = PLB_rdPrim, DIR = I, BUS = SPLB
+PORT PLB_wrPrim = PLB_wrPrim, DIR = I, BUS = SPLB
+PORT PLB_masterID = PLB_masterID, DIR = I, VEC = [0:(C_SPLB_MID_WIDTH-1)], BUS = SPLB
+PORT PLB_abort = PLB_abort, DIR = I, BUS = SPLB
+PORT PLB_busLock = PLB_busLock, DIR = I, BUS = SPLB
+PORT PLB_RNW = PLB_RNW, DIR = I, BUS = SPLB
+PORT PLB_BE = PLB_BE, DIR = I, VEC = [0:((C_SPLB_DWIDTH/8)-1)], BUS = SPLB
+PORT PLB_MSize = PLB_MSize, DIR = I, VEC = [0:1], BUS = SPLB
+PORT PLB_size = PLB_size, DIR = I, VEC = [0:3], BUS = SPLB
+PORT PLB_type = PLB_type, DIR = I, VEC = [0:2], BUS = SPLB
+PORT PLB_lockErr = PLB_lockErr, DIR = I, BUS = SPLB
+PORT PLB_wrDBus = PLB_wrDBus, DIR = I, VEC = [0:(C_SPLB_DWIDTH-1)], BUS = SPLB
+PORT PLB_wrBurst = PLB_wrBurst, DIR = I, BUS = SPLB
+PORT PLB_rdBurst = PLB_rdBurst, DIR = I, BUS = SPLB
+PORT PLB_wrPendReq = PLB_wrPendReq, DIR = I, BUS = SPLB
+PORT PLB_rdPendReq = PLB_rdPendReq, DIR = I, BUS = SPLB
+PORT PLB_wrPendPri = PLB_wrPendPri, DIR = I, VEC = [0:1], BUS = SPLB
+PORT PLB_rdPendPri = PLB_rdPendPri, DIR = I, VEC = [0:1], BUS = SPLB
+PORT PLB_reqPri = PLB_reqPri, DIR = I, VEC = [0:1], BUS = SPLB
+PORT PLB_TAttribute = PLB_TAttribute, DIR = I, VEC = [0:15], BUS = SPLB
+PORT Sl_addrAck = Sl_addrAck, DIR = O, BUS = SPLB
+PORT Sl_SSize = Sl_SSize, DIR = O, VEC = [0:1], BUS = SPLB
+PORT Sl_wait = Sl_wait, DIR = O, BUS = SPLB
+PORT Sl_rearbitrate = Sl_rearbitrate, DIR = O, BUS = SPLB
+PORT Sl_wrDAck = Sl_wrDAck, DIR = O, BUS = SPLB
+PORT Sl_wrComp = Sl_wrComp, DIR = O, BUS = SPLB
+PORT Sl_wrBTerm = Sl_wrBTerm, DIR = O, BUS = SPLB
+PORT Sl_rdDBus = Sl_rdDBus, DIR = O, VEC = [0:(C_SPLB_DWIDTH-1)], BUS = SPLB
+PORT Sl_rdWdAddr = Sl_rdWdAddr, DIR = O, VEC = [0:3], BUS = SPLB
+PORT Sl_rdDAck = Sl_rdDAck, DIR = O, BUS = SPLB
+PORT Sl_rdComp = Sl_rdComp, DIR = O, BUS = SPLB
+PORT Sl_rdBTerm = Sl_rdBTerm, DIR = O, BUS = SPLB
+PORT Sl_MBusy = Sl_MBusy, DIR = O, VEC = [0:(C_SPLB_NUM_MASTERS-1)], BUS = SPLB
+PORT Sl_MWrErr = Sl_MWrErr, DIR = O, VEC = [0:(C_SPLB_NUM_MASTERS-1)], BUS = SPLB
+PORT Sl_MRdErr = Sl_MRdErr, DIR = O, VEC = [0:(C_SPLB_NUM_MASTERS-1)], BUS = SPLB
+PORT Sl_MIRQ = Sl_MIRQ, DIR = O, VEC = [0:(C_SPLB_NUM_MASTERS-1)], BUS = SPLB
+
+## Global Reset (asynchronous)
+PORT reset              = "", DIR = I
+PORT clk                = "", DIR = I
+
+## Camera Output Port
+PORT camera_frame_valid_o = "frame_valid", DIR = O,                                   BUS = CAMERA_VIDEO_OUT, ISVALID = (C_VIDEO_INTERFACE == 0)
+PORT camera_line_valid_o  = "line_valid",  DIR = O,                                   BUS = CAMERA_VIDEO_OUT, ISVALID = (C_VIDEO_INTERFACE == 0)
+PORT camera_data_o        = "data",        DIR = O, VEC = [[(C_XSVI_DATA_WIDTH-1):0], BUS = CAMERA_VIDEO_OUT, ISVALID = (C_VIDEO_INTERFACE == 0)
+
+## DVI Output Port
+PORT dvi_vsync_o = "vsync", DIR = O,              BUS = DVI_VIDEO_OUT, ISVALID = (C_VIDEO_INTERFACE == 1)
+PORT dvi_hsync_o = "hsync", DIR = O,              BUS = DVI_VIDEO_OUT, ISVALID = (C_VIDEO_INTERFACE == 1)
+PORT dvi_de_o    = "de",    DIR = O,              BUS = DVI_VIDEO_OUT, ISVALID = (C_VIDEO_INTERFACE == 1)
+PORT dvi_red_o   = "red",   DIR = O, VEC = [7:0], BUS = DVI_VIDEO_OUT, ISVALID = (C_VIDEO_INTERFACE == 1)
+PORT dvi_green_o = "green", DIR = O, VEC = [7:0], BUS = DVI_VIDEO_OUT, ISVALID = (C_VIDEO_INTERFACE == 1)
+PORT dvi_blue_o  = "blue",  DIR = O, VEC = [7:0], BUS = DVI_VIDEO_OUT, ISVALID = (C_VIDEO_INTERFACE == 1)
+
+## XSVI Output Port
+PORT xsvi_vsync_o        = "vsync",        DIR = O,                                  BUS = XSVI_VIDEO_OUT, ISVALID = (C_VIDEO_INTERFACE == 2)
+PORT xsvi_hsync_o        = "hsync",        DIR = O,                                  BUS = XSVI_VIDEO_OUT, ISVALID = (C_VIDEO_INTERFACE == 2)
+PORT xsvi_vblank_o       = "vblank",       DIR = O,                                  BUS = XSVI_VIDEO_OUT, ISVALID = (C_VIDEO_INTERFACE == 2)
+PORT xsvi_hblank_o       = "hblank",       DIR = O,                                  BUS = XSVI_VIDEO_OUT, ISVALID = (C_VIDEO_INTERFACE == 2)
+PORT xsvi_active_video_o = "active_video", DIR = O,                                  BUS = XSVI_VIDEO_OUT, ISVALID = (C_VIDEO_INTERFACE == 2)
+PORT xsvi_video_data_o   = "video_data",   DIR = O, VEC = [(C_XSVI_DATA_WIDTH-1):0], BUS = XSVI_VIDEO_OUT, ISVALID = (C_VIDEO_INTERFACE == 2)
+
+## VDMA Read Port
+#PORT vdma_rcmd_clk       = "cmd_clk",      DIR = O,                                  BUS = XIL_RD_VDMA, ISVALID = (C_GEN_RD_VDMA == 1)
+PORT vdma_rd_clk         = "rd_clk",       DIR = O,                                  BUS = XIL_RD_VDMA, ISVALID = (C_GEN_RD_VDMA == 1)
+PORT vdma_rd_read        = "rd_read",      DIR = O,                                  BUS = XIL_RD_VDMA, ISVALID = (C_GEN_RD_VDMA == 1)
+PORT vdma_rd_data        = "rd_data",      DIR = I, VEC = [C_VDMA_DATA_WIDTH-1:0],   BUS = XIL_RD_VDMA, ISVALID = (C_GEN_RD_VDMA == 1)
+
+## Frame Sync Output Port
+PORT fsync_o = "", DIR = O, ISVALID = (C_GEN_FSYNC == 1)
+
+END

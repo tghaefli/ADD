@@ -1,0 +1,495 @@
+
+# ##############################################################################
+# Created by Base System Builder Wizard for Xilinx EDK 11.1 Build EDK_L.29.1
+# Tue Mar 24 18:44:04 2009
+# Target Board:  Xilinx Spartan-3A DSP 3400A Development Board Rev D
+# Family:    spartan3adsp
+# Device:    xc3sd3400a
+# Package:   fg676
+# Speed Grade:  -4
+# Processor number: 1
+# Processor 1: microblaze_0
+# System clock frequency: 62.5
+# Debug Interface: On-Chip HW Debug Module
+# ##############################################################################
+ PARAMETER VERSION = 2.1.0
+
+
+# Clocking
+ PORT fpga_0_clk_1_sys_clk_pin = dcm_clk_s, DIR = I, SIGIS = CLK, CLK_FREQ = 100000000
+ PORT fpga_0_rst_1_sys_rst_pin = sys_rst_s, DIR = I, SIGIS = RST, RST_POLARITY = 1
+# Push-Buttons
+# PORT fpga_0_Push_Buttons_Position_GPIO_IO_I_pin = fpga_0_Push_Buttons_Position_GPIO_IO_I_pin, DIR = I, VEC = [0:2]
+# DIP Switches
+# PORT fpga_0_DIP_Switches_4Bit_GPIO_IO_I_pin = fpga_0_DIP_Switches_4Bit_GPIO_IO_I_pin, DIR = I, VEC = [0:3]
+# RS232
+ PORT fpga_0_RS232_Uart_RX_pin = fpga_0_RS232_Uart_RX_pin, DIR = I
+ PORT fpga_0_RS232_Uart_TX_pin = fpga_0_RS232_Uart_TX_pin, DIR = O
+# DDR3
+ PORT MPMC_0_mcbx_dram_addr_pin = MPMC_0_mcbx_dram_addr, DIR = O, VEC = [12:0]
+ PORT MPMC_0_mcbx_dram_ba_pin = MPMC_0_mcbx_dram_ba, DIR = O, VEC = [2:0]
+ PORT MPMC_0_mcbx_dram_ras_n_pin = MPMC_0_mcbx_dram_ras_n, DIR = O
+ PORT MPMC_0_mcbx_dram_cas_n_pin = MPMC_0_mcbx_dram_cas_n, DIR = O
+ PORT MPMC_0_mcbx_dram_we_n_pin = MPMC_0_mcbx_dram_we_n, DIR = O
+ PORT MPMC_0_mcbx_dram_cke_pin = MPMC_0_mcbx_dram_cke, DIR = O
+ PORT MPMC_0_mcbx_dram_clk_pin = MPMC_0_mcbx_dram_clk, DIR = O, SIGIS = CLK
+ PORT MPMC_0_mcbx_dram_clk_n_pin = MPMC_0_mcbx_dram_clk_n, DIR = O, SIGIS = CLK
+ PORT MPMC_0_mcbx_dram_dq = MPMC_0_mcbx_dram_dq, DIR = IO, VEC = [15:0]
+ PORT MPMC_0_mcbx_dram_dqs = MPMC_0_mcbx_dram_dqs, DIR = IO
+ PORT MPMC_0_mcbx_dram_udqs = MPMC_0_mcbx_dram_udqs, DIR = IO
+ PORT MPMC_0_mcbx_dram_odt_pin = MPMC_0_mcbx_dram_odt, DIR = O
+ PORT MPMC_0_mcbx_dram_ldm_pin = MPMC_0_mcbx_dram_ldm, DIR = O
+ PORT MPMC_0_mcbx_dram_udm_pin = MPMC_0_mcbx_dram_udm, DIR = O
+ PORT MPMC_0_mcbx_dram_udqs_n = MPMC_0_mcbx_dram_udqs_n, DIR = IO
+ PORT MPMC_0_mcbx_dram_dqs_n = MPMC_0_mcbx_dram_dqs_n, DIR = IO
+ PORT MPMC_0_mcbx_dram_ddr3_rst = MPMC_0_mcbx_dram_ddr3_rst, DIR = O
+# FMC
+ PORT fmc_ipmi_i2c_scl = xps_iic_0_Scl, DIR = IO
+ PORT fmc_ipmi_i2c_sda = xps_iic_0_Sda, DIR = IO
+# FMC-IMAGEOV - I2C
+ PORT fmc_imageov_i2c_scl_pin = fmc_imageov_i2c_scl, DIR = O
+ PORT fmc_imageov_i2c_sda_pin = fmc_imageov_i2c_sda, DIR = IO
+ PORT fmc_imageov_i2c_rst_pin = fmc_imageov_i2c_rst, DIR = O
+# FMC-IMAGEOV - Video Clock Synthesizer
+ PORT fmc_imageov_video_clk_pin = fmc_imageov_video_clk, DIR = I, SIGIS = CLK, CLK_FREQ = 74250000
+# FMC-IMAGEOV - Camera 1
+ PORT fmc_imageov_cam1_pwdn_pin = fmc_imageov_cam1_pwdn, DIR = O
+ PORT fmc_imageov_cam1_rst_pin = fmc_imageov_cam1_rst, DIR = O
+ PORT fmc_imageov_cam1_clk_pin = vid_in_clk, DIR = I, SIGIS = CLK, CLK_FREQ = 40000000, BUFFER_TYPE = BUFGP
+ PORT fmc_imageov_cam1_frame_valid_pin = fmc_imageov_cam1_frame_valid, DIR = I
+ PORT fmc_imageov_cam1_line_valid_pin = fmc_imageov_cam1_line_valid, DIR = I
+ PORT fmc_imageov_cam1_data_pin = fmc_imageov_cam1_data, DIR = I, VEC = [9:0]
+# FMC-IMAGEOV - DVI output
+ PORT fmc_imageov_dvi_reset_n_pin = fmc_imageov_dvi_reset_n, DIR = O
+ PORT fmc_imageov_dvi_clk_pin = fmc_imageov_dvi_clk, DIR = O
+ PORT fmc_imageov_dvi_de_pin = fmc_imageov_dvi_de, DIR = O
+ PORT fmc_imageov_dvi_vsync_pin = fmc_imageov_dvi_vsync, DIR = O
+ PORT fmc_imageov_dvi_hsync_pin = fmc_imageov_dvi_hsync, DIR = O
+ PORT fmc_imageov_dvi_data_pin = fmc_imageov_dvi_data, DIR = O, VEC = [11:0]
+
+
+BEGIN microblaze
+ PARAMETER HW_VER = 7.30.b
+ PARAMETER INSTANCE = microblaze_0
+ PARAMETER C_INTERCONNECT = 1
+ PARAMETER C_DEBUG_ENABLED = 1
+ PARAMETER C_USE_BARREL = 1
+ PARAMETER C_USE_MSR_INSTR = 0
+ PARAMETER C_ALLOW_ICACHE_WR = 0
+ PARAMETER C_RESET_MSR = 0x000000A0
+ PARAMETER C_DPLB_BUS_EXCEPTION = 0
+ PARAMETER C_IPLB_BUS_EXCEPTION = 0
+ PARAMETER C_ILL_OPCODE_EXCEPTION = 0
+ PARAMETER C_UNALIGNED_EXCEPTIONS = 0
+ PARAMETER C_OPCODE_0x0_ILLEGAL = 0
+ PARAMETER C_USE_HW_MUL = 1
+ PARAMETER C_USE_ICACHE = 1
+ PARAMETER C_CACHE_BYTE_SIZE = 2048
+ PARAMETER C_ICACHE_BASEADDR = 0x10000000
+ PARAMETER C_ICACHE_HIGHADDR = 0x17ffffff
+ PARAMETER C_ICACHE_ALWAYS_USED = 1
+ PARAMETER C_USE_DCACHE = 1
+ PARAMETER C_DCACHE_BYTE_SIZE = 2048
+ PARAMETER C_DCACHE_BASEADDR = 0x10000000
+ PARAMETER C_DCACHE_HIGHADDR = 0x17ffffff
+ PARAMETER C_DCACHE_ALWAYS_USED = 1
+ BUS_INTERFACE DPLB = mb_plb
+ BUS_INTERFACE IPLB = mb_plb
+ BUS_INTERFACE DEBUG = microblaze_0_mdm_bus
+ BUS_INTERFACE IXCL = microblaze_0_IXCL
+ BUS_INTERFACE DXCL = microblaze_0_DXCL
+ BUS_INTERFACE DLMB = dlmb
+ BUS_INTERFACE ILMB = ilmb
+ PORT MB_RESET = mb_reset
+END
+
+BEGIN plb_v46
+ PARAMETER INSTANCE = mb_plb
+ PARAMETER HW_VER = 1.05.a
+ PORT PLB_Clk = plb_clk
+ PORT SYS_Rst = sys_bus_reset
+END
+
+BEGIN plb_v46
+ PARAMETER INSTANCE = slave_plb
+ PARAMETER HW_VER = 1.05.a
+ PORT PLB_Clk = plb_clk
+ PORT SYS_Rst = sys_bus_reset
+END
+
+BEGIN plbv46_plbv46_bridge
+ PARAMETER INSTANCE = plbv46_plbv46_bridge_0
+ PARAMETER HW_VER = 1.04.a
+ PARAMETER C_NUM_ADDR_RNG = 1
+ PARAMETER C_RNG1_BASEADDR = 0xc2000000
+ PARAMETER C_RNG1_HIGHADDR = 0xc203ffff
+ PARAMETER C_RNG2_BASEADDR = 0xc4a00000
+ PARAMETER C_RNG2_HIGHADDR = 0xc4a0ffff
+ PARAMETER C_BRIDGE_BASEADDR = 0x80060000
+ PARAMETER C_BRIDGE_HIGHADDR = 0x8006ffff
+ PARAMETER C_RNG0_BASEADDR = 0xc0000000
+ PARAMETER C_RNG0_HIGHADDR = 0xc003ffff
+ BUS_INTERFACE MPLB = slave_plb
+ BUS_INTERFACE SPLB = mb_plb
+END
+
+BEGIN lmb_v10
+ PARAMETER INSTANCE = ilmb
+ PARAMETER HW_VER = 1.00.a
+ PORT LMB_Clk = plb_clk
+ PORT SYS_Rst = sys_bus_reset
+END
+
+BEGIN lmb_v10
+ PARAMETER INSTANCE = dlmb
+ PARAMETER HW_VER = 1.00.a
+ PORT LMB_Clk = plb_clk
+ PORT SYS_Rst = sys_bus_reset
+END
+
+BEGIN lmb_bram_if_cntlr
+ PARAMETER INSTANCE = dlmb_cntlr
+ PARAMETER HW_VER = 2.10.b
+ PARAMETER C_BASEADDR = 0x00000000
+ PARAMETER C_HIGHADDR = 0x000007ff
+ BUS_INTERFACE SLMB = dlmb
+ BUS_INTERFACE BRAM_PORT = dlmb_port
+END
+
+BEGIN lmb_bram_if_cntlr
+ PARAMETER INSTANCE = ilmb_cntlr
+ PARAMETER HW_VER = 2.10.b
+ PARAMETER C_BASEADDR = 0x00000000
+ PARAMETER C_HIGHADDR = 0x000007ff
+ BUS_INTERFACE SLMB = ilmb
+ BUS_INTERFACE BRAM_PORT = ilmb_port
+END
+
+BEGIN bram_block
+ PARAMETER INSTANCE = lmb_bram
+ PARAMETER HW_VER = 1.00.a
+ BUS_INTERFACE PORTA = ilmb_port
+ BUS_INTERFACE PORTB = dlmb_port
+END
+
+BEGIN xps_uartlite
+ PARAMETER INSTANCE = RS232_Uart
+ PARAMETER C_BAUDRATE = 9600
+ PARAMETER C_DATA_BITS = 8
+ PARAMETER C_USE_PARITY = 0
+ PARAMETER C_ODD_PARITY = 0
+ PARAMETER HW_VER = 1.02.a
+ PARAMETER C_BASEADDR = 0x80010000
+ PARAMETER C_HIGHADDR = 0x8001ffff
+ BUS_INTERFACE SPLB = mb_plb
+ PORT RX = fpga_0_RS232_Uart_RX_pin
+ PORT TX = fpga_0_RS232_Uart_TX_pin
+END
+
+# BEGIN xps_gpio
+# PARAMETER INSTANCE = Push_Buttons_Position
+# PARAMETER C_FAMILY = spartan6
+# PARAMETER C_ALL_INPUTS = 1
+# PARAMETER C_GPIO_WIDTH = 3
+# PARAMETER C_INTERRUPT_PRESENT = 0
+# PARAMETER C_IS_DUAL = 0
+# PARAMETER HW_VER = 2.00.a
+# PARAMETER C_BASEADDR = 0x81420000
+# PARAMETER C_HIGHADDR = 0x8142ffff
+# BUS_INTERFACE SPLB = mb_plb
+# PORT GPIO_IO_I = fpga_0_Push_Buttons_Position_GPIO_IO_I_pin
+# END
+# BEGIN xps_gpio
+# PARAMETER INSTANCE = DIP_Switches_4Bit
+# PARAMETER C_FAMILY = spartan6
+# PARAMETER C_ALL_INPUTS = 1
+# PARAMETER C_GPIO_WIDTH = 4
+# PARAMETER C_INTERRUPT_PRESENT = 0
+# PARAMETER C_IS_DUAL = 0
+# PARAMETER HW_VER = 2.00.a
+# PARAMETER C_BASEADDR = 0x81440000
+# PARAMETER C_HIGHADDR = 0x8144ffff
+# BUS_INTERFACE SPLB = mb_plb
+# PORT GPIO_IO_I = fpga_0_DIP_Switches_4Bit_GPIO_IO_I_pin
+# END
+BEGIN mpmc
+ PARAMETER INSTANCE = MPMC_0
+ PARAMETER HW_VER = 6.05.a
+ PARAMETER C_NUM_PORTS = 4
+ PARAMETER C_MEM_PARTNO = MT41J64M16XX-187E
+ PARAMETER C_MEM_ODT_TYPE = 1
+ PARAMETER C_PORT_CONFIG = 1
+ PARAMETER C_MEM_DATA_WIDTH = 16
+ PARAMETER C_MEM_TYPE = DDR3
+# Begin for S6 V1.0 Silicon
+ PARAMETER C_MEM_CALIBRATION_BYPASS = YES
+ PARAMETER C_MCB_LDQSP_TAP_DELAY_VAL = 16
+ PARAMETER C_MCB_UDQSP_TAP_DELAY_VAL = 16
+ PARAMETER C_MCB_LDQSN_TAP_DELAY_VAL = 16
+ PARAMETER C_MCB_UDQSN_TAP_DELAY_VAL = 16
+# End for S6 V1.0 Silicon
+# PIM0 (Video Input)
+ PARAMETER C_PIM0_BASETYPE = 6
+ PARAMETER C_PIM0_DATA_WIDTH = 32
+ PARAMETER C_VFBC0_RDWD_DATA_WIDTH = 32
+ PARAMETER C_VFBC0_RDWD_FIFO_DEPTH = 2048
+# PIM1 (Video Output)
+ PARAMETER C_PIM1_BASETYPE = 6
+ PARAMETER C_PIM1_DATA_WIDTH = 32
+ PARAMETER C_VFBC1_RDWD_DATA_WIDTH = 32
+ PARAMETER C_VFBC1_RDWD_FIFO_DEPTH = 2048
+# PIM2 (PLB)
+ PARAMETER C_PIM2_BASETYPE = 2
+# PIM3 (XCL)
+ PARAMETER C_PIM3_BASETYPE = 1
+ PARAMETER C_XCL3_B_IN_USE = 1
+# DDR3 Parameters
+ PARAMETER C_MCB_LOC = MEMC4
+ PARAMETER C_MPMC_BASEADDR = 0x10000000
+ PARAMETER C_MPMC_HIGHADDR = 0x17ffffff
+ BUS_INTERFACE VFBC1 = vdma_1_XIL_VFBC
+ BUS_INTERFACE VFBC0 = vdma_0_XIL_VFBC
+ BUS_INTERFACE SPLB2 = mb_plb
+ BUS_INTERFACE XCL3 = microblaze_0_IXCL
+ BUS_INTERFACE XCL3_B = microblaze_0_DXCL
+ PORT MPMC_Rst = sys_bus_reset
+ PORT MPMC_InitDone = ddr_rdy
+ PORT MPMC_PLL_Lock = Dcm_all_locked
+ PORT MPMC_Clk0 = mpmc_clk0
+ PORT MPMC_Clk_Mem_2x = pll_module_0_CLKOUT0
+ PORT MPMC_Clk_Mem_2x_180 = pll_module_0_CLKOUT1
+ PORT mcbx_dram_addr = MPMC_0_mcbx_dram_addr
+ PORT mcbx_dram_ba = MPMC_0_mcbx_dram_ba
+ PORT mcbx_dram_ras_n = MPMC_0_mcbx_dram_ras_n
+ PORT mcbx_dram_cas_n = MPMC_0_mcbx_dram_cas_n
+ PORT mcbx_dram_we_n = MPMC_0_mcbx_dram_we_n
+ PORT mcbx_dram_cke = MPMC_0_mcbx_dram_cke
+ PORT mcbx_dram_clk = MPMC_0_mcbx_dram_clk
+ PORT mcbx_dram_clk_n = MPMC_0_mcbx_dram_clk_n
+ PORT mcbx_dram_dq = MPMC_0_mcbx_dram_dq
+ PORT mcbx_dram_dqs = MPMC_0_mcbx_dram_dqs
+ PORT mcbx_dram_udqs = MPMC_0_mcbx_dram_udqs
+ PORT mcbx_dram_odt = MPMC_0_mcbx_dram_odt
+ PORT mcbx_dram_ldm = MPMC_0_mcbx_dram_ldm
+ PORT mcbx_dram_udm = MPMC_0_mcbx_dram_udm
+ PORT mcbx_dram_ddr3_rst = MPMC_0_mcbx_dram_ddr3_rst
+ PORT mcbx_dram_udqs_n = MPMC_0_mcbx_dram_udqs_n
+ PORT mcbx_dram_dqs_n = MPMC_0_mcbx_dram_dqs_n
+ PORT calib_recal = net_gnd
+ PORT selfrefresh_enter = net_gnd
+END
+
+BEGIN clock_generator
+ PARAMETER INSTANCE = clock_generator_0
+ PARAMETER HW_VER = 4.03.a
+ PARAMETER C_CLKIN_FREQ = 100000000
+ PARAMETER C_CLKOUT0_FREQ = 666666666
+ PARAMETER C_CLKOUT0_GROUP = PLL0
+ PARAMETER C_CLKOUT0_BUF = FALSE
+ PARAMETER C_CLKOUT1_FREQ = 666666666
+ PARAMETER C_CLKOUT1_PHASE = 180
+ PARAMETER C_CLKOUT1_GROUP = PLL0
+ PARAMETER C_CLKOUT1_BUF = FALSE
+# PARAMETER C_CLKOUT2_FREQ = 62500000
+ PARAMETER C_CLKOUT2_FREQ = 50000000
+ PARAMETER C_CLKOUT2_GROUP = PLL1
+# PARAMETER C_CLKOUT3_FREQ = 125000000
+ PARAMETER C_CLKOUT3_FREQ = 100000000
+ PARAMETER C_CLKOUT3_GROUP = PLL1
+ PARAMETER C_FAMILY = spartan6
+ PORT CLKIN = dcm_clk_s
+ PORT CLKOUT0 = pll_module_0_CLKOUT0
+ PORT CLKOUT1 = pll_module_0_CLKOUT1
+ PORT CLKOUT2 = plb_clk
+ PORT CLKOUT3 = mpmc_clk0
+ PORT RST = sys_rst_s
+ PORT LOCKED = Dcm_all_locked
+END
+
+BEGIN clock_generator
+ PARAMETER INSTANCE = clock_generator_1
+ PARAMETER HW_VER = 4.03.a
+ PARAMETER C_EXT_RESET_HIGH = 1
+ PARAMETER C_CLKIN_FREQ = 74250000
+ PARAMETER C_CLKOUT0_FREQ = 74250000
+ PARAMETER C_CLKOUT0_PHASE = 0
+ PARAMETER C_CLKOUT0_BUF = TRUE
+ PORT CLKIN = fmc_imageov_video_clk
+ PORT CLKOUT0 = display_clk
+# PORT LOCKED = dvi_clock_locked
+ PORT RST = dcm_0_rst
+END
+
+BEGIN mdm
+ PARAMETER INSTANCE = mdm_0
+ PARAMETER C_MB_DBG_PORTS = 1
+ PARAMETER C_USE_UART = 1
+ PARAMETER C_UART_WIDTH = 8
+ PARAMETER HW_VER = 1.00.g
+ PARAMETER C_BASEADDR = 0x80020000
+ PARAMETER C_HIGHADDR = 0x8002ffff
+ BUS_INTERFACE SPLB = mb_plb
+ BUS_INTERFACE MBDEBUG_0 = microblaze_0_mdm_bus
+ PORT Debug_SYS_Rst = Debug_SYS_Rst
+END
+
+BEGIN proc_sys_reset
+ PARAMETER INSTANCE = proc_sys_reset_0
+ PARAMETER C_EXT_RESET_HIGH = 1
+ PARAMETER HW_VER = 2.00.a
+ PORT Slowest_sync_clk = plb_clk
+ PORT Ext_Reset_In = sys_rst_s
+ PORT MB_Debug_Sys_Rst = Debug_SYS_Rst
+ PORT Dcm_locked = Dcm_all_locked
+ PORT MB_Reset = mb_reset
+ PORT Bus_Struct_Reset = sys_bus_reset
+ PORT Peripheral_Reset = sys_periph_reset
+END
+
+BEGIN xps_iic
+ PARAMETER INSTANCE = xps_iic_0
+ PARAMETER HW_VER = 2.03.a
+ PARAMETER C_GPO_WIDTH = 3
+ PARAMETER C_BASEADDR = 0x80000000
+ PARAMETER C_HIGHADDR = 0x8000ffff
+ BUS_INTERFACE SPLB = mb_plb
+ PORT Scl = xps_iic_0_Scl
+ PORT Sda = xps_iic_0_Sda
+ PORT Gpo = dcm_0_rst & 0b0 & fmc1_enable
+END
+
+BEGIN sg_i2c_controller_s6_plbw
+ PARAMETER INSTANCE = sg_i2c_controller_plbw_0
+ PARAMETER HW_VER = 1.01.a
+ PARAMETER C_BASEADDR = 0x80030000
+ PARAMETER C_HIGHADDR = 0x8003ffff
+ BUS_INTERFACE SPLB = mb_plb
+ PORT i2c_scl = fmc_imageov_i2c_scl
+ PORT i2c_sda = fmc_imageov_i2c_sda
+ PORT gpio_out8_o = 0b0 & fmc_imageov_dvi_rst & fmc_imageov_i2c_rst & 0b0 & 0b0 & fmc_imageov_cam1_rst & 0b0 & fmc_imageov_cam1_pwdn
+ PORT sysgen_clk = plb_clk
+ PORT splb_rst = net_gnd
+END
+
+BEGIN vdma
+ PARAMETER INSTANCE = vdma_0
+ PARAMETER HW_VER = 1.00.a
+ PARAMETER C_MPMC_BASEADDR = 0x10000000
+ PARAMETER C_MPMC_HIGHADDR = 0x17ffffff
+ PARAMETER C_USE_FSYNC = 1
+ PARAMETER C_GEN_RESET = 1
+ PARAMETER C_BASEADDR = 0x80040000
+ PARAMETER C_HIGHADDR = 0x8004ffff
+ BUS_INTERFACE SPLB = mb_plb
+ BUS_INTERFACE XIL_VFBC = vdma_0_XIL_VFBC
+ BUS_INTERFACE XIL_WD_MGENLOCK = vdma_0_XIL_WD_MGENLOCK
+ BUS_INTERFACE XIL_WD_VDMA = ivk_video_det_0_XIL_WD_VDMA
+ PORT fsync = ivk_video_det_0_fsync
+END
+
+BEGIN vdma
+ PARAMETER INSTANCE = vdma_1
+ PARAMETER HW_VER = 1.00.a
+ PARAMETER C_MPMC_BASEADDR = 0x10000000
+ PARAMETER C_MPMC_HIGHADDR = 0x17ffffff
+ PARAMETER C_USE_FSYNC = 1
+ PARAMETER C_DMA_TYPE = 1
+ PARAMETER C_BASEADDR = 0x80050000
+ PARAMETER C_HIGHADDR = 0x8005ffff
+ BUS_INTERFACE SPLB = mb_plb
+ BUS_INTERFACE XIL_VFBC = vdma_1_XIL_VFBC
+ BUS_INTERFACE XIL_RD_SGENLOCK1 = vdma_0_XIL_WD_MGENLOCK
+ BUS_INTERFACE XIL_RD_VDMA = ivk_video_gen_0_XIL_RD_VDMA
+ PORT fsync = ivk_video_gen_0_fsync
+END
+
+BEGIN ivk_video_gen
+ PARAMETER INSTANCE = ivk_video_gen_0
+ PARAMETER HW_VER = 2.01.a
+ PARAMETER C_GEN_FSYNC = 1
+ PARAMETER C_GEN_RD_VDMA = 1
+ PARAMETER C_VIDEO_INTERFACE = 2
+ PARAMETER C_XSVI_DATA_WIDTH = 24
+ PARAMETER C_VDMA_DATA_WIDTH = 32
+ PARAMETER C_BASEADDR = 0xc0010000
+ PARAMETER C_HIGHADDR = 0xc001ffff
+ BUS_INTERFACE SPLB = slave_plb
+ BUS_INTERFACE XIL_RD_VDMA = ivk_video_gen_0_XIL_RD_VDMA
+ BUS_INTERFACE XSVI_VIDEO_OUT = ivk_video_gen_0_XSVI_VIDEO_OUT
+ PORT fsync_o = ivk_video_gen_0_fsync
+ PORT clk = display_clk
+ PORT reset = net_gnd
+END
+
+BEGIN ivk_video_det
+ PARAMETER INSTANCE = ivk_video_det_0
+ PARAMETER HW_VER = 2.01.a
+ PARAMETER C_XSVII_DATA_WIDTH = 24
+ PARAMETER C_XSVIO_DATA_WIDTH = 32
+ PARAMETER C_VDMA_DATA_WIDTH = 32
+ PARAMETER C_GEN_XSVI_OUT = 0
+ PARAMETER C_GEN_WD_VDMA = 1
+ PARAMETER C_GEN_FSYNC = 1
+ PARAMETER C_BASEADDR = 0xc0000000
+ PARAMETER C_HIGHADDR = 0xc000ffff
+ BUS_INTERFACE SPLB = slave_plb
+ BUS_INTERFACE XIL_WD_VDMA = ivk_video_det_0_XIL_WD_VDMA
+ BUS_INTERFACE XSVI_VIDEO_IN = sg_cfa_gamma_plbw_0_XSVI_VIDEO_OUT
+ PORT clk = vid_in_clk
+ PORT reset = sys_bus_reset
+ PORT fsync_o = ivk_video_det_0_fsync
+END
+
+BEGIN fmc_imageov_camera_in
+ PARAMETER INSTANCE = fmc_imageov_camera_in_0
+ PARAMETER HW_VER = 1.02.a
+ PARAMETER C_VIDEO_INTERFACE = 2
+ PARAMETER C_DATA_WIDTH = 8
+ BUS_INTERFACE XSVI_VIDEO_OUT = fmc_imageov_camera_in_0_XSVI_VIDEO_OUT
+ PORT ce = net_vcc
+ PORT clk = vid_in_clk
+ PORT io_frame_valid_i = fmc_imageov_cam1_frame_valid
+ PORT io_line_valid_i = fmc_imageov_cam1_line_valid
+ PORT io_data_i = fmc_imageov_cam1_data
+END
+
+BEGIN fmc_imageov_dvi_out
+ PARAMETER INSTANCE = fmc_imageov_dvi_out_0
+ PARAMETER HW_VER = 1.02.d
+ PARAMETER C_VIDEO_INTERFACE = 2
+ PARAMETER C_DATA_WIDTH = 24
+ BUS_INTERFACE XSVI_VIDEO_IN = sg_2d_fir_plbw_0_XSVI_VIDEO_OUT
+ PORT io_dvi_clk = fmc_imageov_dvi_clk
+ PORT io_dvi_de = fmc_imageov_dvi_de
+ PORT io_dvi_vsync = fmc_imageov_dvi_vsync
+ PORT io_dvi_hsync = fmc_imageov_dvi_hsync
+ PORT io_dvi_data = fmc_imageov_dvi_data
+ PORT io_dvi_reset_n = fmc_imageov_dvi_reset_n
+ PORT clk = display_clk
+ PORT reset = fmc_imageov_dvi_rst
+ PORT ce = net_vcc
+ PORT oe = fmc1_enable
+END
+
+BEGIN sg_2d_fir_plbw
+ PARAMETER INSTANCE = sg_2d_fir_plbw_0
+ PARAMETER HW_VER = 1.01.a
+ PARAMETER C_BASEADDR = 0xc0030000
+ PARAMETER C_HIGHADDR = 0xc003ffff
+ BUS_INTERFACE SPLB = slave_plb
+ BUS_INTERFACE XSVI_VIDEO_OUT = sg_2d_fir_plbw_0_XSVI_VIDEO_OUT
+ BUS_INTERFACE XSVI_VIDEO_IN = ivk_video_gen_0_XSVI_VIDEO_OUT
+ PORT sysgen_clk = display_clk
+END
+
+BEGIN sg_cfa_gamma_plbw
+ PARAMETER INSTANCE = sg_cfa_gamma_plbw_0
+ PARAMETER HW_VER = 1.00.a
+ PARAMETER C_BASEADDR = 0xc0020000
+ PARAMETER C_HIGHADDR = 0xc002ffff
+ BUS_INTERFACE SPLB = slave_plb
+ BUS_INTERFACE XSVI_VIDEO_IN = fmc_imageov_camera_in_0_XSVI_VIDEO_OUT
+ BUS_INTERFACE XSVI_VIDEO_OUT = sg_cfa_gamma_plbw_0_XSVI_VIDEO_OUT
+ PORT sysgen_clk = vid_in_clk
+END
+

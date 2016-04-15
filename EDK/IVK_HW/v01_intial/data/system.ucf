@@ -1,0 +1,153 @@
+##############################################################################
+# Clock & Reset Input
+##############################################################################
+
+## Clock constraints
+NET  fpga_0_clk_1_sys_clk_pin  LOC = U23  | IOSTANDARD = LVCMOS25;
+
+Net fpga_0_clk_1_sys_clk_pin TNM_NET = ref_clk;
+TIMESPEC TS_ref_clk = PERIOD ref_clk 10000 ps;
+
+
+## Reset constraints
+Net fpga_0_rst_1_sys_rst_pin TIG;
+Net fpga_0_rst_1_sys_rst_pin LOC= M19 | IOSTANDARD = LVCMOS15;
+
+
+###########################################
+#  Video Clock
+###########################################
+
+Net fmc_imageov_cam1_clk_pin TNM_NET = vid_in_clk;
+TIMESPEC TS_vid_in_clk = PERIOD vid_in_clk 25 ns; # 40 MHz (HD 720p30)
+
+Net fmc_imageov_video_clk_pin TNM_NET = vid_out_clk;
+TIMESPEC TS_vid_out_clk = PERIOD vid_out_clk 13.5 ns; # 74.25 MHz (HD 720p60)
+
+###########################################
+# FMC
+###########################################
+NET fmc_ipmi_i2c_scl        LOC = AB3 | SLEW = SLOW | TIG | IOSTANDARD = LVCMOS33;
+NET fmc_ipmi_i2c_sda        LOC = AB1 | SLEW = SLOW | TIG | IOSTANDARD = LVCMOS33;
+
+###########################################
+# FMC-IMAGEOV - I2C
+###########################################
+Net fmc_imageov_i2c_scl_pin LOC = A2  | SLEW = SLOW | TIG | IOSTANDARD = LVCMOS25 | PULLUP; # FMC1 - H38 (LA32_N)
+Net fmc_imageov_i2c_sda_pin LOC = A3  | SLEW = SLOW | TIG | IOSTANDARD = LVCMOS25 | PULLUP; # FMC1 - H37 (LA32_P)
+Net fmc_imageov_i2c_rst_pin LOC = A23 | SLEW = SLOW | TIG | IOSTANDARD = LVCMOS25; # FMC1 - G16 (LA12_N)
+
+###########################################
+# FMC-IMAGEOV - Video Clock Synthesizer
+###########################################
+Net fmc_imageov_video_clk_pin LOC = D13; # FMC1 - G3 (CLK1_M2C_N)
+#Net fmc_imageov_video_clk_pin LOC = B14; # FMC1 - G6 (LA00_P_CC)
+
+Net fmc_imageov_video_clk_pin TNM_NET = display_clk;
+TIMESPEC TS_display_clk = PERIOD display_clk 13333 ps; # 75 MHz (720P60)
+#TIMESPEC TS_display_clk = PERIOD display_clk 6667 ps; # 150 MHz
+#TIMESPEC TS_display_clk = PERIOD display_clk 6.0 ns; # 162 MHz
+
+###########################################
+# FMC-IMAGEOV - CAM1
+###########################################
+#Net fmc_imageov_cam1_clk_pin         LOC = C13; # FMC1 - H4  (CLK0_M2C_P)
+#Net fmc_imageov_cam1_pwdn_pin        LOC = H13; # FMC1 - C23 (LA18_N_CC)
+#Net fmc_imageov_cam1_rst_pin         LOC = J15; # FMC1 - D8  (LA01_P_CC)
+#Net fmc_imageov_cam1_frame_valid_pin LOC = H17; # FMC1 - C10 (LA06_P)
+#Net fmc_imageov_cam1_line_valid_pin  LOC = G17; # FMC1 - C11 (LA06_N)
+#Net fmc_imageov_cam1_data_pin[0]     LOC = E16; # FMC1 - D15 (LA09_N)
+#Net fmc_imageov_cam1_data_pin[1]     LOC = F16; # FMC1 - D14 (LA09_P)
+#Net fmc_imageov_cam1_data_pin[2]     LOC = D22; # FMC1 - C15 (LA10_N)
+#Net fmc_imageov_cam1_data_pin[3]     LOC = D21; # FMC1 - C14 (LA10_P)
+#Net fmc_imageov_cam1_data_pin[4]     LOC = E18; # FMC1 - H14 (LA07_N)
+#Net fmc_imageov_cam1_data_pin[5]     LOC = F18; # FMC1 - H13 (LA07_P)
+#Net fmc_imageov_cam1_data_pin[6]     LOC = F17; # FMC1 - G13 (LA08_N)
+#Net fmc_imageov_cam1_data_pin[7]     LOC = G16; # FMC1 - G12 (LA08_P)
+#Net fmc_imageov_cam1_data_pin[8]     LOC = E20; # FMC1 - D12 (LA05_N)
+#Net fmc_imageov_cam1_data_pin[9]     LOC = F20; # FMC1 - D11 (LA05_P)
+
+###########################################
+# FMC-IMAGEOV - CAM2
+###########################################
+Net fmc_imageov_cam1_clk_pin         LOC = E13; # FMC1 - G2  (CLK1_M2C_P)
+Net fmc_imageov_cam1_pwdn_pin        LOC = F14; # FMC1 - C18 (LA14_P)
+Net fmc_imageov_cam1_rst_pin         LOC = B23; # FMC1 - G15 (LA12_P)
+Net fmc_imageov_cam1_frame_valid_pin LOC = B12; # FMC1 - D20 (LA17_P_CC)
+Net fmc_imageov_cam1_line_valid_pin  LOC = A12; # FMC1 - D21 (LA17_N_CC)
+Net fmc_imageov_cam1_data_pin[0]     LOC = G8 ; # FMC1 - H26 (LA21_N)
+Net fmc_imageov_cam1_data_pin[1]     LOC = H8 ; # FMC1 - H25 (LA21_P)
+Net fmc_imageov_cam1_data_pin[2]     LOC = G9 ; # FMC1 - G25 (LA22_N)
+Net fmc_imageov_cam1_data_pin[3]     LOC = H9 ; # FMC1 - G24 (LA22_P)
+Net fmc_imageov_cam1_data_pin[4]     LOC = G10; # FMC1 - H23 (LA19_N)
+Net fmc_imageov_cam1_data_pin[5]     LOC = H10; # FMC1 - H22 (LA19_P)
+Net fmc_imageov_cam1_data_pin[6]     LOC = E12; # FMC1 - G22 (LA20_N)
+Net fmc_imageov_cam1_data_pin[7]     LOC = F12; # FMC1 - G21 (LA20_P)
+Net fmc_imageov_cam1_data_pin[8]     LOC = G13; # FMC1 - H20 (LA15_N)
+Net fmc_imageov_cam1_data_pin[9]     LOC = H12; # FMC1 - H19 (LA15_P)
+
+###########################################
+# FMC-IMAGEOV - DVI
+###########################################
+Net fmc_imageov_dvi_clk_pin          LOC = J13; # FMC1 - C22 (LA18_P_CC)
+Net fmc_imageov_dvi_reset_n_pin      LOC = A5 ; # FMC1 - G34 (LA31_N)
+Net fmc_imageov_dvi_de_pin           LOC = B5 ; # FMC1 - G33 (LA31_P)
+Net fmc_imageov_dvi_vsync_pin        LOC = C5 ; # FMC1 - H32 (LA28_N)
+Net fmc_imageov_dvi_hsync_pin        LOC = D5 ; # FMC1 - H31 (LA28_P)
+Net fmc_imageov_dvi_data_pin[0]      LOC = F5 ; # FMC1 - G31 (LA29_N)
+Net fmc_imageov_dvi_data_pin[1]      LOC = G6 ; # FMC1 - G30 (LA29_P)
+Net fmc_imageov_dvi_data_pin[2]      LOC = F6 ; # FMC1 - H29 (LA24_N)
+Net fmc_imageov_dvi_data_pin[3]      LOC = F7 ; # FMC1 - H28 (LA24_P)
+Net fmc_imageov_dvi_data_pin[4]      LOC = E8 ; # FMC1 - G28 (LA25_N)
+Net fmc_imageov_dvi_data_pin[5]      LOC = F9 ; # FMC1 - G27 (LA25_P)
+Net fmc_imageov_dvi_data_pin[6]      LOC = E10; # FMC1 - D27 (LA26_N)
+Net fmc_imageov_dvi_data_pin[7]      LOC = F10; # FMC1 - D26 (LA26_P)
+Net fmc_imageov_dvi_data_pin[8]      LOC = F11; # FMC1 - C27 (LA27_N)
+Net fmc_imageov_dvi_data_pin[9]      LOC = G12; # FMC1 - C26 (LA27_P)
+Net fmc_imageov_dvi_data_pin[10]     LOC = G11; # FMC1 - D24 (LA23_N)
+Net fmc_imageov_dvi_data_pin[11]     LOC = J11; # FMC1 - D23 (LA23_P)
+
+###########################################
+# LEDs
+###########################################
+#Net fpga_0_LEDs_8Bit_GPIO_IO_pin<0> LOC=M18    |  IOSTANDARD = LVCMOS15;
+#Net fpga_0_LEDs_8Bit_GPIO_IO_pin<1> LOC=L19    |  IOSTANDARD = LVCMOS15;
+#Net fpga_0_LEDs_8Bit_GPIO_IO_pin<2> LOC=M21    |  IOSTANDARD = LVCMOS15;
+#Net fpga_0_LEDs_8Bit_GPIO_IO_pin<3> LOC=F22    |  IOSTANDARD = LVCMOS15;
+#Net fpga_0_LEDs_8Bit_GPIO_IO_pin<4> LOC=H22    |  IOSTANDARD = LVCMOS15;
+#Net fpga_0_LEDs_8Bit_GPIO_IO_pin<5> LOC=C25    |  IOSTANDARD = LVCMOS15;
+#Net fpga_0_LEDs_8Bit_GPIO_IO_pin<6> LOC=C26    |  IOSTANDARD = LVCMOS15;
+#Net fpga_0_LEDs_8Bit_GPIO_IO_pin<7> LOC=F23    |  IOSTANDARD = LVCMOS15;
+
+###########################################
+# Module Push_Buttons_3Bit constraints
+###########################################
+#Net fpga_0_Push_Buttons_Position_GPIO_IO_I_pin<0> LOC=  | IOSTANDARD = LVCMOS25;
+#Net fpga_0_Push_Buttons_Position_GPIO_IO_I_pin<1> LOC=   | IOSTANDARD = LVCMOS33;
+#Net fpga_0_Push_Buttons_Position_GPIO_IO_I_pin<2> LOC=   | IOSTANDARD = LVCMOS33;
+
+###########################################
+# Module DIP_Switches_4Bit constraints
+###########################################
+#Net fpga_0_DIP_Switches_4Bit_GPIO_IO_I_pin<0> LOC=  | IOSTANDARD = LVCMOS25;
+#Net fpga_0_DIP_Switches_4Bit_GPIO_IO_I_pin<1> LOC=  | IOSTANDARD = LVCMOS25;
+#Net fpga_0_DIP_Switches_4Bit_GPIO_IO_I_pin<2> LOC=  | IOSTANDARD = LVCMOS25;
+#Net fpga_0_DIP_Switches_4Bit_GPIO_IO_I_pin<3> LOC=  | IOSTANDARD = LVCMOS25;
+
+###########################################
+# UART Constraints
+###########################################
+# USB-RS232 bridge
+Net fpga_0_RS232_Uart_RX_pin LOC=AE2 | IOSTANDARD = LVCMOS33;
+Net fpga_0_RS232_Uart_TX_pin LOC=AE1 | IOSTANDARD = LVCMOS33;
+# P3 (DB9) RS232 connector
+#Net fpga_0_RS232_Uart_RX_pin LOC=AC2 | IOSTANDARD = LVCMOS33;
+#Net fpga_0_RS232_Uart_TX_pin LOC=AC1 | IOSTANDARD = LVCMOS33;
+
+###########################################
+### MCB parameters
+###########################################
+NET MPMC_0_mcbx_dram_dqs         IN_TERM=UNTUNED_SPLIT_75;
+NET MPMC_0_mcbx_dram_udqs        IN_TERM=UNTUNED_SPLIT_75;
+NET MPMC_0_mcbx_dram_udqs_n      IN_TERM=UNTUNED_SPLIT_75;
+NET MPMC_0_mcbx_dram_dqs_n       IN_TERM=UNTUNED_SPLIT_75;

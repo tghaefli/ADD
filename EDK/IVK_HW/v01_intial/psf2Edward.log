@@ -1,0 +1,279 @@
+WARNING:EDK:4088 - IPNAME: microblaze, INSTANCE: microblaze_0 - Superseded core
+   for architecture 'spartan6t' -
+   C:\__waj_\_work_\RT_lab\EDK\IVK_HW\v01_intial\system.mhs line 71 
+WARNING:EDK:4088 - IPNAME: lmb_v10, INSTANCE: ilmb - Superseded core for
+   architecture 'spartan6t' -
+   C:\__waj_\_work_\RT_lab\EDK\IVK_HW\v01_intial\system.mhs line 136 
+WARNING:EDK:4088 - IPNAME: lmb_v10, INSTANCE: dlmb - Superseded core for
+   architecture 'spartan6t' -
+   C:\__waj_\_work_\RT_lab\EDK\IVK_HW\v01_intial\system.mhs line 143 
+WARNING:EDK:4088 - IPNAME: lmb_bram_if_cntlr, INSTANCE: dlmb_cntlr - Superseded
+   core for architecture 'spartan6t' -
+   C:\__waj_\_work_\RT_lab\EDK\IVK_HW\v01_intial\system.mhs line 150 
+WARNING:EDK:4088 - IPNAME: lmb_bram_if_cntlr, INSTANCE: ilmb_cntlr - Superseded
+   core for architecture 'spartan6t' -
+   C:\__waj_\_work_\RT_lab\EDK\IVK_HW\v01_intial\system.mhs line 159 
+WARNING:EDK:4088 - IPNAME: mdm, INSTANCE: mdm_0 - Superseded core for
+   architecture 'spartan6t' -
+   C:\__waj_\_work_\RT_lab\EDK\IVK_HW\v01_intial\system.mhs line 323 
+WARNING:EDK:4088 - IPNAME: proc_sys_reset, INSTANCE: proc_sys_reset_0 -
+   Superseded core for architecture 'spartan6t' -
+   C:\__waj_\_work_\RT_lab\EDK\IVK_HW\v01_intial\system.mhs line 336 
+WARNING:EDK:4088 - IPNAME: microblaze, INSTANCE: microblaze_0 - Superseded core
+   for architecture 'spartan6t' -
+   C:\__waj_\_work_\RT_lab\EDK\IVK_HW\v01_intial\system.mhs line 71 
+WARNING:EDK:4088 - IPNAME: lmb_v10, INSTANCE: ilmb - Superseded core for
+   architecture 'spartan6t' -
+   C:\__waj_\_work_\RT_lab\EDK\IVK_HW\v01_intial\system.mhs line 136 
+WARNING:EDK:4088 - IPNAME: lmb_v10, INSTANCE: dlmb - Superseded core for
+   architecture 'spartan6t' -
+   C:\__waj_\_work_\RT_lab\EDK\IVK_HW\v01_intial\system.mhs line 143 
+WARNING:EDK:4088 - IPNAME: lmb_bram_if_cntlr, INSTANCE: dlmb_cntlr - Superseded
+   core for architecture 'spartan6t' -
+   C:\__waj_\_work_\RT_lab\EDK\IVK_HW\v01_intial\system.mhs line 150 
+WARNING:EDK:4088 - IPNAME: lmb_bram_if_cntlr, INSTANCE: ilmb_cntlr - Superseded
+   core for architecture 'spartan6t' -
+   C:\__waj_\_work_\RT_lab\EDK\IVK_HW\v01_intial\system.mhs line 159 
+WARNING:EDK:4088 - IPNAME: mdm, INSTANCE: mdm_0 - Superseded core for
+   architecture 'spartan6t' -
+   C:\__waj_\_work_\RT_lab\EDK\IVK_HW\v01_intial\system.mhs line 323 
+WARNING:EDK:4088 - IPNAME: proc_sys_reset, INSTANCE: proc_sys_reset_0 -
+   Superseded core for architecture 'spartan6t' -
+   C:\__waj_\_work_\RT_lab\EDK\IVK_HW\v01_intial\system.mhs line 336 
+WARNING:EDK:3967 - plbv46_plbv46_bridge (plbv46_plbv46_bridge_0) - ADDRESS
+   specified by PARAMETER C_RNG1_BASEADDR is ignored -
+   C:\__waj_\_work_\RT_lab\EDK\IVK_HW\v01_intial\system.mhs line 120 
+WARNING:EDK:3967 - plbv46_plbv46_bridge (plbv46_plbv46_bridge_0) - ADDRESS
+   specified by PARAMETER C_RNG2_BASEADDR is ignored -
+   C:\__waj_\_work_\RT_lab\EDK\IVK_HW\v01_intial\system.mhs line 120 
+WARNING:EDK:4123 - IPNAME: microblaze, INSTANCE: microblaze_0, PARAMETER:
+   C_INTERCONNECT - ASSIGNMENT=CONSTANT is defined in the MPD. Its value should
+   not be overwritten in the MHS. 
+
+Checking platform configuration ...
+IPNAME: plb_v46, INSTANCE: mb_plb - 2 master(s) : 8 slave(s) 
+IPNAME: plb_v46, INSTANCE: slave_plb - 1 master(s) : 4 slave(s) 
+IPNAME: lmb_v10, INSTANCE: ilmb - 1 master(s) : 1 slave(s) 
+IPNAME: lmb_v10, INSTANCE: dlmb - 1 master(s) : 1 slave(s) 
+
+Checking port drivers...
+WARNING:EDK:4180 - PORT: IWAIT, CONNECTOR: ilmb_LMB_Wait - No driver found. Port
+   will be driven to GND -
+   C:\Program_Waj\Xilinx_13.1\ISE_DS\EDK\hw\XilinxProcessorIPLib\pcores\microbla
+   ze_v7_30_b\data\microblaze_v2_1_0.mpd line 241 
+WARNING:EDK:4180 - PORT: DWAIT, CONNECTOR: dlmb_LMB_Wait - No driver found. Port
+   will be driven to GND -
+   C:\Program_Waj\Xilinx_13.1\ISE_DS\EDK\hw\XilinxProcessorIPLib\pcores\microbla
+   ze_v7_30_b\data\microblaze_v2_1_0.mpd line 277 
+WARNING:EDK:4180 - PORT: bscan_tdo1, CONNECTOR: bscan_tdo1 - No driver found.
+   Port will be driven to GND -
+   C:\Program_Waj\Xilinx_13.1\ISE_DS\EDK\hw\XilinxProcessorIPLib\pcores\mdm_v1_0
+   0_g\data\mdm_v2_1_0.mpd line 236 
+WARNING:EDK:4180 - PORT: vdma_wcmd_clk, CONNECTOR:
+   ivk_video_det_0_XIL_WD_VDMA_cmd_clk - No driver found. Port will be driven to
+   GND -
+   C:\__waj_\_work_\RT_lab\EDK\IVK_Repos\IVK_IPLib\pcores\sg_i2c_controller_s6_p
+   lbw_v1_01_a\..\..\..\IVK_IPLib\pcores\vdma_v1_00_a\data\vdma_v2_1_0.mpd line
+   205 
+WARNING:EDK:4180 - PORT: vdma_wcmd_reset, CONNECTOR:
+   ivk_video_det_0_XIL_WD_VDMA_cmd_reset - No driver found. Port will be driven
+   to GND -
+   C:\__waj_\_work_\RT_lab\EDK\IVK_Repos\IVK_IPLib\pcores\sg_i2c_controller_s6_p
+   lbw_v1_01_a\..\..\..\IVK_IPLib\pcores\vdma_v1_00_a\data\vdma_v2_1_0.mpd line
+   206 
+WARNING:EDK:4180 - PORT: vdma_wcmd_data, CONNECTOR:
+   ivk_video_det_0_XIL_WD_VDMA_cmd_data - No driver found. Port will be driven
+   to GND -
+   C:\__waj_\_work_\RT_lab\EDK\IVK_Repos\IVK_IPLib\pcores\sg_i2c_controller_s6_p
+   lbw_v1_01_a\..\..\..\IVK_IPLib\pcores\vdma_v1_00_a\data\vdma_v2_1_0.mpd line
+   207 
+WARNING:EDK:4180 - PORT: vdma_wcmd_write, CONNECTOR:
+   ivk_video_det_0_XIL_WD_VDMA_cmd_write - No driver found. Port will be driven
+   to GND -
+   C:\__waj_\_work_\RT_lab\EDK\IVK_Repos\IVK_IPLib\pcores\sg_i2c_controller_s6_p
+   lbw_v1_01_a\..\..\..\IVK_IPLib\pcores\vdma_v1_00_a\data\vdma_v2_1_0.mpd line
+   208 
+WARNING:EDK:4180 - PORT: vdma_wcmd_end, CONNECTOR:
+   ivk_video_det_0_XIL_WD_VDMA_cmd_end - No driver found. Port will be driven to
+   GND -
+   C:\__waj_\_work_\RT_lab\EDK\IVK_Repos\IVK_IPLib\pcores\sg_i2c_controller_s6_p
+   lbw_v1_01_a\..\..\..\IVK_IPLib\pcores\vdma_v1_00_a\data\vdma_v2_1_0.mpd line
+   209 
+WARNING:EDK:4180 - PORT: vdma_wd_reset, CONNECTOR:
+   ivk_video_det_0_XIL_WD_VDMA_wd_reset - No driver found. Port will be driven
+   to GND -
+   C:\__waj_\_work_\RT_lab\EDK\IVK_Repos\IVK_IPLib\pcores\sg_i2c_controller_s6_p
+   lbw_v1_01_a\..\..\..\IVK_IPLib\pcores\vdma_v1_00_a\data\vdma_v2_1_0.mpd line
+   220 
+WARNING:EDK:4180 - PORT: vdma_wd_end_burst, CONNECTOR:
+   ivk_video_det_0_XIL_WD_VDMA_wd_end_burst - No driver found. Port will be
+   driven to GND -
+   C:\__waj_\_work_\RT_lab\EDK\IVK_Repos\IVK_IPLib\pcores\sg_i2c_controller_s6_p
+   lbw_v1_01_a\..\..\..\IVK_IPLib\pcores\vdma_v1_00_a\data\vdma_v2_1_0.mpd line
+   222 
+WARNING:EDK:4180 - PORT: vdma_wd_flush, CONNECTOR:
+   ivk_video_det_0_XIL_WD_VDMA_wd_flush - No driver found. Port will be driven
+   to GND -
+   C:\__waj_\_work_\RT_lab\EDK\IVK_Repos\IVK_IPLib\pcores\sg_i2c_controller_s6_p
+   lbw_v1_01_a\..\..\..\IVK_IPLib\pcores\vdma_v1_00_a\data\vdma_v2_1_0.mpd line
+   223 
+WARNING:EDK:4180 - PORT: vdma_rcmd_clk, CONNECTOR:
+   ivk_video_gen_0_XIL_RD_VDMA_cmd_clk - No driver found. Port will be driven to
+   GND -
+   C:\__waj_\_work_\RT_lab\EDK\IVK_Repos\IVK_IPLib\pcores\sg_i2c_controller_s6_p
+   lbw_v1_01_a\..\..\..\IVK_IPLib\pcores\vdma_v1_00_a\data\vdma_v2_1_0.mpd line
+   233 
+WARNING:EDK:4180 - PORT: vdma_rcmd_reset, CONNECTOR:
+   ivk_video_gen_0_XIL_RD_VDMA_cmd_reset - No driver found. Port will be driven
+   to GND -
+   C:\__waj_\_work_\RT_lab\EDK\IVK_Repos\IVK_IPLib\pcores\sg_i2c_controller_s6_p
+   lbw_v1_01_a\..\..\..\IVK_IPLib\pcores\vdma_v1_00_a\data\vdma_v2_1_0.mpd line
+   234 
+WARNING:EDK:4180 - PORT: vdma_rcmd_data, CONNECTOR:
+   ivk_video_gen_0_XIL_RD_VDMA_cmd_data - No driver found. Port will be driven
+   to GND -
+   C:\__waj_\_work_\RT_lab\EDK\IVK_Repos\IVK_IPLib\pcores\sg_i2c_controller_s6_p
+   lbw_v1_01_a\..\..\..\IVK_IPLib\pcores\vdma_v1_00_a\data\vdma_v2_1_0.mpd line
+   235 
+WARNING:EDK:4180 - PORT: vdma_rcmd_write, CONNECTOR:
+   ivk_video_gen_0_XIL_RD_VDMA_cmd_write - No driver found. Port will be driven
+   to GND -
+   C:\__waj_\_work_\RT_lab\EDK\IVK_Repos\IVK_IPLib\pcores\sg_i2c_controller_s6_p
+   lbw_v1_01_a\..\..\..\IVK_IPLib\pcores\vdma_v1_00_a\data\vdma_v2_1_0.mpd line
+   236 
+WARNING:EDK:4180 - PORT: vdma_rcmd_end, CONNECTOR:
+   ivk_video_gen_0_XIL_RD_VDMA_cmd_end - No driver found. Port will be driven to
+   GND -
+   C:\__waj_\_work_\RT_lab\EDK\IVK_Repos\IVK_IPLib\pcores\sg_i2c_controller_s6_p
+   lbw_v1_01_a\..\..\..\IVK_IPLib\pcores\vdma_v1_00_a\data\vdma_v2_1_0.mpd line
+   237 
+WARNING:EDK:4180 - PORT: vdma_rd_reset, CONNECTOR:
+   ivk_video_gen_0_XIL_RD_VDMA_rd_reset - No driver found. Port will be driven
+   to GND -
+   C:\__waj_\_work_\RT_lab\EDK\IVK_Repos\IVK_IPLib\pcores\sg_i2c_controller_s6_p
+   lbw_v1_01_a\..\..\..\IVK_IPLib\pcores\vdma_v1_00_a\data\vdma_v2_1_0.mpd line
+   248 
+WARNING:EDK:4180 - PORT: vdma_rd_end_burst, CONNECTOR:
+   ivk_video_gen_0_XIL_RD_VDMA_rd_end_burst - No driver found. Port will be
+   driven to GND -
+   C:\__waj_\_work_\RT_lab\EDK\IVK_Repos\IVK_IPLib\pcores\sg_i2c_controller_s6_p
+   lbw_v1_01_a\..\..\..\IVK_IPLib\pcores\vdma_v1_00_a\data\vdma_v2_1_0.mpd line
+   250 
+WARNING:EDK:4180 - PORT: vdma_rd_flush, CONNECTOR:
+   ivk_video_gen_0_XIL_RD_VDMA_rd_flush - No driver found. Port will be driven
+   to GND -
+   C:\__waj_\_work_\RT_lab\EDK\IVK_Repos\IVK_IPLib\pcores\sg_i2c_controller_s6_p
+   lbw_v1_01_a\..\..\..\IVK_IPLib\pcores\vdma_v1_00_a\data\vdma_v2_1_0.mpd line
+   251 
+WARNING:EDK:4181 - PORT: MPMC_InitDone, CONNECTOR: ddr_rdy - floating connection
+   - C:\__waj_\_work_\RT_lab\EDK\IVK_HW\v01_intial\system.mhs line 256 
+WARNING:EDK:4181 - PORT: bscan_tdi, CONNECTOR: bscan_tdi - floating connection -
+   C:\Program_Waj\Xilinx_13.1\ISE_DS\EDK\hw\XilinxProcessorIPLib\pcores\mdm_v1_0
+   0_g\data\mdm_v2_1_0.mpd line 229 
+WARNING:EDK:4181 - PORT: bscan_reset, CONNECTOR: bscan_reset - floating
+   connection -
+   C:\Program_Waj\Xilinx_13.1\ISE_DS\EDK\hw\XilinxProcessorIPLib\pcores\mdm_v1_0
+   0_g\data\mdm_v2_1_0.mpd line 230 
+WARNING:EDK:4181 - PORT: bscan_shift, CONNECTOR: bscan_shift - floating
+   connection -
+   C:\Program_Waj\Xilinx_13.1\ISE_DS\EDK\hw\XilinxProcessorIPLib\pcores\mdm_v1_0
+   0_g\data\mdm_v2_1_0.mpd line 231 
+WARNING:EDK:4181 - PORT: bscan_update, CONNECTOR: bscan_update - floating
+   connection -
+   C:\Program_Waj\Xilinx_13.1\ISE_DS\EDK\hw\XilinxProcessorIPLib\pcores\mdm_v1_0
+   0_g\data\mdm_v2_1_0.mpd line 232 
+WARNING:EDK:4181 - PORT: bscan_capture, CONNECTOR: bscan_capture - floating
+   connection -
+   C:\Program_Waj\Xilinx_13.1\ISE_DS\EDK\hw\XilinxProcessorIPLib\pcores\mdm_v1_0
+   0_g\data\mdm_v2_1_0.mpd line 233 
+WARNING:EDK:4181 - PORT: bscan_sel1, CONNECTOR: bscan_sel1 - floating connection
+   -
+   C:\Program_Waj\Xilinx_13.1\ISE_DS\EDK\hw\XilinxProcessorIPLib\pcores\mdm_v1_0
+   0_g\data\mdm_v2_1_0.mpd line 234 
+WARNING:EDK:4181 - PORT: bscan_drck1, CONNECTOR: bscan_drck1 - floating
+   connection -
+   C:\Program_Waj\Xilinx_13.1\ISE_DS\EDK\hw\XilinxProcessorIPLib\pcores\mdm_v1_0
+   0_g\data\mdm_v2_1_0.mpd line 235 
+WARNING:EDK:4181 - PORT: Peripheral_Reset, CONNECTOR: sys_periph_reset -
+   floating connection -
+   C:\__waj_\_work_\RT_lab\EDK\IVK_HW\v01_intial\system.mhs line 346 
+WARNING:EDK:4181 - PORT: vdma_wcmd_full, CONNECTOR:
+   ivk_video_det_0_XIL_WD_VDMA_cmd_full - floating connection -
+   C:\__waj_\_work_\RT_lab\EDK\IVK_Repos\IVK_IPLib\pcores\sg_i2c_controller_s6_p
+   lbw_v1_01_a\..\..\..\IVK_IPLib\pcores\vdma_v1_00_a\data\vdma_v2_1_0.mpd line
+   210 
+WARNING:EDK:4181 - PORT: vdma_wcmd_almost_full, CONNECTOR:
+   ivk_video_det_0_XIL_WD_VDMA_cmd_almost_full - floating connection -
+   C:\__waj_\_work_\RT_lab\EDK\IVK_Repos\IVK_IPLib\pcores\sg_i2c_controller_s6_p
+   lbw_v1_01_a\..\..\..\IVK_IPLib\pcores\vdma_v1_00_a\data\vdma_v2_1_0.mpd line
+   211 
+WARNING:EDK:4181 - PORT: vdma_wcmd_idle, CONNECTOR:
+   ivk_video_det_0_XIL_WD_VDMA_cmd_idle - floating connection -
+   C:\__waj_\_work_\RT_lab\EDK\IVK_Repos\IVK_IPLib\pcores\sg_i2c_controller_s6_p
+   lbw_v1_01_a\..\..\..\IVK_IPLib\pcores\vdma_v1_00_a\data\vdma_v2_1_0.mpd line
+   212 
+WARNING:EDK:4181 - PORT: vdma_wd_full, CONNECTOR:
+   ivk_video_det_0_XIL_WD_VDMA_wd_full - floating connection -
+   C:\__waj_\_work_\RT_lab\EDK\IVK_Repos\IVK_IPLib\pcores\sg_i2c_controller_s6_p
+   lbw_v1_01_a\..\..\..\IVK_IPLib\pcores\vdma_v1_00_a\data\vdma_v2_1_0.mpd line
+   226 
+WARNING:EDK:4181 - PORT: vdma_wd_almost_full, CONNECTOR:
+   ivk_video_det_0_XIL_WD_VDMA_wd_almost_full - floating connection -
+   C:\__waj_\_work_\RT_lab\EDK\IVK_Repos\IVK_IPLib\pcores\sg_i2c_controller_s6_p
+   lbw_v1_01_a\..\..\..\IVK_IPLib\pcores\vdma_v1_00_a\data\vdma_v2_1_0.mpd line
+   227 
+WARNING:EDK:4181 - PORT: vdma_rcmd_full, CONNECTOR:
+   ivk_video_gen_0_XIL_RD_VDMA_cmd_full - floating connection -
+   C:\__waj_\_work_\RT_lab\EDK\IVK_Repos\IVK_IPLib\pcores\sg_i2c_controller_s6_p
+   lbw_v1_01_a\..\..\..\IVK_IPLib\pcores\vdma_v1_00_a\data\vdma_v2_1_0.mpd line
+   238 
+WARNING:EDK:4181 - PORT: vdma_rcmd_almost_full, CONNECTOR:
+   ivk_video_gen_0_XIL_RD_VDMA_cmd_almost_full - floating connection -
+   C:\__waj_\_work_\RT_lab\EDK\IVK_Repos\IVK_IPLib\pcores\sg_i2c_controller_s6_p
+   lbw_v1_01_a\..\..\..\IVK_IPLib\pcores\vdma_v1_00_a\data\vdma_v2_1_0.mpd line
+   239 
+WARNING:EDK:4181 - PORT: vdma_rcmd_idle, CONNECTOR:
+   ivk_video_gen_0_XIL_RD_VDMA_cmd_idle - floating connection -
+   C:\__waj_\_work_\RT_lab\EDK\IVK_Repos\IVK_IPLib\pcores\sg_i2c_controller_s6_p
+   lbw_v1_01_a\..\..\..\IVK_IPLib\pcores\vdma_v1_00_a\data\vdma_v2_1_0.mpd line
+   240 
+WARNING:EDK:4181 - PORT: vdma_rd_empty, CONNECTOR:
+   ivk_video_gen_0_XIL_RD_VDMA_rd_empty - floating connection -
+   C:\__waj_\_work_\RT_lab\EDK\IVK_Repos\IVK_IPLib\pcores\sg_i2c_controller_s6_p
+   lbw_v1_01_a\..\..\..\IVK_IPLib\pcores\vdma_v1_00_a\data\vdma_v2_1_0.mpd line
+   253 
+WARNING:EDK:4181 - PORT: vdma_rd_almost_empty, CONNECTOR:
+   ivk_video_gen_0_XIL_RD_VDMA_rd_almost_empty - floating connection -
+   C:\__waj_\_work_\RT_lab\EDK\IVK_Repos\IVK_IPLib\pcores\sg_i2c_controller_s6_p
+   lbw_v1_01_a\..\..\..\IVK_IPLib\pcores\vdma_v1_00_a\data\vdma_v2_1_0.mpd line
+   254 
+WARNING:EDK:4181 - PORT: hblank_o, CONNECTOR:
+   sg_2d_fir_plbw_0_XSVI_VIDEO_OUT_hblank - floating connection -
+   C:\__waj_\_work_\RT_lab\EDK\IVK_Repos\IVK_IPLib\pcores\sg_i2c_controller_s6_p
+   lbw_v1_01_a\..\..\..\IVK_IPLib\pcores\sg_2d_fir_plbw_v1_01_a\data\sg_2d_fir_p
+   lbw_v2_1_0.mpd line 71 
+WARNING:EDK:4181 - PORT: vblank_o, CONNECTOR:
+   sg_2d_fir_plbw_0_XSVI_VIDEO_OUT_vblank - floating connection -
+   C:\__waj_\_work_\RT_lab\EDK\IVK_Repos\IVK_IPLib\pcores\sg_i2c_controller_s6_p
+   lbw_v1_01_a\..\..\..\IVK_IPLib\pcores\sg_2d_fir_plbw_v1_01_a\data\sg_2d_fir_p
+   lbw_v2_1_0.mpd line 80 
+
+Performing Clock DRCs...
+
+Performing Reset DRCs...
+
+Overriding system level properties...
+
+Running system level update procedures...
+
+Running UPDATE Tcl procedures for OPTION SYSLEVEL_UPDATE_PROC...
+
+Running system level DRCs...
+
+Performing System level DRCs on properties...
+
+Running DRC Tcl procedures for OPTION SYSLEVEL_DRC_PROC...
+WARNING:EDK - : MPMC_0::MPMC period of 3000 ps is not inside range 2500-2499 ps
+   for memory "MT41J64M16XX-187E".
+
+Conversion to XML complete.

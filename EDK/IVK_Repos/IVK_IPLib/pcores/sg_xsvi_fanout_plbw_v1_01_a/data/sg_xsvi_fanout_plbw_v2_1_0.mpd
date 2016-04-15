@@ -1,0 +1,70 @@
+## Copyright (c) 1995-2010 Xilinx, Inc.  All rights reserved.
+
+## You may copy and modify these files for your own internal use solely with
+## Xilinx programmable logic devices and  Xilinx EDK system or create IP
+## modules solely for Xilinx programmable logic devices and Xilinx EDK system.
+## No rights are granted to distribute any files unless they are distributed in
+## Xilinx programmable logic devices.
+
+BEGIN sg_xsvi_fanout_plbw
+
+## Peripheral Options
+OPTION RUN_NGCBUILD = TRUE
+OPTION IMP_NETLIST = TRUE
+OPTION STYLE = MIX
+OPTION HDL = MIXED
+OPTION IPTYPE = PERIPHERAL
+OPTION LAST_UPDATED = 13.3i
+OPTION USAGE_LEVEL = BASE_USER
+OPTION ARCH_SUPPORT_MAP = ( spartan6=PRODUCTION )
+
+## Bus Interfaces
+BUS_INTERFACE BUS = SPLB, BUS_STD = PLBV46, BUS_TYPE = SLAVE
+BUS_INTERFACE BUS = XSVI_VIDEO_IN, BUS_STD = XSVI, BUS_TYPE = TARGET
+
+## Generics for VHDL or Parameters for Verilog
+PARAMETER C_BASEADDR = 0xffffffff, DT = std_logic_vector(0 to 31), BUS = SPLB, ADDRESS = BASE, PAIR = C_HIGHADDR, MIN_SIZE = 0x1000, ASSIGNMENT = REQUIRE
+PARAMETER C_HIGHADDR = 0x00000000, DT = std_logic_vector(0 to 31), BUS = SPLB, ADDRESS = HIGH, PAIR = C_BASEADDR, ASSIGNMENT = REQUIRE
+PARAMETER C_SPLB_AWIDTH = 32, DT = INTEGER, ASSIGNMENT = CONSTANT, BUS = SPLB
+PARAMETER C_SPLB_DWIDTH = 32, DT = INTEGER, BUS = SPLB
+PARAMETER C_SPLB_MID_WIDTH = 1, DT = INTEGER, BUS = SPLB
+PARAMETER C_SPLB_NATIVE_DWIDTH = 32, DT = INTEGER, ASSIGNMENT = CONSTANT, BUS = SPLB
+PARAMETER C_SPLB_NUM_MASTERS = 1, DT = INTEGER, BUS = SPLB
+PARAMETER C_SPLB_SUPPORT_BURSTS = 0, DT = INTEGER, ASSIGNMENT = CONSTANT, BUS = SPLB
+
+# Memory Map Information
+# From Registers
+# To Registers
+# From FIFOs
+# To FIFOs
+# Shared RAMs
+
+# Ports
+PORT active_video_i = active_video, BUS = XSVI_VIDEO_IN, DIR = IN
+PORT sysgen_clk = "", SIGIS = CLK, ASSIGNMENT = REQUIRE, DIR = IN
+PORT hblank_i = hblank, BUS = XSVI_VIDEO_IN, DIR = IN
+PORT hsync_i = hsync, BUS = XSVI_VIDEO_IN, DIR = IN
+PORT plb_abus = plb_abus, VEC = [0:(32-1)], BUS = SPLB, DIR = IN
+PORT plb_pavalid = plb_pavalid, BUS = SPLB, DIR = IN
+PORT plb_rnw = plb_rnw, BUS = SPLB, DIR = IN
+PORT plb_wrdbus = plb_wrdbus, VEC = [0:(C_SPLB_DWIDTH-1)], BUS = SPLB, DIR = IN
+PORT splb_rst = splb_rst, BUS = SPLB, SIGIS = RST, DIR = IN
+PORT vblank_i = vblank, BUS = XSVI_VIDEO_IN, DIR = IN
+PORT video_data_i = video_data, VEC = [0:(24-1)], BUS = XSVI_VIDEO_IN, DIR = IN
+PORT vsync_i = vsync, BUS = XSVI_VIDEO_IN, DIR = IN
+PORT splb_clk = "", BUS = SPLB, SIGIS = CLK, ASSIGNMENT = REQUIRE, DIR = IN
+PORT active_video_o = "", DIR = OUT
+PORT hblank_o = "", DIR = OUT
+PORT hsync_o = "", DIR = OUT
+PORT sl_addrack = sl_addrack, BUS = SPLB, DIR = OUT
+PORT sl_rdcomp = sl_rdcomp, BUS = SPLB, DIR = OUT
+PORT sl_rddack = sl_rddack, BUS = SPLB, DIR = OUT
+PORT sl_rddbus = sl_rddbus, VEC = [0:(C_SPLB_DWIDTH-1)], BUS = SPLB, DIR = OUT
+PORT sl_wait = sl_wait, BUS = SPLB, DIR = OUT
+PORT sl_wrcomp = sl_wrcomp, BUS = SPLB, DIR = OUT
+PORT sl_wrdack = sl_wrdack, BUS = SPLB, DIR = OUT
+PORT vblank_o = "", DIR = OUT
+PORT video_data_o = "", VEC = [0:(24-1)], DIR = OUT
+PORT vsync_o = "", DIR = OUT
+
+END

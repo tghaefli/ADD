@@ -1,0 +1,60 @@
+## ----------------------------------------------------------------
+##      _____
+##     /     \
+##    /____   \____
+##   / \===\   \==/
+##  /___\===\___\/  AVNET
+##       \======/
+##        \====/    
+## ----------------------------------------------------------------
+##
+## This design is the property of Avnet.  Publication of this
+## design is not authorized without written consent from Avnet.
+## 
+## Please direct any questions to:  technical.support@avnet.com
+##
+## Disclaimer:
+##    Avnet, Inc. makes no warranty for the use of this code or design.
+##    This code is provided  "As Is". Avnet, Inc assumes no responsibility for
+##    any errors, which may appear in this code, nor does it make a commitment
+##    to update the information contained herein. Avnet, Inc specifically
+##    disclaims any implied warranties of fitness for a particular purpose.
+##                     Copyright(c) 2010 Avnet, Inc.
+##                             All rights reserved.
+##
+## ----------------------------------------------------------------
+##
+## Create Date:         Feb 18, 2010
+## Design Name:         IVK
+## Module Name:         ivk_video_det
+## Project Name:        IVK
+## Target Devices:      Spartan-6
+## Avnet Boards:        IVK
+##
+## Tool versions:       ISE 12.1
+##
+## Description:         Peripheral Analysis Order
+##
+## Dependencies:        
+##
+## Revision:            Feb 18, 2010: 1.01 Initial Version
+##                      Mar 02, 2010: 1.02 Add optionnal VDMA Write Port
+##                      Mar 10, 2010: 1.04 Force FSYNC to active high polarity
+##                      Apr 13, 2010: 1.05 Add support for 16bit data width on XSVI input
+##                      May 14, 2010: 2.01 Update for 12.1
+##
+## ----------------------------------------------------------------
+
+lib proc_common_v3_00_a proc_common_pkg vhdl
+lib proc_common_v3_00_a ipif_pkg vhdl
+lib proc_common_v3_00_a or_muxcy vhdl
+lib proc_common_v3_00_a or_gate128 vhdl
+lib proc_common_v3_00_a family_support vhdl
+lib proc_common_v3_00_a pselect_f vhdl
+lib proc_common_v3_00_a counter_f vhdl
+lib plbv46_slave_single_v1_01_a plb_address_decoder vhdl
+lib plbv46_slave_single_v1_01_a plb_slave_attachment vhdl
+lib plbv46_slave_single_v1_01_a plbv46_slave_single vhdl
+lib proc_common_v3_00_a soft_reset vhdl
+lib ivk_video_det_v2_01_a user_logic vhdl
+lib ivk_video_det_v2_01_a ivk_video_det vhdl

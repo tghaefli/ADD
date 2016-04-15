@@ -1,0 +1,2 @@
+-g TdoPin:PULLNONE
+-g StartUpClk:JTAGCLK
