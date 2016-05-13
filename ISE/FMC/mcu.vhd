@@ -38,10 +38,18 @@ architecture rtl of mcu is
   signal ram2bus : t_rws2bus;
   -- GPIO signals
   signal bus2gpio     : t_bus2rws;
-  signal gpio2bus     : t_rws2bus;
+  signal gpio2bus     : t_rws2bus; 
   signal gpio_in      : std_logic_vector(DW-1 downto 0);
   signal gpio_out     : std_logic_vector(DW-1 downto 0);
   signal gpio_out_enb : std_logic_vector(DW-1 downto 0);
+  
+  -- fmc_top signals
+  signal bus2fmc_top  : t_bus2rws;
+  signal fmc_top2bus  : t_rws2bus;
+  
+  signal fmc_top_out_enb  : std_logic_vector(N_FMC-1 downto 0);
+  signal fmc_top_out_step : std_logic_vector(N_FMC-1 downto 0);
+  signal fmc_top_out_dir  : std_logic_vector(N_FMC-1 downto 0);
 
 begin
 
@@ -92,7 +100,10 @@ begin
       ram_in   => ram2bus,
       ram_out  => bus2ram,
       gpio_in  => gpio2bus,
-      gpio_out => bus2gpio
+      gpio_out => bus2gpio,
+		fmc_top_in  => fmc_top2bus,
+		fmc_top_out =>bus2fmc_top
+		
     );
 
   -- ROM ----------------------------------------------------------------------
@@ -121,6 +132,20 @@ begin
       gpio_in      => gpio_in,
       gpio_out     => gpio_out,
       gpio_out_enb => gpio_out_enb
+    );
+	 
+  -- fmc_top ---------------------------------------------------------------------
+  i_fmc_top: entity work.fmc_top
+    port map(
+      rst          => rst,
+      clk          => clk,
+      bus_in       => bus2fmc_top,
+      bus_out      => fmc_top2bus,
+		
+      fmc_top_out_enb  => fmc_top_out_enb,
+      fmc_top_out_step => fmc_top_out_step,
+      fmc_top_out_dir  => fmc_top_out_dir
+		
     );
     
 end rtl;

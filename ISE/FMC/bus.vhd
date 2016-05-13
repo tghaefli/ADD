@@ -44,7 +44,10 @@ entity buss is
        ram_out : out t_bus2rws;
        -- GPIO bus signals
        gpio_in  : in  t_rws2bus;
-       gpio_out : out t_bus2rws
+       gpio_out : out t_bus2rws;
+		 -- fmc_top bis signals
+		 fmc_top_in  : in  t_rws2bus;
+		 fmc_top_out : out t_bus2rws
        );
 end buss;
 

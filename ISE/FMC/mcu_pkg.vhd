@@ -64,6 +64,10 @@ package mcu_pkg is
   constant c_addr_gpio_out_enb  : std_logic_vector(AWL-1 downto 0) := n2slv( 2, AWL);
   type t_gpio_addr_sel is (none, gpio_data_in, gpio_data_out, gpio_enb);
   -- FMC
+  constant N_FMC  : natural range 1 to 8 := 8;
+  constant c_addr_fmc_chan_enb	: std_logic_vector(AWL-1 downto 0) := n2slv( 0, AWL);
+  constant c_addr_fmc_tmp_ctrl	: std_logic_vector(AWL-1 downto 0) := n2slv( 1, AWL);
+  type t_fmc_addr_sel is (none, fmc_chn_enb, fmc_tmp_ctrl);
   -- TIM
   -- UART
 
