@@ -21,6 +21,9 @@ package mcu_pkg is
   -- system clock frequency in Hz
   constant CF : natural :=  50_000_000;           -- 50 MHz
   
+  -- prescaler factor
+  constant PRESCALE : natural :=  50_000;			  -- constant scale factor -> Tclk 1ms
+  
   -----------------------------------------------------------------------------
   -- Helper functions (prototypes)
   -----------------------------------------------------------------------------
@@ -28,11 +31,9 @@ package mcu_pkg is
   function i2slv(i : integer; w : positive) return std_logic_vector;
   -- std_logic_vector(to_unsigned(n,w))
   function n2slv(n : natural; w : positive) return std_logic_vector;
-  -- form instruction word for NOP instruction
-  function iw_nop return std_logic_vector;
 
   -----------------------------------------------------------------------------
-  -- design parameters: Memory Map & Peripherals
+  -- design parameters: Memory Map
   -----------------------------------------------------------------------------
   -- bus architecture parameters
   constant DW  : natural range 4 to 64 := 16;     -- data word width
@@ -66,14 +67,9 @@ package mcu_pkg is
   constant c_addr_gpio_out_enb  : std_logic_vector(AWL-1 downto 0) := n2slv( 2, AWL);
   type t_gpio_addr_sel is (none, gpio_data_in, gpio_data_out, gpio_enb);
   -- FMC
-  constant FMC_NUM_CHN   : natural range 1 to  8 :=  8;             -- # of FMC channels
-  constant FMC_ROM_AW    : natural range 1 to 10 := 10;             -- FMC ROM addr width
-  constant FMC_ROM_DW    : natural range 1 to 20 := 20;             -- FMC ROM data width
-  constant FMC_TON_WW    : natural range 1 to 16 :=  6;             -- FMC duration word width
-  constant FMC_DUR_WW    : natural range 1 to 16 := 14;             -- FMC tone word width
-  constant FMC_LAST_TONE : unsigned(9 downto 0) := (others => '1'); -- last-tone indicator
-  constant c_addr_fmc_chn_enb  : std_logic_vector(AWL-1 downto 0) := n2slv( 0, AWL);
-  constant c_addr_fmc_tmp_ctrl : std_logic_vector(AWL-1 downto 0) := n2slv( 1, AWL);
+  constant N_FMC  : natural range 1 to 8 := 8; --# of FMC channels
+  constant c_addr_fmc_chn_enb 	: std_logic_vector(AWL-1 downto 0) := n2slv( 0, AWL);
+  constant c_addr_fmc_tmp_ctrl  	: std_logic_vector(AWL-1 downto 0) := n2slv( 1, AWL);
   type t_fmc_addr_sel is (none, fmc_chn_enb, fmc_tmp_ctrl);
   -- TIM
   -- UART
@@ -221,18 +217,6 @@ package body mcu_pkg is
   begin 
     return std_logic_vector(to_unsigned(n,w));
   end function n2slv;
-
-  function iw_nop return std_logic_vector is
-    variable v : std_logic_vector(DW-1 downto 0);
-  begin
-    for k in DW-1 downto DW-OPCW loop
-      v(k) := OPC(nop)(k-DW+OPCW);
-    end loop;
-    for k in DW-OPCW-1 downto 0 loop
-      v(k) := '0';
-    end loop;
-    return v;
-  end function iw_nop;
 
 
 end package body mcu_pkg;

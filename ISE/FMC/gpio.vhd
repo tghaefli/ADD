@@ -1,9 +1,9 @@
 -------------------------------------------------------------------------------
--- Entity: ram
--- Author: Waj
+-- Entity: fmc_top
+-- Author: Sandro Arnold
 -------------------------------------------------------------------------------
--- Description: (ECS Uebung 9)
--- GPIO block for simple von-Neumann MCU.
+-- Description: Testatübung ADD
+-- FMC Block for Floppy Music Controller.
 -------------------------------------------------------------------------------
 -- Total # of FFs: ... tbd ...
 -------------------------------------------------------------------------------

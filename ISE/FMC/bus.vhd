@@ -44,7 +44,10 @@ entity buss is
        ram_out : out t_bus2rws;
        -- GPIO bus signals
        gpio_in  : in  t_rws2bus;
-       gpio_out : out t_bus2rws
+       gpio_out : out t_bus2rws;
+		 -- FMC TOP bus signals
+		 fmc_top_in  : in  t_rws2bus;
+       fmc_top_out : out t_bus2rws
        );
 end buss;
 
@@ -59,9 +62,10 @@ begin
   -- address decoding
   -----------------------------------------------------------------------------
   -- convey lower address bist from CPU to all bus slaves
-  rom_out.addr  <= cpu_in.addr(AWL-1 downto 0);
-  ram_out.addr  <= cpu_in.addr(AWL-1 downto 0);
-  gpio_out.addr <= cpu_in.addr(AWL-1 downto 0);
+  rom_out.addr  		<= cpu_in.addr(AWL-1 downto 0);
+  ram_out.addr  		<= cpu_in.addr(AWL-1 downto 0);
+  gpio_out.addr 		<= cpu_in.addr(AWL-1 downto 0);
+  fmc_top_out.addr 	<= cpu_in.addr(AWL-1 downto 0);
   -- combinational process:
   -- determine addressed slave by decoding higher address bits
   -----------------------------------------------------------------------------
@@ -80,12 +84,13 @@ begin
   -----------------------------------------------------------------------------
   -- convey write data from CPU to all bus slaves 
   -- rom is read-only slave
-  ram_out.data  <= cpu_in.data;
-  gpio_out.data <= cpu_in.data;
+  ram_out.data  		<= cpu_in.data;
+  gpio_out.data 		<= cpu_in.data;
+  fmc_top_out.data  <= cpu_in.data;
   -- convey write enable from CPU to addressed slave only
-  ram_out.wr_enb  <= cpu_in.wr_enb when bus_slave = RAM  else '0';
-  gpio_out.wr_enb <= cpu_in.wr_enb when bus_slave = GPIO else '0';
- 
+  ram_out.wr_enb  	<= cpu_in.wr_enb when bus_slave = RAM  else '0';
+  gpio_out.wr_enb 	<= cpu_in.wr_enb when bus_slave = GPIO else '0'; 
+  fmc_top_out.wr_enb	<= cpu_in.wr_enb when bus_slave = FMC  else '0';
   -----------------------------------------------------------------------------
   -- read transfer logic
   -----------------------------------------------------------------------------
@@ -93,10 +98,12 @@ begin
   with bus_slave_reg select cpu_out.data <= rom_in.data      when ROM,
                                             ram_in.data      when RAM,
                                             gpio_in.data     when GPIO,
+														  fmc_top_in.data	 when FMC,
                                             (others => '-')  when others;
   -- convey read enable from CPU to addressed slave only
-  ram_out.rd_enb  <= cpu_in.rd_enb when bus_slave = RAM  else '0';
-  gpio_out.rd_enb <= cpu_in.rd_enb when bus_slave = GPIO else '0';
+  ram_out.rd_enb  		<= cpu_in.rd_enb when bus_slave = RAM  else '0';
+  gpio_out.rd_enb 		<= cpu_in.rd_enb when bus_slave = GPIO else '0';
+  fmc_top_out.rd_enb		<= cpu_in.rd_enb when bus_slave = FMC else '0';
   -- sequential process:
   -- register decode information to compensate read-latency of slaves
   -----------------------------------------------------------------------------  

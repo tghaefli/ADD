@@ -20,6 +20,10 @@ entity mcu is
        clk     : in    std_logic;
        -- LED(8:0) on S3E-Board (demonstrate tri-state buffers)
        LED     : inout std_logic_vector(7 downto 0);
+		 -- Floppy connector
+		 Step_Floppy 		: out std_logic_vector(8 downto 1);
+		 Direction_Floppy : out std_logic_vector(8 downto 1);
+		 Enable_Floppy		: out std_logic_vector(8 downto 1);
        -- SW(3:0) on S3E-Board
        Switch  : in std_logic_vector(3 downto 0)
        );
@@ -43,11 +47,11 @@ architecture rtl of mcu is
   signal gpio_out     : std_logic_vector(DW-1 downto 0);
   signal gpio_out_enb : std_logic_vector(DW-1 downto 0);
   -- FMC signals
-  signal bus2fmc      : t_bus2rws;
-  signal fmc2bus      : t_rws2bus;
-  signal fmc_enable   : std_logic_vector(FMC_NUM_CHN-1 downto 0);
-  signal fmc_direct   : std_logic_vector(FMC_NUM_CHN-1 downto 0);
-  signal fmc_step     : std_logic_vector(FMC_NUM_CHN-1 downto 0);
+  signal bus2fmc_top     		: t_bus2rws;
+  signal fmc_top2bus     		: t_rws2bus;
+  signal fmc_top_out_enb      : std_logic_vector(N_FMC-1 downto 0);
+  signal fmc_top_out_step     : std_logic_vector(N_FMC-1 downto 0);
+  signal fmc_top_out_dir		: std_logic_vector(N_FMC-1 downto 0);
 
 begin
 
@@ -73,6 +77,12 @@ begin
   -- gen_sw_3state: for k in 8 to 11 generate
   --   SW(k-8) <= gpio_out(k) when gpio_out_enb(k) = '1' else 'Z';
   -- end generate;
+  
+  -----------------------------------------------------------------------------
+  -- Connect Floppy's to FMC_TOP
+  Step_Floppy 			<= fmc_top_out_step;
+  Direction_Floppy 	<=	fmc_top_out_dir;
+  Enable_Floppy		<= fmc_top_out_enb;
  
   -----------------------------------------------------------------------------
   -- Instantiation of top-level components (assumed to be in library work)
@@ -98,7 +108,9 @@ begin
       ram_in   => ram2bus,
       ram_out  => bus2ram,
       gpio_in  => gpio2bus,
-      gpio_out => bus2gpio
+      gpio_out => bus2gpio,
+		fmc_top_in  => fmc_top2bus,
+      fmc_top_out => bus2fmc_top		
     );
 
   -- ROM ----------------------------------------------------------------------
@@ -128,18 +140,17 @@ begin
       gpio_out     => gpio_out,
       gpio_out_enb => gpio_out_enb
     );
-    
-  -- FMC ----------------------------------------------------------------------
+	 
+  -- FMC_TOP ---------------------------------------------------------------------
   i_fmc_top: entity work.fmc_top
     port map(
-      rst     		=> rst,
-      clk     		=> clk,
-      bus_in  		=> bus2fmc,
-      bus_out 		=> fmc2bus,
-		fmc_enable 	=> fmc_enable,
-      fmc_direct 	=> fmc_direct,
-      fmc_step   	=> fmc_step
-    );
-	 
-	 
+      rst          			=> rst,
+      clk          			=> clk,
+      bus_in       			=> bus2fmc_top,
+      bus_out      			=> fmc_top2bus,
+      fmc_top_out_enb 		=> fmc_top_out_enb,
+		fmc_top_out_step		=> fmc_top_out_step,
+		fmc_top_out_dir		=> fmc_top_out_dir
+    );    
+    
 end rtl;
