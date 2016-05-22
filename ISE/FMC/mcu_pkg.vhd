@@ -1,6 +1,6 @@
 -------------------------------------------------------------------------------
 -- Entity: mcu_pkg
--- Author: Sandro
+-- Author: Waj
 -------------------------------------------------------------------------------
 -- Description:
 -- VHDL package for definition of design parameters and types used throughout
@@ -22,8 +22,8 @@ package mcu_pkg is
   constant CF : natural :=  50_000_000;           -- 50 MHz
   
   -- prescaler factor
-  constant PRESCALE_1kHz : natural :=  50_000;			  -- constant scale factor -> Tclk 1ms
-  constant PRESCALE_1MHz : natural :=  50;			  	  -- constant scale factor -> Tclk 1us
+  constant DUR_SCALE : natural :=  50_000;			  -- constant scale factor -> Tclk 1ms
+  constant NCO_SCALE : natural :=  50;					  -- constant scale factor -> Tclk 1ms
   
   -----------------------------------------------------------------------------
   -- Helper functions (prototypes)
@@ -42,7 +42,14 @@ package mcu_pkg is
   constant DW  : natural range 4 to 64 := 16;     -- data word width
   constant AW  : natural range 2 to 64 := 10;     -- total address width
   constant AWH : natural range 1 to 64 :=  4;     -- high address width
-  constant AWL : natural range 1 to 64 := AW-AWH; -- low address width
+  constant AWL : natural range 1 to 64 := AW-AWH; -- low address width  
+  -- fmc rom parameters
+  constant FMC_NUM_CHN: natural range 1 to  8 	:=  8;      -- # of FMC channels
+  constant FMC_ROM_AW : natural range 1 to 10 	:= 10;		--FMC_ROM address width
+  constant FMC_ROM_DW : natural range 1 to 20 	:= 20;		--FMC_ROM data word width
+  constant FMC_DUR_WW : natural range 1 to 16 	:= 14;		--FMC_ROM tone duration word width  
+  constant FMC_TON_WW : natural range 1 to 16 	:= 6;	  		--FMC_ROM tone duration word width  
+  constant FMC_LAST_TONE : unsigned(9 downto 0) := (others => '1'); -- last-tone indicator
   -- memory map
   type t_bus_slave is (ROM, RAM, GPIO, FMC, TIM, UART); -- list of bus slaves
   type t_ba is array (t_bus_slave) of std_logic_vector(AW-1 downto 0);
@@ -71,11 +78,6 @@ package mcu_pkg is
   type t_gpio_addr_sel is (none, gpio_data_in, gpio_data_out, gpio_enb);
   -- FMC
   constant N_FMC  : natural range 1 to 8 := 8; --# of FMC channels
-  constant FMC_ROM_AW    : natural range 1 to 10 := 10;             -- FMC ROM addr width
-  constant FMC_ROM_DW    : natural range 1 to 20 := 20;             -- FMC ROM data width
-  constant FMC_TON_WW    : natural range 1 to 16 :=  6;             -- FMC duration word width
-  constant FMC_DUR_WW    : natural range 1 to 16 := 14;             -- FMC tone word width
-  constant FMC_LAST_TONE : unsigned(9 downto 0) := (others => '1'); -- last-tone indicator
   constant c_addr_fmc_chn_enb 	: std_logic_vector(AWL-1 downto 0) := n2slv( 0, AWL);
   constant c_addr_fmc_tmp_ctrl  	: std_logic_vector(AWL-1 downto 0) := n2slv( 1, AWL);
   type t_fmc_addr_sel is (none, fmc_chn_enb, fmc_tmp_ctrl);
@@ -225,7 +227,7 @@ package body mcu_pkg is
   begin 
     return std_logic_vector(to_unsigned(n,w));
   end function n2slv;
-
+  
   function iw_nop return std_logic_vector is
     variable v : std_logic_vector(DW-1 downto 0);
   begin
@@ -238,5 +240,5 @@ package body mcu_pkg is
     return v;
   end function iw_nop;
 
-  
+
 end package body mcu_pkg;

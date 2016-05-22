@@ -2,7 +2,7 @@
 -- Entity: fmc_top
 -- Author: Sandro Arnold
 -------------------------------------------------------------------------------
--- Description: Testatbung FMC Controller
+-- Description: Testatübung FMC Controller
 -- FMC_TOP Top Level Entity of Floppy Music Controller
 -------------------------------------------------------------------------------
 -- Total # of FFs: ... tbd ...
@@ -33,9 +33,8 @@ architecture rtl of fmc_top is
   -- prescaler signals
   signal tick_dur  : std_logic;
   signal tick_nco  : std_logic;
-  signal tick_dur_ctr 	: integer range 0 to PRESCALE_1kHz/2 := 0; -- toggling frequency = 2*f_tick_dur
-  signal tick_nco_ctr 	: integer range 0 to PRESCALE_1MHz/2 := 0; -- toggling frequency = 2*f_tick_nco
-
+  signal dur_cnt 	: integer range 0 to DUR_SCALE/2 := 0; -- toggling frequency = 2*f_tick_dur
+  signal nco_cnt 	: integer range 0 to NCO_SCALE/2 := 0; -- toggling frequency = 2*f_tick_nco
   -- peripheral registers
   signal chn_enb_reg  	: std_logic_vector(DW-1 downto 0);
   signal spd_fac_reg 	: std_logic_vector(DW-1 downto 0);
@@ -49,6 +48,7 @@ begin
  -- FMC_CH ---------------------------------------------------------------------
   gen_i_fmc_ch: for k in 0 to N_FMC-1 generate	 
 	  i_fmc_ch: entity work.fmc_ch
+		 generic map(N => k)
 		 port map(
 			rst          		=> rst,
 			clk          		=> clk,
@@ -113,34 +113,37 @@ begin
   end process;
   
   -----------------------------------------------------------------------------
-  -- clock generator
+  -- tick_dur
   -----------------------------------------------------------------------------  
-  p_tick_dur: process (rst, clk) begin		-- 1kHz
-    if (rst = '1') then
-      tick_dur <= '0';
-      tick_dur_ctr <= 0;
-    elsif rising_edge(clk) then
-      if (tick_dur_ctr = PRESCALE_1kHz/2) then
-        tick_dur <= not tick_dur;
-	     tick_dur_ctr <= 0;
-      else
-        tick_dur_ctr <= tick_dur_ctr + 1;
-      end if;
-    end if;
-  end process;
-	 
-  p_tick_nco: process (rst, clk) begin		-- 1MHz
-    if (rst = '1') then
-      tick_nco <= '0';
-      tick_nco_ctr <= 0;
-    elsif rising_edge(clk) then
-      if (tick_nco_ctr = PRESCALE_1MHz) then
-        tick_dur <= not tick_dur;
-		  tick_nco_ctr <= 0;
-      else
-        tick_nco_ctr <= tick_nco_ctr + 1;
-      end if;
-    end if;
-  end process;
+    tick_duration: process (rst, clk) begin
+        if (rst = '1') then
+            tick_dur <= '0';
+            dur_cnt <= 0;
+        elsif rising_edge(clk) then
+            if (dur_cnt = DUR_SCALE/2) then
+                tick_dur <= not tick_dur;
+					 dur_cnt <= 0;
+            else
+                dur_cnt <= dur_cnt + 1;
+            end if;
+        end if;
+    end process;
+ 
+   -----------------------------------------------------------------------------
+  -- tick_nco
+  -----------------------------------------------------------------------------  
+    tick_ncoscillator: process (rst, clk) begin
+        if (rst = '1') then
+            tick_nco <= '0';
+            nco_cnt <= 0;
+        elsif rising_edge(clk) then
+            if (dur_cnt = DUR_SCALE/2) then
+                tick_nco <= not tick_nco;
+					 nco_cnt <= 0;
+            else
+                nco_cnt <= dur_cnt + 1;
+            end if;
+        end if;
+    end process;
 	 
 end rtl;
