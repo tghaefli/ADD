@@ -2,7 +2,7 @@
 -- Entity: fmc_top
 -- Author: Sandro Arnold
 -------------------------------------------------------------------------------
--- Description: Testatübung FMC Controller
+-- Description: Testatbung FMC Controller
 -- FMC_TOP Top Level Entity of Floppy Music Controller
 -------------------------------------------------------------------------------
 -- Total # of FFs: ... tbd ...
@@ -31,8 +31,10 @@ architecture rtl of fmc_top is
   signal addr_sel : t_fmc_addr_sel;
   
   -- prescaler signals
-  signal clk_enb  : std_logic;
-  signal counter 	: integer range 0 to PRESCALE/2 := 0; -- toggling frequency = 2*f_clk_enb
+  signal tick_dur  : std_logic;
+  signal tick_nco  : std_logic;
+  signal tick_dur_ctr 	: integer range 0 to PRESCALE_1kHz/2 := 0; -- toggling frequency = 2*f_tick_dur
+  signal tick_nco_ctr 	: integer range 0 to PRESCALE_1MHz/2 := 0; -- toggling frequency = 2*f_tick_nco
 
   -- peripheral registers
   signal chn_enb_reg  	: std_logic_vector(DW-1 downto 0);
@@ -51,7 +53,8 @@ begin
 			rst          		=> rst,
 			clk          		=> clk,
 			enb					=> chn_enb_reg(k),
-			clk_enb				=> clk_enb,
+			tick_dur				=> tick_dur,
+			tick_nco				=> tick_nco,
 			fmc_ch_out_enb		=> fmc_top_out_enb(k),
 			fmc_chn_out_step  => fmc_top_out_step(k),
 			fmc_chn_out_dir 	=>	fmc_top_out_dir(k)			
@@ -110,20 +113,34 @@ begin
   end process;
   
   -----------------------------------------------------------------------------
-  -- Prescaler
+  -- clock generator
   -----------------------------------------------------------------------------  
-    prescaler: process (rst, clk) begin
-        if (rst = '1') then
-            clk_enb <= '0';
-            counter <= 0;
-        elsif rising_edge(clk) then
-            if (counter = PRESCALE/2) then
-                clk_enb <= not clk_enb;
-					 counter <= 0;
-            else
-                counter <= counter + 1;
-            end if;
-        end if;
-    end process;
+  p_tick_dur: process (rst, clk) begin		-- 1kHz
+    if (rst = '1') then
+      tick_dur <= '0';
+      tick_dur_ctr <= 0;
+    elsif rising_edge(clk) then
+      if (tick_dur_ctr = PRESCALE_1kHz/2) then
+        tick_dur <= not tick_dur;
+	     tick_dur_ctr <= 0;
+      else
+        tick_dur_ctr <= tick_dur_ctr + 1;
+      end if;
+    end if;
+  end process;
+	 
+  p_tick_nco: process (rst, clk) begin		-- 1MHz
+    if (rst = '1') then
+      tick_nco <= '0';
+      tick_nco_ctr <= 0;
+    elsif rising_edge(clk) then
+      if (tick_nco_ctr = PRESCALE_1MHz) then
+        tick_dur <= not tick_dur;
+		  tick_nco_ctr <= 0;
+      else
+        tick_nco_ctr <= tick_nco_ctr + 1;
+      end if;
+    end if;
+  end process;
 	 
 end rtl;
