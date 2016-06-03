@@ -1,0 +1,49 @@
+# period constraints for system clock
+NET "clk" TNM_NET = clk;
+TIMESPEC TS_clk = PERIOD "clk" 20 ns HIGH 50%;
+	
+# I/O-constraints for system clock and reset input
+NET "clk" LOC = "C9"  |IOSTANDARD = LVCMOS33;
+NET "rst" LOC = "K17" |IOSTANDARD = LVTTL |PULLDOWN ; # = BTN_SOUTH
+
+# I/O-constraints for LEDs
+#NET "LED<7>" LOC = "F9" | IOSTANDARD = LVTTL | SLEW = SLOW | DRIVE = 8 ;
+#NET "LED<6>" LOC = "E9" | IOSTANDARD = LVTTL | SLEW = SLOW | DRIVE = 8 ;
+#NET "LED<5>" LOC = "D11" | IOSTANDARD = LVTTL | SLEW = SLOW | DRIVE = 8 ;
+#NET "LED<4>" LOC = "C11" | IOSTANDARD = LVTTL | SLEW = SLOW | DRIVE = 8 ;
+#NET "LED<3>" LOC = "F11" | IOSTANDARD = LVTTL | SLEW = SLOW | DRIVE = 8 ;
+#NET "LED<2>" LOC = "E11" | IOSTANDARD = LVTTL | SLEW = SLOW | DRIVE = 8 ;
+#NET "LED<1>" LOC = "E12" | IOSTANDARD = LVTTL | SLEW = SLOW | DRIVE = 8 ;
+#NET "LED<0>" LOC = "F12" | IOSTANDARD = LVTTL | SLEW = SLOW | DRIVE = 8 ;
+
+# I/O-constraints for Switches
+NET "Switch<0>" LOC = "L13" | IOSTANDARD = LVTTL | PULLUP ;
+NET "Switch<1>" LOC = "L14" | IOSTANDARD = LVTTL | PULLUP ;
+NET "Switch<2>" LOC = "H18" | IOSTANDARD = LVTTL | PULLUP ;
+NET "Switch<3>" LOC = "N17" | IOSTANDARD = LVTTL | PULLUP ;
+
+# I/O-constraints for FMC on J3 connector
+NET "fmc_step<0>" LOC = "B4" | IOSTANDARD = LVTTL | SLEW = FAST | DRIVE = 8 ;
+NET "fmc_direct<0>" LOC = "A4" | IOSTANDARD = LVTTL | SLEW = FAST | DRIVE = 8 ;
+NET "fmc_enable<0>" LOC = "D5" | IOSTANDARD = LVTTL | SLEW = FAST | DRIVE = 8 ;
+NET "fmc_step<1>" LOC = "C5" | IOSTANDARD = LVTTL | SLEW = FAST | DRIVE = 8 ;
+NET "fmc_direct<1>" LOC = "A6" | IOSTANDARD = LVTTL | SLEW = FAST | DRIVE = 8 ;
+NET "fmc_enable<1>" LOC = "B6" | IOSTANDARD = LVTTL | SLEW = FAST | DRIVE = 8 ;
+NET "fmc_step<2>" LOC = "E7" | IOSTANDARD = LVTTL | SLEW = FAST | DRIVE = 8 ;
+NET "fmc_direct<2>" LOC = "F7" | IOSTANDARD = LVTTL | SLEW = FAST | DRIVE = 8 ;
+NET "fmc_enable<2>" LOC = "D7" | IOSTANDARD = LVTTL | SLEW = FAST | DRIVE = 8 ;
+NET "fmc_step<3>" LOC = "C7" | IOSTANDARD = LVTTL | SLEW = FAST | DRIVE = 8 ;
+NET "fmc_direct<3>" LOC = "F8" | IOSTANDARD = LVTTL | SLEW = FAST | DRIVE = 8 ;
+NET "fmc_enable<3>" LOC = "E8" | IOSTANDARD = LVTTL | SLEW = FAST | DRIVE = 8 ;
+NET "fmc_step<4>" LOC = "F9" | IOSTANDARD = LVTTL | SLEW = FAST | DRIVE = 8 ;
+NET "fmc_direct<4>" LOC = "E9" | IOSTANDARD = LVTTL | SLEW = FAST | DRIVE = 8 ;
+NET "fmc_enable<4>" LOC = "D11" | IOSTANDARD = LVTTL | SLEW = FAST | DRIVE = 8 ;
+NET "fmc_step<5>" LOC = "C11" | IOSTANDARD = LVTTL | SLEW = FAST | DRIVE = 8 ;
+NET "fmc_direct<5>" LOC = "F11" | IOSTANDARD = LVTTL | SLEW = FAST | DRIVE = 8 ;
+NET "fmc_enable<5>" LOC = "E11" | IOSTANDARD = LVTTL | SLEW = FAST | DRIVE = 8 ;
+NET "fmc_step<6>" LOC = "E12" | IOSTANDARD = LVTTL | SLEW = FAST | DRIVE = 8 ;
+NET "fmc_direct<6>" LOC = "F12" | IOSTANDARD = LVTTL | SLEW = FAST | DRIVE = 8 ;
+NET "fmc_enable<6>" LOC = "A13" | IOSTANDARD = LVTTL | SLEW = FAST | DRIVE = 8 ;
+NET "fmc_step<7>" LOC = "B13" | IOSTANDARD = LVTTL | SLEW = FAST | DRIVE = 8 ;
+NET "fmc_direct<7>" LOC = "A14" | IOSTANDARD = LVTTL | SLEW = FAST | DRIVE = 8 ;
+NET "fmc_enable<7>" LOC = "B14" | IOSTANDARD = LVTTL | SLEW = FAST | DRIVE = 8 ;

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="C:/_dev/ADD_FS16/design_env/ISE/MCU/tb_mcu_isim_beh.wdb" id="1" type="auto">
+         <top_modules>
+            <top_module name="mcu_pkg" />
+            <top_module name="numeric_std" />
+            <top_module name="std_logic_1164" />
+            <top_module name="tb_mcu" />
+            <top_module name="textio" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <WVObjectSize size="16" />
+   <wvobject fp_name="/tb_mcu/MUT/i_fmc/tick_nco" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">tick_nco</obj_property>
+      <obj_property name="ObjectShortName">tick_nco</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mcu/MUT/i_fmc/tick_dur" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">tick_dur</obj_property>
+      <obj_property name="ObjectShortName">tick_dur</obj_property>
+   </wvobject>
+   <wvobject fp_name="divider73" type="divider">
+      <obj_property name="label">FMC_0</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="BkColor">128 128 255</obj_property>
+      <obj_property name="TextColor">230 230 230</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mcu/MUT/i_fmc/\fmc_i(0)\/fmc_chn_i/rom_addr" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">rom_addr[9:0]</obj_property>
+      <obj_property name="ObjectShortName">rom_addr[9:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mcu/MUT/i_fmc/\fmc_i(0)\/fmc_chn_i/tone_duration" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">tone_duration[13:0]</obj_property>
+      <obj_property name="ObjectShortName">tone_duration[13:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mcu/MUT/i_fmc/\fmc_i(0)\/fmc_chn_i/tone_number" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">tone_number[5:0]</obj_property>
+      <obj_property name="ObjectShortName">tone_number[5:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mcu/MUT/i_fmc/\fmc_i(0)\/fmc_chn_i/fmc_enb" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">fmc_enb</obj_property>
+      <obj_property name="ObjectShortName">fmc_enb</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ffff00</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mcu/MUT/i_fmc/\fmc_i(0)\/fmc_chn_i/fmc_stp" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">fmc_stp</obj_property>
+      <obj_property name="ObjectShortName">fmc_stp</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ffff00</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mcu/MUT/i_fmc/\fmc_i(0)\/fmc_chn_i/fmc_dir" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">fmc_dir</obj_property>
+      <obj_property name="ObjectShortName">fmc_dir</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ffff00</obj_property>
+   </wvobject>
+   <wvobject fp_name="divider74" type="divider">
+      <obj_property name="label">FMC_1</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="BkColor">128 128 255</obj_property>
+      <obj_property name="TextColor">230 230 230</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mcu/MUT/i_fmc/\fmc_i(1)\/fmc_chn_i/rom_addr" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">rom_addr[9:0]</obj_property>
+      <obj_property name="ObjectShortName">rom_addr[9:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mcu/MUT/i_fmc/\fmc_i(1)\/fmc_chn_i/tone_duration" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">tone_duration[13:0]</obj_property>
+      <obj_property name="ObjectShortName">tone_duration[13:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mcu/MUT/i_fmc/\fmc_i(1)\/fmc_chn_i/tone_number" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">tone_number[5:0]</obj_property>
+      <obj_property name="ObjectShortName">tone_number[5:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mcu/MUT/i_fmc/\fmc_i(1)\/fmc_chn_i/fmc_enb" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">fmc_enb</obj_property>
+      <obj_property name="ObjectShortName">fmc_enb</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ffff00</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mcu/MUT/i_fmc/\fmc_i(1)\/fmc_chn_i/fmc_stp" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">fmc_stp</obj_property>
+      <obj_property name="ObjectShortName">fmc_stp</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ffff00</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_mcu/MUT/i_fmc/\fmc_i(1)\/fmc_chn_i/fmc_dir" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">fmc_dir</obj_property>
+      <obj_property name="ObjectShortName">fmc_dir</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ffff00</obj_property>
+   </wvobject>
+</wave_config>
