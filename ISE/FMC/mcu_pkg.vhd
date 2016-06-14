@@ -22,8 +22,8 @@ package mcu_pkg is
   constant CF : natural :=  50_000_000;           -- 50 MHz
   
   -- prescaler factor
-  constant DUR_SCALE : natural :=  50_000;			  -- constant scale factor -> Tclk 1ms
-  constant NCO_SCALE : natural :=  50;					  -- constant scale factor -> Tclk 1ms
+  constant DUR_SCALE : natural :=  5_000;			  -- constant scale factor -> Tclk 1ms
+  constant NCO_SCALE : natural :=  5;					  -- constant scale factor -> Tclk 1ms
   
   -----------------------------------------------------------------------------
   -- Helper functions (prototypes)
@@ -49,7 +49,7 @@ package mcu_pkg is
   constant FMC_ROM_DW : natural range 1 to 20 	:= 20;		--FMC_ROM data word width
   constant FMC_DUR_WW : natural range 1 to 16 	:= 14;		--FMC_ROM tone duration word width  
   constant FMC_TON_WW : natural range 1 to 16 	:= 6;	  		--FMC_ROM tone duration word width  
-  constant FMC_LAST_TONE : unsigned(9 downto 0) := (others => '1'); -- last-tone indicator
+  constant FMC_LAST_TONE : unsigned(FMC_DUR_WW-1 downto 0) := (others => '1'); -- last-tone indicator
   -- memory map
   type t_bus_slave is (ROM, RAM, GPIO, FMC, TIM, UART); -- list of bus slaves
   type t_ba is array (t_bus_slave) of std_logic_vector(AW-1 downto 0);

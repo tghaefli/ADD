@@ -30,15 +30,32 @@ architecture rtl of rom is
     ---------------------------------------------------------------------------
     -- Opcode    Rdest    Rsrc1    Rsrc2               description
     ---------------------------------------------------------------------------
+    -- configure FMC_CHN_ENB(7:0) to enable all channels
+    OPC(setil) & reg(3) & n2slv(16#40#, DW/2),         -- setil r3, 0x40
+    OPC(setih) & reg(3) & n2slv(16#03#, DW/2),         -- setih r3, 0x03
+    OPC(setil) & reg(4) & n2slv(16#FF#, DW/2),         -- setil r4, 0xFF
+    OPC(st)    & reg(4) & reg(3) & "00000",            -- CHN_ENB(7:0) = 0xFF
+    -- configure FMC_TMP_CTRL to speed-up factor of 1
+    OPC(setil) & reg(3) & n2slv(16#41#, DW/2),         -- setil r3, 0x41
+    OPC(setih) & reg(3) & n2slv(16#03#, DW/2),         -- setih r3, 0x03
+    OPC(setil) & reg(4) & n2slv(16#40#, DW/2),         -- setil r4, 0x40
+    OPC(setih) & reg(4) & n2slv(16#00#, DW/2),         -- setih r4, 0x00
+    OPC(st)    & reg(4) & reg(3) & "00000",            -- SPD_FAC(9:0)=0x040=1.00
+
+    OPC(jmp)   & "-00" & n2slv(16#09#, AW-2),             -- jmp 0x009
+
+
+    
+    
     -- set GPIO(7:0) = LED(7:0) to Output
     OPC(setil) & reg(3) & n2slv(16#02#, DW/2),         -- setil r3, 0x02
     OPC(setih) & reg(3) & n2slv(16#03#, DW/2),         -- setih r3, 0x03
     OPC(setil) & reg(4) & n2slv(16#FF#, DW/2),         -- setil r4, 0xFF
-    OPC(st)    & reg(4) & reg(3) & "-----",            -- GPIO_OUT_ENB = 0xFF
+    OPC(st)    & reg(4) & reg(3) & "00000",            -- GPIO_OUT_ENB = 0xFF
     -- initialize GPIO data output values (permanently stored in r4) 
     OPC(setil) & reg(3) & n2slv(16#01#, DW/2),         -- setil r3, 0x01
     OPC(setil) & reg(4) & n2slv(16#2A#, DW/2),         -- setil r4, 0x2A (LED(7:0)=00101010)
-    OPC(st)    & reg(4) & reg(3) & "-----",            -- GPIO_DATA_OUT = 0x2A
+    OPC(st)    & reg(4) & reg(3) & "00000",            -- GPIO_DATA_OUT = 0x2A
     -- initilize bit masks for toggling specific bits
     OPC(setil) & reg(5) & n2slv(16#03#, DW/2),         -- setil r5, 0x03 (LED(1:0))
     OPC(setil) & reg(6) & n2slv(16#0C#, DW/2),         -- setil r6, 0x0C (LED(3:2))
@@ -58,30 +75,30 @@ architecture rtl of rom is
              OPC(setil) & reg(0) & n2slv(16#61#, DW/2),   -- setil r0, 0x61
              OPC(setih) & reg(0) & n2slv(16#51#, DW/2),   -- setih r0, 0x51
                 -- execute
-                OPC(nop)   & "-----------",               
-                OPC(nop)   & "-----------",                       
+                iw_nop,               
+                iw_nop,                       
              -- check condition
              OPC(addil) & reg(0) & n2slv(16#FF#, DW/2),   -- addil r0, 0xFF
              OPC(bne)   & "-11"  & n2slv(16#FD#, AW-2),   -- bne 0x3FD (-3)
              -- toggle LED(1:0)
-             OPC(xori)  & reg(4) & reg(4) & reg(5)& "--", -- apply bit mask     
-             OPC(st)    & reg(4) & reg(3) & "-----",      -- write new value to GPIO_DATA_OUT
+             OPC(xori)  & reg(4) & reg(4) & reg(5)& "00", -- apply bit mask     
+             OPC(st)    & reg(4) & reg(3) & "00000",      -- write new value to GPIO_DATA_OUT
           -- check condition
           OPC(addil) & reg(1) & n2slv(16#FF#, DW/2),      -- addil r1, 0xFF
           OPC(bne)   & "-11"  & n2slv(16#F7#, AW-2),      -- bne 0x3F7 (-9)
           -- toggle LED(3:2)
-          OPC(xori)  & reg(4) & reg(4) & reg(6)& "--",    -- apply bit mask     
-          OPC(st)    & reg(4) & reg(3) & "-----",         -- write new value to GPIO_DATA_OUT
+          OPC(xori)  & reg(4) & reg(4) & reg(6)& "00",    -- apply bit mask     
+          OPC(st)    & reg(4) & reg(3) & "00000",         -- write new value to GPIO_DATA_OUT
        -- check condition
        OPC(addil) & reg(2) & n2slv(16#FF#, DW/2),         -- addil r2, 0xFF
        OPC(bne)   & "-11"  & n2slv(16#F1#, AW-2),         -- bne 0x3F1 (-15)
        -- toggle LED(3:2)
-       OPC(xori)  & reg(4) & reg(4) & reg(7)& "--",       -- apply bit mask     
-       OPC(st)    & reg(4) & reg(3) & "-----",            -- write new value to GPIO_DATA_OUT
+       OPC(xori)  & reg(4) & reg(4) & reg(7)& "00",       -- apply bit mask     
+       OPC(st)    & reg(4) & reg(3) & "00000",            -- write new value to GPIO_DATA_OUT
     -- end of end-less loop
     OPC(jmp)   & "-00" & n2slv(16#0A#, AW-2),             -- jmp 0x00A
     ---------------------------------------------------------------------------
-    others => OPC(nop)  & "-----------"                   -- NOP
+    others => iw_nop                   -- NOP
          );
   
 begin

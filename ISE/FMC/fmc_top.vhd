@@ -2,7 +2,7 @@
 -- Entity: fmc_top
 -- Author: Sandro Arnold
 -------------------------------------------------------------------------------
--- Description: Testatübung FMC Controller
+-- Description: Testatbung FMC Controller
 -- FMC_TOP Top Level Entity of Floppy Music Controller
 -------------------------------------------------------------------------------
 -- Total # of FFs: ... tbd ...
@@ -120,7 +120,11 @@ begin
             tick_dur <= '0';
             dur_cnt <= 0;
         elsif rising_edge(clk) then
-            if (dur_cnt = DUR_SCALE/2) then
+            if (tick_dur = '1') then
+					tick_dur <= '0';
+				end if;
+				
+				if (dur_cnt = DUR_SCALE-1) then
                 tick_dur <= not tick_dur;
 					 dur_cnt <= 0;
             else
@@ -137,11 +141,15 @@ begin
             tick_nco <= '0';
             nco_cnt <= 0;
         elsif rising_edge(clk) then
-            if (dur_cnt = DUR_SCALE/2) then
-                tick_nco <= not tick_nco;
+				if (tick_nco = '1') then
+					tick_nco <= '0';
+				end if;
+				
+            if (nco_cnt = NCO_SCALE-1) then
+                tick_nco <= '1';
 					 nco_cnt <= 0;
             else
-                nco_cnt <= dur_cnt + 1;
+                nco_cnt <= nco_cnt + 1;
             end if;
         end if;
     end process;

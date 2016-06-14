@@ -2,7 +2,7 @@
 -- Entity: fmc_ch
 -- Author: Sandro Arnold
 -------------------------------------------------------------------------------
--- Description: Testatübung Floppy Music Controller
+-- Description: Testatbung Floppy Music Controller
 -- FMC_CH Channel of Floppy Music Controller
 -------------------------------------------------------------------------------
 -- Total # of FFs: ... tbd ...
@@ -13,7 +13,8 @@ use ieee.numeric_std.all;
 use work.mcu_pkg.all;
 
 entity fmc_ch is
-  generic(N : natural := 0 -- channel number); 
+  generic(N : natural := 0 -- channel number
+			); 
   port( rst     : in    std_logic;
         clk     : in    std_logic;
 		    -- FMC_CH FMC_TOP signals
@@ -21,7 +22,7 @@ entity fmc_ch is
 		    tick_nco				: in  std_logic; 	--period = 1us
         enb		 		 		: in  std_logic;
 		    fmc_ch_out_enb		: out std_logic;
-        fmc_chn_out_step    : out std_logic;
+        fmc_chn_out_step      : out std_logic;
         fmc_chn_out_dir 		: out std_logic
   );
 end fmc_ch;
@@ -50,6 +51,7 @@ architecture rtl of fmc_ch is
   signal stp_cnt 	: integer range 0 to 80 := 0;
   -- signal stp_cnt   : unsigned(6 downto 0);  --  7 bit step counter
   signal dir		: std_logic;
+  signal stp_log  : std_logic;
   
   -- Wait during tone ist playing signals
   signal wait_cnt			: unsigned(FMC_DUR_WW-1 downto 0);
@@ -61,8 +63,9 @@ begin
   -- output assignment
   fmc_chn_out_step <= osc_cnt(23);
   fmc_chn_out_dir	 <= dir;
-  fmc_ch_out_enb	 <= enb;  
-  
+  --fmc_ch_out_enb	 <= enb;  
+  fmc_ch_out_enb <= '1' when to_integer(unsigned(tone_number)) = 0 else '0';
+
   -----------------------------------------------------------------------------
   -- Direction changing
   -----------------------------------------------------------------------------  
@@ -70,29 +73,20 @@ begin
   begin
     if rst = '1' then
       stp_cnt <= 0;
+		dir <= '0';
     elsif rising_edge(clk) then
-		if osc_cnt(23) = '1' then	--why is this?
+	 stp_log <= osc_cnt(23);								--rising edge
+	 if (stp_log = '0' AND osc_cnt(23) = '1') then	--rising edge
 			stp_cnt <= stp_cnt + 1;
-			if (stp_cnt = 80) then
-				dir <= not dir;
-				stp_cnt <= 0;
-			else
-				stp_cnt <= stp_cnt + 1;
-			end if;
-		end if;
+	 end if;
+	 
+	 --if (stp_cnt = 79) then
+	 if (stp_cnt = 2) then
+			dir <= not dir;
+			stp_cnt <= 0;
+	 end if;
 	end if;
   end process;
-
---  P_dir_change: process(osc_cnt(23),stp_cnt)
---  begin
---	 if osc_cnt(23) = '1' then
---		stp_cnt <= stp_cnt + 1;
---	end if;	
---    if (stp_cnt = 80) then
---		dir <= not dir;
---		stp_cnt <= 0;
---    end if;
---  end process;
 
   -----------------------------------------------------------------------------
   -- wait during tone is playing 
@@ -101,6 +95,7 @@ begin
   begin
     if rst = '1' then
       wait_cnt <= (others => '0');
+		addr <= (others => '0');
 		next_tone_enb <= '0';
     elsif rising_edge(clk) then
 		--default assignemt
@@ -108,13 +103,18 @@ begin
 		--wait for next tone 
 		if tick_dur = '1' then	
             if (wait_cnt = tone_duration-1) then
-					 wait_cnt <= (others => '0');
-					 -- decode next tone
+					 wait_cnt <= (others => '0');  -- decode next tone
 					 next_tone_enb <='1';					 
             else
 					 wait_cnt <= wait_cnt + 1;
-					 next_tone_enb <='0';
+					 --next_tone_enb <='0';
             end if;
+		end if;
+		
+		if tone_duration = FMC_LAST_TONE then
+			addr <= (others => '0');
+		elsif next_tone_enb = '1' then
+				addr <= std_logic_vector(unsigned(addr)+1);
 		end if;
     end if;
   end process;
@@ -122,21 +122,21 @@ begin
   -----------------------------------------------------------------------------
   -- count address for tone playing next
   -----------------------------------------------------------------------------  
-  P_next_tone: process(rst, clk)
-  begin
-	if rst = '1' then
-		addr <= (others => '0');
-	elsif rising_edge(clk) then	
-		if next_tone_enb = '1' then
-			if tone_duration = FMC_LAST_TONE then
-				-- restart playing from 1st tone
-				addr <= (others => '0');
-			else
-				addr <= std_logic_vector(unsigned(addr)+1);
-			end if;
-		end if;
-    end if;
-  end process;
+--  P_next_tone: process(rst, clk)
+--  begin
+--	if rst = '1' then
+--		addr <= (others => '0');
+--	elsif rising_edge(clk) then	
+--		if next_tone_enb = '1' then
+--			if tone_duration = FMC_LAST_TONE then
+--				-- restart playing from 1st tone
+--				addr <= (others => '0');
+--			else
+--				addr <= std_logic_vector(unsigned(addr)+1);
+--			end if;
+--		end if;
+--    end if;
+--  end process;
 
   -----------------------------------------------------------------------------
   -- Tone frequency Oscillator
